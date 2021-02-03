@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2                // Swagger的开关，表示已经启用Swagger
 @Configuration                 // 声明当前配置类
-public class swaggerConfig extends WebMvcConfigurationSupport {
+public class swaggerConfig extends WebMvcConfigurationSupport  {
 
     @Value("${swagger.basePackage}")
     private String basePackage;       // controller接口所在的包
@@ -38,6 +38,11 @@ public class swaggerConfig extends WebMvcConfigurationSupport {
                 "classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations(
                 "classpath:/META-INF/resources/webjars/");
+        registry.addResourceHandler("/**")
+                .addResourceLocations("classpath:/resources/")
+                .addResourceLocations("classpath:/static/")
+                .addResourceLocations("classpath:/public/")
+                .addResourceLocations("classpath:/templates");
         super.addResourceHandlers(registry);
     }
 
