@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -45,6 +46,11 @@ public class swaggerConfig extends WebMvcConfigurationSupport  {
                 .addResourceLocations("classpath:/templates");
         super.addResourceHandlers(registry);
     }
+
+//    @Override
+//    protected void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/index").setViewName("/templates/user.html");
+//    }
 
     @Bean
     public Docket createRestApi() {

@@ -8,7 +8,7 @@
 </head>
 <body>
 <div>
-    <div style="width:700px;">
+    <div style="width:100%;">
         <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
             <table style="width:100%;">
                 <tr>
@@ -26,12 +26,14 @@
             </table>
         </div>
     </div>
-    <div id="mytest" class="mini-datagrid" style="width:700px;height:250px;"
+    <div id="mytest" class="mini-datagrid" style="clear:both;"
          url="../user"
          idField="id"
+         sizeList="[20,50,100,300,500,1000]"
          onellbeginedit="onCellBeginEdit"
          showPager="false"
          allowResize="true"
+         allSortColumn="false"
          allowCellEdit="true" allowCellSelect="true" multiSelect="true"
          editNextOnEnterKey="true"  editNextRowCell="true"
          title="表格面板">

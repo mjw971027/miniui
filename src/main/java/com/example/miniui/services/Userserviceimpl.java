@@ -41,18 +41,19 @@ UserMapper userMapper;
                 Logger logger= LoggerFactory.getLogger(Userserviceimpl.class);
                 logger.info(user.getName()+"修改");
                 map.put("flag",1);
-                return map;
+                continue;
             }
-            if (userMapper.checkname(user)>0)
+            else if (userMapper.checkname(user)>0)
             {
                 map.put("msg","REPEATING NAME");
                 map.put("flag",2);
-                return map;
             }
-            Logger logger= LoggerFactory.getLogger(Userserviceimpl.class);
-            logger.info(user.getName()+"增加");
-            map.put("flag",1);
-            userMapper.insert(user);
+            else {
+                Logger logger= LoggerFactory.getLogger(Userserviceimpl.class);
+                logger.info(user.getName()+"增加");
+                map.put("flag",1);
+                userMapper.insert(user);
+            }
         }
         return map;
     }
