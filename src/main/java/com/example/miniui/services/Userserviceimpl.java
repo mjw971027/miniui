@@ -1,32 +1,22 @@
 package com.example.miniui.services;
-
-
-
 import com.example.miniui.dao.UserMapper;
 import com.example.miniui.entity.User;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 @Service
 public class Userserviceimpl implements Userservice{
-@Autowired
-UserMapper userMapper;
-
+    @Autowired
+    UserMapper userMapper;
     @Override
     public List<User> qurryall(String searchname) {
         List<User> list=userMapper.selectAll(searchname);
         return list;
     }
-
     @Override
     public Map save(List<User> users) {
         Map map=new HashMap();
@@ -40,29 +30,22 @@ UserMapper userMapper;
                 userMapper.updateByPrimaryKey(user);
                 Logger logger= LoggerFactory.getLogger(Userserviceimpl.class);
                 logger.info(user.getName()+"修改");
-                map.put("flag",1);
-                continue;
-            }
-            else if (userMapper.checkname(user)>0)
+            } else if (userMapper.checkname(user)>0)
             {
                 map.put("msg","REPEATING NAME");
-                map.put("flag",2);
-            }
-            else {
+            } else {
                 Logger logger= LoggerFactory.getLogger(Userserviceimpl.class);
                 logger.info(user.getName()+"增加");
-                map.put("flag",1);
                 userMapper.insert(user);
             }
         }
+        map.put("flag",1);
         return map;
     }
-
     @Override
     public Map deletebyid(List<Integer> integers) {
         Map map=new HashMap();
         map.put("flag",0);
-        String id;
         for (int int1:integers)
         {
             if (userMapper.checkid(int1)>0)
@@ -71,8 +54,7 @@ UserMapper userMapper;
                 Logger logger=LoggerFactory.getLogger(Userserviceimpl.class);
                 logger.info("删除成功id为"+int1);
                 map.put("flag",1);
-            }
-            else {
+            } else {
                 Logger logger=LoggerFactory.getLogger(Userserviceimpl.class);
                 logger.info("本就不存在，无法删除");
             }

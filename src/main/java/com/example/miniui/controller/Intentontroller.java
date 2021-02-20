@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-//这个用于页面跳转
+//这个用于页面跳转这个是用thymeleaf
 @Controller
 //可以直接跳转
 public class Intentontroller {

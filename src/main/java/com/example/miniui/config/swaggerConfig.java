@@ -1,5 +1,4 @@
 package com.example.miniui.config;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,23 +13,21 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 @EnableSwagger2                // Swagger的开关，表示已经启用Swagger
 @Configuration                 // 声明当前配置类
 public class swaggerConfig extends WebMvcConfigurationSupport  {
-
     @Value("${swagger.basePackage}")
-    private String basePackage;       // controller接口所在的包
-
+    private String basePackage;
+    // controller接口所在的包
     @Value("${swagger.title}")
-    private String title;           // 当前文档的标题
-
+    private String title;
+    // 当前文档的标题
     @Value("${swagger.description}")
-    private String description;         // 当前文档的详细描述
-
+    private String description;
+    // 当前文档的详细描述
     @Value("${swagger.version}")
-    private String version;         // 当前文档的版本
-
+    private String version;
+    // 当前文档的版本
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**").addResourceLocations(
@@ -46,12 +43,10 @@ public class swaggerConfig extends WebMvcConfigurationSupport  {
                 .addResourceLocations("classpath:/templates");
         super.addResourceHandlers(registry);
     }
-
-//    @Override
-//    protected void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/index").setViewName("/templates/user.html");
-//    }
-
+    //    @Override
+    //    protected void addViewControllers(ViewControllerRegistry registry) {
+    //        registry.addViewController("/index").setViewName("templates/user.html");
+    //    }
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -61,7 +56,6 @@ public class swaggerConfig extends WebMvcConfigurationSupport  {
                 .paths(PathSelectors.any())
                 .build();
     }
-
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title(title)
@@ -69,5 +63,4 @@ public class swaggerConfig extends WebMvcConfigurationSupport  {
                 .version(version)
                 .build();
     }
-
 }
