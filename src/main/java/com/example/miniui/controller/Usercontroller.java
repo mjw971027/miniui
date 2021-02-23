@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(value = "mjw")
+@Api(tags = "mjw")
 //这个control用于user
 @RestController
 //一般用于返回json

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
-@Api(value = "mjw2")
+@Api(tags = "mjw2")
 @RestController
 public class CookieController {
     @GetMapping(value = "SetCookies")
