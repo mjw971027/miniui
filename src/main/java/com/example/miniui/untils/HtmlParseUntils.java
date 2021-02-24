@@ -18,29 +18,30 @@ public class HtmlParseUntils {
     public  List<Content> getJDRsearch(String url)
     {
         Document document= null;
+        Element element=null;
+        ArrayList<Content> list=new ArrayList<Content>();
         try {
             document = Jsoup.parse(new URL(url),30000);
-        } catch (IOException e) {
+            element=document.getElementById("J_goodsList");
+            Elements elements=element.getElementsByTag("li");
+            for (Element el:elements)
+            {
+                String goodUrl=el.getElementsByTag("a").eq(0).attr("href");
+                String img=el.getElementsByTag("img").attr("data-lazy-img");
+                String price=el.getElementsByClass("p-price").text();
+                String name=el.getElementsByClass("p-name p-name-type-2").text();
+                Content content=new Content();
+                content.setImg(img);
+                content.setGoodUrl(goodUrl);
+                content.setTitle(name);
+                content.setPrice(price);
+                list.add(content);
+            }
+            Logger logger= LoggerFactory.getLogger(HtmlParseUntils.class);
+            logger.info("完成一次爬取。");
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        Element element=document.getElementById("J_goodsList");
-        ArrayList<Content> list=new ArrayList<Content>();
-        Elements elements=element.getElementsByTag("li");
-        for (Element el:elements)
-        {
-            String img=el.getElementsByTag("img").attr("data-lazy-img");
-            String price=el.getElementsByClass("p-price").text();
-            String name=el.getElementsByClass("p-name p-name-type-2").text();
-            Content content=new Content();
-            content.setImg(img);
-            content.setTitle(name);
-            content.setPrice(price);
-            list.add(content);
-        }
-        Logger logger= LoggerFactory.getLogger(HtmlParseUntils.class);
-        logger.info("完成一次爬取。");
         return list;
     }
-
-
 }

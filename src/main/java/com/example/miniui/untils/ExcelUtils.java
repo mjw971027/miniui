@@ -1,13 +1,11 @@
 package com.example.miniui.untils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +19,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.imageio.ImageIO;
 
 /**
  * Excel 工具类(兼容xls和xlsx)
@@ -97,6 +97,16 @@ public class ExcelUtils {
             writeWorkbookToOutputStream(book, outputStream);
         }
     }
+
+    /**
+     * 将url图片插入到excel
+     * @param
+     *
+     *
+     */
+
+
+
 
     /**
      * 把Workbook对象输出到Excel输出流

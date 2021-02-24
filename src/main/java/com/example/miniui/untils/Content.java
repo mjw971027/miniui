@@ -4,6 +4,15 @@ public class Content {
     String title;
     String price;
     String img;
+    String goodUrl;
+
+    public String getGoodUrl() {
+        return goodUrl;
+    }
+
+    public void setGoodUrl(String goodUrl) {
+        this.goodUrl = goodUrl;
+    }
 
     public String getTitle() {
         return title;
@@ -35,6 +44,7 @@ public class Content {
                 "title='" + title + '\'' +
                 ", price='" + price + '\'' +
                 ", img='" + img + '\'' +
+                ", goodUrl='" + goodUrl + '\'' +
                 '}';
     }
 }
