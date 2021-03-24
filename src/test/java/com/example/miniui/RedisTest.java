@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootTest
 public class RedisTest {
     @Autowired
@@ -14,9 +17,9 @@ public class RedisTest {
     @Test
     void contextLoad()
     {
-        User user=new User(1,"mjw","3424f333");
-        String user1= JSON.toJSONString(user);
-    redisTemplate.opsForValue().set("name",user1);
-    System.out.println(redisTemplate.opsForValue().get("name"));
+        User user=new User();
+      user.setName("dasdas");
+      user.setId(1);
+      System.out.println(user.getId()+user.getName()+user.getPwd());
     }
 }

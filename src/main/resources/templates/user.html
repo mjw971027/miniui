@@ -5,64 +5,186 @@
     <title>datagrid</title>
     <script src="../static/boot.js" type="text/javascript"></script>
     <script src="../static/jquery.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+    </style>
 </head>
 <body>
-<div>
-    <div style="width:100%;">
-        <div class="mini-toolbar" style="border-bottom:0;padding:0px;">
-            <table style="width:100%;">
-                <tr>
-                    <td style="width:100%;">
-                        <a class="mini-button" iconCls="icon-add" onclick="addRow()" plain="true" tooltip="增加...">增加</a>
-                        <a class="mini-button" iconCls="icon-remove" onclick="removeRow()" plain="true">删除</a>
-                        <span class="separator"></span>
-                        <a class="mini-button" iconCls="icon-save" onclick="saveData()" plain="true">保存</a>
-                    </td>
-                    <td style="white-space:nowrap;">
-                        <input id="searchname" class="mini-textbox" emptyText="请输入姓名" style="width:150px;" onenter="onKeyEnter"/>
-                        <a class="mini-button" onclick="search()">查询</a>
-                    </td>
-                </tr>
-            </table>
+
+<!--        <div class="mini-panel" title="nothing" style="height: 38px;width: 100%" showHeader="false"></div>-->
+<div class="mini-toolbar" bodyStyle="padding:0;" style="width: 100%">
+    <table style="width:100%;">
+        <tr>
+            <td style="width:100%;">
+                <div id="idname" class="mini-combobox" style="width: 90px;" textField="name" valueField="name"
+                     url="../user" onvaluechanged="test1">
+                    <div property="columns" style="width: 90px;">
+                        <div header="id" field="id" visible="false"></div>
+                        <div header="name" field="name"></div>
+                    </div>
+                </div>
+                <div id="tidname" class="mini-combobox" style="width: 90px;" textField="name" valueField="name">
+                    <div property="columns">
+                        <div header="id" field="id" visible="false"></div>
+                        <div header="name" field="name"></div>
+                    </div>
+                </div>
+                <a class="mini-button" iconCls="icon-add" onclick="addRow()" plain="true" tooltip="增加...">增加</a>
+                <a class="mini-button" iconCls="icon-remove" onclick="removeRow()" plain="true">删除</a>
+                <span class="separator"></span>
+                <a class="mini-button" iconCls="icon-save" onclick="saveData()" plain="true">保存</a>
+                <a class="mini-button" iconCls="icon-button" onclick="print1()" plain="true">输出光标</a>
+            </td>
+            <td style="white-space:nowrap;">
+<!--                <input id="searchname" class="mini-textbox" emptyText="请输入姓名" style="width:150px;"-->
+<!--                       onenter="onKeyEnter"/>-->
+                <a class="mini-button" onclick="search()">查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div class="mini-splitter" allowRisize="false" style="width: 100%;height: 100%" borderStyle="border:none">
+        <div size="50%" style="border: none;">
+            <div class="mini-fit" style="width: 100%;height: 100%">
+                <div id="mytest" class="mini-datagrid" style="height: 100%;width: 100%" bodyStyle="padding:0;"
+                     url="../userlist"
+                     idField="id"
+                     datafield="list"
+                     pageSize="10"
+                     sizeList="[10,20,40,100]"
+                     onselectionchanged="getNTitle"
+                     onellbeginedit="onCellBeginEdit"
+                     showPager="true"
+                     allowResize="false"
+                     allSortColumn="false"
+                     allowCellEdit="true" allowCellSelect="true" multiSelect="true"
+                     editNextOnEnterKey="true" editNextRowCell="true"
+                     SortMode="client"
+                     title="表格面板">
+                    <div property="columns">
+
+                        <div type="indexcolumn">序号</div>
+                        <div field="id" name="id" style="width: 20px">id</div>
+                        <!--        field必须与列名相同。否则无法识别出来-->
+                        <div field="name" name="name"style="width: 150px" headerAlign="center allowSort" allowSort="false">员工账号
+                            <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                        </div>
+                        <div field="pwd" name="pwd" style="width: 150px" headerAlign="center" allowSort="false">密码
+                            <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="border: none;">
+            <div class="mini-fit">
+                <div id="mytest1" class="mini-datagrid" style="height: 100%;width: 100%" bodyStyle="padding:0;"
+                     idField="id"
+                     onellbeginedit="onCellBeginEdit"
+                     showPager="false"
+                     allowResize="false"
+                     allSortColumn="false"
+                     allowCellEdit="true" allowCellSelect="true" multiSelect="true"
+                     editNextOnEnterKey="true" editNextRowCell="true"
+                     SortMode="client"
+                     title="表格面板">
+                    <div property="columns">
+                        <div field="id" name="id" style="width: 50px">
+                            id
+                        </div>
+                        <!--        field必须与列名相同。否则无法识别出来-->
+                        <div field="name" name="name" style="width: 100px" headerAlign="center allowSort" allowSort="false">员工账号
+                            <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
+                        </div>
+                        <!--                    <div field="pwd" name="pwd" width="120" headerAlign="center" allowSort="false">密码-->
+                        <!--                        <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/>-->
+                        <!--                    </div>-->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="mytest" class="mini-datagrid" style="clear:both;"
-         url="../user"
-         idField="id"
-         sizeList="[20,50,100,300,500,1000]"
-         onellbeginedit="onCellBeginEdit"
-         showPager="false"
-         allowResize="true"
-         allSortColumn="false"
-         allowCellEdit="true" allowCellSelect="true" multiSelect="true"
-         editNextOnEnterKey="true"  editNextRowCell="true"
-         title="表格面板">
-        <div property="columns">
-            <div type="indexcolumn"></div>
-            <div type="checkcolumn"></div>
-            <div field="id" width="30" headerAlign="center allowSort">id</div>
-            <!--        field必须与列名相同。否则无法识别出来-->
-            <div field ="name" name="name" with="120" headerAlign="center allowSort">员工账号
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200" />
-            </div>
-            <div field="pwd" name="pwd" width="120" headerAlign="center" allowSort="true">密码
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200" />
-            </div>
-        </div>
-    </div>
+
 </div>
 
+
 <script type="text/javascript">
+
     mini.parse();
+    let place="";
+    let grid = mini.get("mytest");
+    let grid2=mini.get("mytest1");
+    let combox2 = mini.get("tidname");
+    grid.load(null,function (){
+        console.log(grid.getData());
+        }
+    //     null, function () {
+    //     grid.sortBy("id", "asc");
+    // }
+    );
 
-    var grid = mini.get("mytest");
 
-    grid.load();
+
+    $("#mytest").click(function () {
+        console.log("datagrid1");
+    });
+    $("#mytest1").click(function () {
+        console.log("datagrid2");
+    });
+
+    function colorchange(index)
+    {
+        place=index;
+
+    }
+    function getNTitle(e)
+    {
+       let gridtmp=e.sender;
+       let record=gridtmp.getSelected();
+       if (record._state!="added")
+       {
+           grid2.setUrl("../getNTitle");
+           grid2.load({id:record.id});
+       }
+
+    }
+    function test1(e) {
+        let combox = e.sender;
+        let value = combox.getSelected();
+        if (!value._state=="added")
+        {
+            console.log(value);
+            let id = value.id;
+            combox2.setUrl("../getNTitle?id=" + id);
+        }
+
+    }
+
+    function print1() {
+        let pd = grid.getCurrentCell();
+        if (pd) {
+            console.log("选中");
+            let data = grid.getData();
+            console.log(data);
+        } else console.log("未选中");
+    }
 
     function search() {
-        var searchname = mini.get("searchname").getValue();
-        console.log(searchname);
-                grid.load({"searchname":searchname});
+        // let searchname = mini.get("searchname").getValue();
+        // console.log(searchname);
+        // grid.load({"searchname": searchname});
+        let idname=mini.get("idname");
+        console.log(idname.getSelected().id);
+
+        grid2.setUrl("../getNTitle");
+        grid2.load({id:idname.getSelected().id});
     }
 
     function onKeyEnter(e) {
@@ -70,28 +192,31 @@
     }
 
     function addRow() {
-        var newRow = { name: "New Row" };
+        let newRow = {name: "New Row"};
         grid.addRow(newRow, 0);
 
         grid.beginEditCell(newRow, "LoginName");
     }
+
     function removeRow() {
-        var rows = grid.getSelecteds();
+        let rows = grid.getSelecteds();
         if (rows.length > 0) {
             grid.removeRows(rows, true);
-            var ids=new Array();
-            for (var i=0;i<rows.length;i++)
-            {
-                ids.add(rows[i].id);
+            let ids = new Array();
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i]._state!="added")
+                {
+                    ids.add(rows[i].id);
+                }
             }
             mini.ajax(
                 {
-                    url:"../delete",
+                    url: "../delete",
                     type: "post",
-                    data:{data:JSON.stringify(ids)},
-                    success:function f(json)
-                    {
-                        var _data=mini.encode(json);
+                    data: {data: JSON.stringify(ids)},
+                    success: function f(json) {
+                        let data = mini.encode(json);
+                        console.log(data);
                         grid.reload();
                     }
                 }
@@ -99,21 +224,35 @@
 
         }
     }
+
     function saveData() {
 
-        var data=grid.getChanges();
-        var json;
-        json=mini.encode(data);
-        console.log(json);
-        if (json=="[]"){return;}
+        let data = grid.getChanges();
+
+        console.log(data);
+        let json;
+        json = mini.encode(data);
+        console.log(typeof (json));
+        if (json == "[]") {
+            return;
+        }
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].pwd.trim()==""||data[i].pwd=="")
+            {
+                console.log("key");
+            }
+        }
+
         $.ajax(
             {
-                url:"../savedata",
-                type:"post",
-                data:{data:json},
-                success:function (text){
-                    var data=mini.decode(text);
+                url: "../savedata",
+                type: "post",
+                data: {data: json},
+                success: function (text) {
+                    let data = mini.decode(text);
+                    mini.alert("保存成功以及失败的部分" + data.msg);
                     grid.reload();
+
                 }
             }
         )
