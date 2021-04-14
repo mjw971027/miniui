@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.github.pagehelper.Page;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,4 +19,5 @@ public interface Userservice {
     public Map deletebyid(List<Integer> ints);
     public List<Map> selectNTitle(int id);
     public Page<HashMap> getuserlist(Integer pageSize, Integer pageNum, String searchname);
+//    public Page<HashMap> getuserlist1(String searchname, HttpServletRequest request);
 }

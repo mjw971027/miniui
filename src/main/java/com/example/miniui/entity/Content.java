@@ -1,4 +1,4 @@
-package com.example.miniui.untils;
+package com.example.miniui.entity;
 
 public class Content {
     String title;

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,26 +25,36 @@ public class Usercontroller {
 //自动注入userserviceimpl
     Userserviceimpl userserviceimpl;
 
-    Logger logger=LoggerFactory.getLogger(Usercontroller.class);
-    @ResponseBody
+    Logger logger = LoggerFactory.getLogger(Usercontroller.class);
+
+
     @RequestMapping(value = "/user")
 //这个得意思就是返回一个值，当user.html返回一个url为/user时
     public List<User> getall(String searchname) {
+        if (searchname == null) {
+            searchname = "";
+        }
         return userserviceimpl.qurryall(searchname);
 //返回一个list里面是user，miniui会自动处理这个list
     }
 
     @RequestMapping(value = "/userlist")
-    public PageInfo<HashMap> getuserlist(@RequestParam(value = "pageIndex",defaultValue = "0") Integer pageNum,
-                                         @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize,
-                                         String searchname)
-    {
-        PageInfo<HashMap> page=new PageInfo<>(userserviceimpl.getuserlist(pageNum,pageSize,searchname));
+    public PageInfo<HashMap> getuserlist(@RequestParam(value = "pageIndex", defaultValue = "0") Integer pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize,
+                                         String searchname) {
+        PageInfo<HashMap> page = new PageInfo<>(userserviceimpl.getuserlist(pageNum, pageSize, searchname));
         return page;
 
     }
+//    @RequestMapping(value = "/userlist")
+//    public PageInfo<HashMap> getuserlist1(HttpServletRequest request,
+//                                          String searchname) {
+//        PageInfo<HashMap> page = new PageInfo<>(userserviceimpl.getuserlist1(searchname,request));
+//        return page;
+//
+//    }
 
-    @ResponseBody
+
     @PostMapping(value = "/savedata")
     public Map update(String data) {
         Map map = new HashMap();
@@ -55,23 +66,25 @@ public class Usercontroller {
         return map;
     }
 
-    @ResponseBody
+
     @PostMapping(value = "/delete")
-    public Map deleteuser(String data)
-    {
-        Map map=new HashMap();
-        List<Integer> userid =JSON.parseArray(data,Integer.class);
-        if (userid.size()>0)
-        {
-            map =userserviceimpl.deletebyid(userid);
+    public Map deleteuser(String data) {
+        Map map = new HashMap();
+        List<Integer> userid = JSON.parseArray(data, Integer.class);
+        if (userid.size() > 0) {
+            map = userserviceimpl.deletebyid(userid);
         }
         return map;
     }
 
-    @ResponseBody
+
     @RequestMapping(value = "/getNTitle")
-    public List<Map> selectNTitle(int id)
-    {
+    public List<Map> selectNTitle(int id) {
         return userserviceimpl.selectNTitle(id);
+    }
+
+    @RequestMapping("/hello")
+    public String index1() {
+        return "Hello World";
     }
 }

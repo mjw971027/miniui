@@ -42,8 +42,9 @@
                 <a class="mini-button" iconCls="icon-button" onclick="print1()" plain="true">输出光标</a>
             </td>
             <td style="white-space:nowrap;">
-<!--                <input id="searchname" class="mini-textbox" emptyText="请输入姓名" style="width:150px;"-->
-<!--                       onenter="onKeyEnter"/>-->
+                <a class="mini-button" onclick="logout()">下线</a>
+                <input id="searchname" class="mini-textbox" emptyText="请输入姓名" style="width:150px;"
+                       onenter="onKeyEnter"/>
                 <a class="mini-button" onclick="search()">查询</a>
             </td>
         </tr>
@@ -52,6 +53,9 @@
 <div class="mini-fit">
     <div class="mini-splitter" allowRisize="false" style="width: 100%;height: 100%" borderStyle="border:none">
         <div size="50%" style="border: none;">
+            <div class="mini-toolbar" width="auto" style=" border: none">
+                <span id="span1" style="font-weight: bold">datagrid1</span>
+            </div>
             <div class="mini-fit" style="width: 100%;height: 100%">
                 <div id="mytest" class="mini-datagrid" style="height: 100%;width: 100%" bodyStyle="padding:0;"
                      url="../userlist"
@@ -71,12 +75,12 @@
                     <div property="columns">
 
                         <div type="indexcolumn">序号</div>
-                        <div field="id" name="id" style="width: 20px">id</div>
+                        <div field="id" name="id" width="20" headerAlign="center allowSort">id</div>
                         <!--        field必须与列名相同。否则无法识别出来-->
-                        <div field="name" name="name"style="width: 150px" headerAlign="center allowSort" allowSort="false">员工账号
+                        <div field="name" name="name" width="120" headerAlign="center allowSort" allowSort="false">员工账号
                             <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                         </div>
-                        <div field="pwd" name="pwd" style="width: 150px" headerAlign="center" allowSort="false">密码
+                        <div field="pwd" name="pwd" width="120" headerAlign="center" allowSort="false">密码
                             <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                         </div>
                     </div>
@@ -84,6 +88,9 @@
             </div>
         </div>
         <div style="border: none;">
+            <div class="mini-toolbar" width="auto" style="border: none">
+                <span id="span2" style="font-weight: bold">datagrid2</span>
+            </div>
             <div class="mini-fit">
                 <div id="mytest1" class="mini-datagrid" style="height: 100%;width: 100%" bodyStyle="padding:0;"
                      idField="id"
@@ -96,11 +103,11 @@
                      SortMode="client"
                      title="表格面板">
                     <div property="columns">
-                        <div field="id" name="id" style="width: 50px">
+                        <div field="id" name="id" width="20">
                             id
                         </div>
                         <!--        field必须与列名相同。否则无法识别出来-->
-                        <div field="name" name="name" style="width: 100px" headerAlign="center allowSort" allowSort="false">员工账号
+                        <div field="name" name="name" width="120" headerAlign="center allowSort" allowSort="false">员工账号
                             <input property="editor" class="mini-textbox" style="width:100%;" minWidth="100"/>
                         </div>
                         <!--                    <div field="pwd" name="pwd" width="120" headerAlign="center" allowSort="false">密码-->
@@ -133,9 +140,14 @@
 
 
     $("#mytest").click(function () {
+        $("#span1").css("color", "#0f0");
+        $("#span2").css("color", "#000");
         console.log("datagrid1");
     });
     $("#mytest1").click(function () {
+        $("#span1").css("color", "#000");
+        $("#span2").css("color", "#0f0");
+
         console.log("datagrid2");
     });
 
@@ -158,13 +170,23 @@
     function test1(e) {
         let combox = e.sender;
         let value = combox.getSelected();
-        if (!value._state=="added")
-        {
+        if (!value._state != "added") {
             console.log(value);
             let id = value.id;
             combox2.setUrl("../getNTitle?id=" + id);
         }
 
+    }
+
+    function logout() {
+        mini.ajax(
+            {
+                url: "../logout",
+                type: "get",
+                data: {data: null},
+            }
+        )
+        location.reload();
     }
 
     function print1() {
@@ -177,14 +199,14 @@
     }
 
     function search() {
-        // let searchname = mini.get("searchname").getValue();
-        // console.log(searchname);
-        // grid.load({"searchname": searchname});
-        let idname=mini.get("idname");
-        console.log(idname.getSelected().id);
-
-        grid2.setUrl("../getNTitle");
-        grid2.load({id:idname.getSelected().id});
+        let searchname = mini.get("searchname").getValue();
+        console.log(searchname);
+        grid.load({"searchname": searchname});
+        // let idname=mini.get("idname");
+        // console.log(idname.getSelected().id);
+        //
+        // grid2.setUrl("../getNTitle");
+        // grid2.load({id:idname.getSelected().id});
     }
 
     function onKeyEnter(e) {

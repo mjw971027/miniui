@@ -12,14 +12,16 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public final class RedisUntils {
+public final class RedisUtils {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     // =============================common============================
+
     /**
      * 指定缓存失效时间
+     *
      * @param key  键
      * @param time 时间(秒)
      */
@@ -77,6 +79,7 @@ public final class RedisUntils {
 
     /**
      * 普通缓存获取
+     *
      * @param key 键
      * @return 值
      */
@@ -85,7 +88,20 @@ public final class RedisUntils {
     }
 
     /**
+     * 根据key获取list
+     *
+     * @param key
+     * @param start
+     * @param end
+     * @return
+     */
+    public List getListByKey(String key, long start, long end) {
+        return redisTemplate.opsForList().range(key, start, end);
+    }
+
+    /**
      * 普通缓存放入
+     *
      * @param key   键
      * @param value 值
      * @return true成功 false失败

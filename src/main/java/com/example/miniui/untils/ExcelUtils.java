@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 
@@ -30,6 +31,7 @@ import javax.imageio.ImageIO;
  * @createDate 2019-03-07
  *
  */
+@Component
 public class ExcelUtils {
 
     private static final String XLS = "xls";

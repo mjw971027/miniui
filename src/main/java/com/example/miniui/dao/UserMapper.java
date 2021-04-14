@@ -1,15 +1,19 @@
 package com.example.miniui.dao;
 
 import com.example.miniui.entity.User;
+import com.example.miniui.entity.nTitle;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.github.pagehelper.Page;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CacheConfig(cacheNames = "users")
 @Mapper
 public interface UserMapper {
     /**
@@ -42,6 +46,7 @@ public interface UserMapper {
      *
      * @mbg.generated
      */
+    @Cacheable
     List<User> selectAll(@Param("searchName") String searchName);
 
     /**
@@ -51,10 +56,21 @@ public interface UserMapper {
      * @mbg.generated
      */
     int updateByPrimaryKey(User record);
+
     int checkname(User user);
+
+    @Cacheable
     int checkid(int i);
+
+    @Cacheable
     List<Map> selectNTitle(int id);
+
+    @Cacheable
     int findExistIdexcptit(int id);
 
     Page<HashMap> selectAllByPage(String searchname);
+
+    void insertTitle(nTitle n);
+
+    User selectByName(String name);
 }
