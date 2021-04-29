@@ -1,20 +1,15 @@
 package com.example.miniui.services;
 import com.example.miniui.dao.UserMapper;
 import com.example.miniui.entity.User;
-import com.example.miniui.untils.PageHelperUtil;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,6 +87,26 @@ public class Userserviceimpl implements Userservice {
         }
         Page<HashMap> list = userMapper.selectAllByPage(searchname);
         return list;
+    }
+
+    @Override
+    public List<User> selectAll() {
+        return userMapper.selectAll1();
+    }
+
+    @Override
+    public Map savelist(List<User> users) {
+        Map map = new HashMap();
+        map.put("flag", 0);
+        String error = "";
+        Logger logger = LoggerFactory.getLogger(Userserviceimpl.class);
+        userMapper.deleteAll();
+        for (User user : users) {
+            userMapper.insertAll(user);
+        }
+        map.put("flag", 1);
+        map.put("msg", error);
+        return map;
     }
 //    @Override
 //    public Page<HashMap> getuserlist1(String searchname, HttpServletRequest request) {

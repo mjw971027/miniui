@@ -1,4 +1,4 @@
-package com.example.miniui.untils;
+package com.example.miniui.utils;
 
 import com.example.miniui.entity.Content;
 import org.jsoup.Jsoup;

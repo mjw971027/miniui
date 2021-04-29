@@ -73,4 +73,11 @@ public interface UserMapper {
     void insertTitle(nTitle n);
 
     User selectByName(String name);
+
+
+    List<User> selectAll1();
+
+    void deleteAll();
+
+    void insertAll(User record);
 }

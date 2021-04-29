@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -19,47 +20,53 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private UserDetailsService myUserDetailsService;
+    private UserDetailsService myUserDetailsService;//调用判断是否匹配数据集
     @Autowired
-    private AuthenticationProvider provider;  //注入我们自己的AuthenticationProvider
+    private AuthenticationProvider authenticationProvider;  //自定义的安全认证
     @Autowired
-    private MyAuthenticationSucessHandler myAuthenticationSuccessHandler;
+    private MyAuthenticationSucessHandler myAuthenticationSuccessHandler;//登陆成功返的处理
     @Autowired
-    private MyAuthenticationFailureHandler myAuthenticationFailHander;
+    private MyAuthenticationFailureHandler myAuthenticationFailHander;//登陆失败时的处理
     @Autowired
-    private MyLogOutSuccessHandler myLogOutSuccessHandler;
+    private MyLogOutSuccessHandler myLogOutSuccessHandler;//下线处理
+    @Autowired
+    private AccessDeniedHandler myAuthenticationAccessDeniedHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // TODO Auto-generated method stub
         //super.configure(http);
-        http
+        http//登录部分
                 .formLogin().loginPage("/loginPage").loginProcessingUrl("/form")
-                .successHandler(myAuthenticationSuccessHandler)
-                .failureHandler(myAuthenticationFailHander)
-                .permitAll()  //表单登录，permitAll()表示这个不需要验证 登录页面，登录失败页面
+                .successHandler(myAuthenticationSuccessHandler)//登陆成功的处理
+                .failureHandler(myAuthenticationFailHander)//登录失败的处理
+                .permitAll()  //表单登录，permitAll()表示这个不需要验证
                 .and()
-                .csrf().disable();
-        http
+                .csrf().disable();//Cross-site request forgery 这个功能防止跨站攻击，没有配置，关闭
+        http//权限设置
                 .authorizeRequests()
-                .antMatchers("/static/**", "/error404").permitAll()
-                .antMatchers("/user/**").permitAll()
-                .antMatchers("/druid**", "/swagger-ui.html").hasAuthority("vip1")
-                //其他接口需要登录后才能访问
-                .anyRequest().authenticated()
+                .antMatchers("/static/**", "/errorPage", "/timeOut", "/logOutPage").permitAll()//不需要登录就可以访问
+//                .antMatchers("/druid**", "/swagger-ui.html").hasRole("ADMIN")//需要权限才能访问的网页
+                .antMatchers("/druid**", "/swagger-ui.html").hasAuthority("vip1")//需要权限才能访问的网页
+                .anyRequest().authenticated() //其他接口需要登录后才能访问
                 .and();
-        http
+        http//登出部分
                 .logout()
-                .logoutUrl("/logout")
                 .logoutSuccessHandler(myLogOutSuccessHandler)
                 .deleteCookies("JSESSIONID")
                 .and();
-
+        http//会话过时部分
+                .sessionManagement()
+                .invalidSessionUrl("/timeOut");
+        http//权限没有的情况下处理
+                .exceptionHandling()
+                .accessDeniedHandler(myAuthenticationAccessDeniedHandler)
+                .and();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(provider);
+        auth.authenticationProvider(authenticationProvider);
     }
 
     //    @Override
@@ -100,5 +107,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
 }

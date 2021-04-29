@@ -42,7 +42,7 @@
                 <a class="mini-button" iconCls="icon-button" onclick="print1()" plain="true">输出光标</a>
             </td>
             <td style="white-space:nowrap;">
-                <a class="mini-button" onclick="logout()">下线</a>
+                <a class="mini-button" onclick="location.href='../logout'">下线</a>
                 <input id="searchname" class="mini-textbox" emptyText="请输入姓名" style="width:150px;"
                        onenter="onKeyEnter"/>
                 <a class="mini-button" onclick="search()">查询</a>
@@ -178,16 +178,15 @@
 
     }
 
-    function logout() {
-        mini.ajax(
-            {
-                url: "../logout",
-                type: "get",
-                data: {data: null},
-            }
-        )
-        location.reload();
-    }
+    // function logout() {
+    //     mini.ajax(
+    //         {
+    //             url: "../logout",
+    //             type: "get",
+    //             data: {data: null},
+    //         }
+    //     )
+    // }
 
     function print1() {
         let pd = grid.getCurrentCell();
@@ -201,7 +200,10 @@
     function search() {
         let searchname = mini.get("searchname").getValue();
         console.log(searchname);
-        grid.load({"searchname": searchname});
+        grid.load({"searchname": searchname}, function () {
+                console.log(grid.getData())
+            }
+        );
         // let idname=mini.get("idname");
         // console.log(idname.getSelected().id);
         //

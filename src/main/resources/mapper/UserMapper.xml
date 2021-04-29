@@ -95,4 +95,16 @@
         from user
         where `name` = #{name,jdbcType=VARCHAR}
     </select>
+    <select id="selectAll1" resultMap="BaseResultMap">
+        select *
+        from userlist
+    </select>
+    <delete id="deleteAll">
+        delete
+        from userlist
+    </delete>
+    <insert id="insertAll" parameterType="com.example.miniui.entity.User">
+        insert into userlist (`name`, pwd)
+        values (#{name,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR})
+    </insert>
 </mapper>

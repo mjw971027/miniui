@@ -87,4 +87,25 @@ public class Usercontroller {
     public String index1() {
         return "Hello World";
     }
+
+    @RequestMapping(value = "/userListBox1")
+    public List<User> userListBox1(String name) {
+        if (name == null) {
+            name = "";
+        }
+        return userserviceimpl.qurryall(name);
+    }
+
+    @RequestMapping(value = "/userListBox2")
+    public List<User> userListBox2() {
+        return userserviceimpl.selectAll();
+    }
+
+    @RequestMapping(value = "/savalist")
+    public Map savelist(String data) {
+        Map map = new HashMap();
+        List<User> users = JSON.parseArray(data, User.class);
+        map = userserviceimpl.savelist(users);
+        return map;
+    }
 }

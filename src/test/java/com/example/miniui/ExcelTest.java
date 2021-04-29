@@ -1,8 +1,8 @@
 package com.example.miniui;
 
 import com.example.miniui.entity.Content;
-import com.example.miniui.untils.ExcelUtils;
-import com.example.miniui.untils.HtmlParseUtils;
+import com.example.miniui.utils.ExcelUtils;
+import com.example.miniui.utils.HtmlParseUtils;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -14,21 +14,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
 public class ExcelTest {
     public static void main(String[] args) throws IOException {
-        ExcelTest excelTest=new ExcelTest();
-        excelTest.test1();
+//        ExcelTest excelTest=new ExcelTest();
+//        excelTest.test1();
+        String str = "aaa";
+
+        String[] strArray = str.split(",");
+        for (String s : strArray) {
+            System.out.println(s);
+        }
     }
 
 
     public void test1() throws IOException {
         //创建HSSFWorkbook对象(excel的文档对象)
         HSSFWorkbook wb = new HSSFWorkbook();
-
-
         //建立新的sheet对象（excel的表单）
         HSSFSheet sheet = wb.createSheet("成绩表");
         HSSFPatriarch patriarch = sheet.createDrawingPatriarch();

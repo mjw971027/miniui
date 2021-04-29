@@ -15,9 +15,17 @@ import java.util.Map;
 @Service
 public interface Userservice {
     public List<User> qurryall(String name);
+
     public Map save(List<User> users);
+
     public Map deletebyid(List<Integer> ints);
+
     public List<Map> selectNTitle(int id);
+
     public Page<HashMap> getuserlist(Integer pageSize, Integer pageNum, String searchname);
-//    public Page<HashMap> getuserlist1(String searchname, HttpServletRequest request);
+
+    //    public Page<HashMap> getuserlist1(String searchname, HttpServletRequest request);
+    public List<User> selectAll();
+
+    Map savelist(List<User> users);
 }

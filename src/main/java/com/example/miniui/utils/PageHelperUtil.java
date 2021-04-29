@@ -1,4 +1,4 @@
-package com.example.miniui.untils;
+package com.example.miniui.utils;
 
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

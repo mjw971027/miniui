@@ -32,7 +32,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();// 这个是表单中输入的密码；
         // 这里构建来判断用户是否存在和密码是否正确
         UserDetails userInfo = userDetailsService.loadUserByUsername(userName); // 这里调用我们的自己写的获取用户的方法；
-        if (userInfo == null) {
+        if (userInfo.getUsername() == null) {
             throw new BadCredentialsException("用户名不存在");
         }
         boolean flag = passwordEncoder.matches(password, userInfo.getPassword());
