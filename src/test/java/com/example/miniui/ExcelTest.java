@@ -14,7 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -22,12 +24,16 @@ public class ExcelTest {
     public static void main(String[] args) throws IOException {
 //        ExcelTest excelTest=new ExcelTest();
 //        excelTest.test1();
-        String str = "aaa";
-
-        String[] strArray = str.split(",");
-        for (String s : strArray) {
-            System.out.println(s);
-        }
+//        String str = "aaa";
+//
+//        String[] strArray = str.split(",");
+//        for (String s : strArray) {
+//            System.out.println(s);}
+        Date date = new Date();
+//可以转成你想要的格式 yyyy/MM/dd HH:mm:ss 等等
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        String dateString = format.format(date);
+        System.out.println(dateString);
     }
 
 

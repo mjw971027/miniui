@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
+  <script src="../static/boot.js" type="text/javascript"></script>
+  <script src="../static/jquery.min.js" type="text/javascript"></script>
   <style type="text/css">
     * {
       margin: 0;
@@ -12,10 +14,22 @@
 </head>
 
 <body>
-<div class="test"></div>
+
+<label style="display: inline-block;vertical-align: middle">这个很好</label>
+<div style="display: inline-block;vertical-align: middle" id="rbl" class="mini-radiobuttonlist" repeatItems="2"
+     repeatLayout="table"
+     textField="text" valueField="id" value="cn"
+>
+</div>
 </body>
 <script>
-  var str = "12314,adsfasfs";
+  mini.parse();
+  var rbl = mini.get("rbl");
+  rbl.loadData([{id: 1, text: "第一号"}, {id: 2, text: "第二号"}])
+  rbl.on("valuechanged", function (e) {
+    console.log(rbl.getValue() + ":" + rbl.getText());
+  });
+  var str = "19971027,mjw-----,end";
   var arr = str.split(",");
   console.log(arr);
 </script>
