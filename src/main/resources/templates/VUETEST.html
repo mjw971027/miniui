@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vxe-table/lib/style.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="../static/jquery.min.js" type="text/javascript"></script>
+
+<!-- 引入脚本 -->
+<script src="https://cdn.jsdelivr.net/npm/xe-utils"></script>
+<script src="https://cdn.jsdelivr.net/npm/vxe-table"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <p>
+        <vxe-button @click="clickEvent1">读取一个文件</vxe-button>
+        <vxe-button @click="clickEvent2">读取指定类型文件</vxe-button>
+        <vxe-button @click="clickEvent3">读取多个文件</vxe-button>
+    </p>
+
+    <p>
+        <vxe-button @click="clickEvent6">保存为txt文件</vxe-button>
+        <vxe-button @click="clickEvent7">保存为html文件</vxe-button>
+    </p>
+
+    <p>
+        <vxe-button @click="clickEvent10">下载文件</vxe-button>
+        <vxe-button @click="shuchu">输出选择</vxe-button>
+    </p>
+    <div class="block">
+        <span class="demonstration">日期选择</span>
+        <el-date-picker
+
+                v-model="value2"
+                type="daterange"
+                align="right"
+                unlink-panels
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions">
+        </el-date-picker>
+    </div>
+    <el-transfer v-model="value"
+                 :data="transferData">
+        <!--          filterable-->
+        <!--          :filter-method="filterMethod"-->
+        <!--          filter-placeholder="请输入城市拼音"-->
+
+    </el-transfer>
+    <!--  <el-pagination-->
+    <!--          small-->
+    <!--          layout="prev, pager, next"-->
+    <!--          :total="50">-->
+    <!--  </el-pagination>-->
+    <vxe-pager
+            align="left"
+            :current-page.sync="page1.currentPage"
+            :page-size.sync="page1.pageSize"
+            :total="page1.totalResult"
+            @page-change="pagechange">
+    </vxe-pager>
+    <!--  <el-transfer v-model="value" :data="data"></el-transfer>-->
+</div>
+
+</body>
+<script type="text/javascript">
+    Date.prototype.diff = function (date) {
+        return (this.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
+    }
+    var app = new Vue({
+        el: "#app",
+        data() {
+            const generateData = _ => {
+                const data = [];
+                // var rels=[];
+                // $.ajax({url:"../data/Test.json",
+                // type:"get",
+                //   dataType:"json",
+                // success:function (res){
+                //   console.log(res);
+                //   rels=res;
+                //   console.log(rels);
+                // }})
+                // // const cities = ['上海', '北京', '广州', '深圳', '南京', '西安', '成都'];
+                // // const pinyin = ['shanghai', 'beijing', 'guangzhou', 'shenzhen', 'nanjing', 'xian', 'chengdu'];
+                // rels.forEach((rel, index) => {
+                //   data.push({
+                //     label: rel.name,
+                //     key: rels[index].id,
+                //     role: rel.role
+                //   });
+                // });
+                return data;
+            };
+            return {
+                dataCache: [],
+                pickerOptions: {
+                    onPick: function ({maxDate, minDate}) {
+                        if (maxDate && minDate) {
+                            var data1 = minDate.getTime();
+                            var data2 = maxDate.getTime();
+                            // 构造两个日期
+                            var now = new Date(maxDate);
+//也可以不要后面的时间如：2015/01/01
+                            var date = new Date(minDate);
+// 调用日期差方搜索法，求得参数日期与系统时间相差的天数
+                            var diff = now.diff(date);
+// 输出日期差
+                            alert(diff);
+
+                            console.log(maxDate, minDate);
+                        }
+
+                    },
+                    shortcuts: [{
+                        text: '最近一周',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近一个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: '最近三个月',
+                        onClick(picker) {
+                            const end = new Date();
+                            const start = new Date();
+                            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
+                },
+                value1: '',
+                value2: '',
+                transferData: generateData(),
+                value: [1, 2],
+                // filterMethod(query, item) {
+                //   return item.role.indexOf(query) > -1;
+                // },
+                page1: {
+                    currentPage: 1,
+                    pageSize: 10,
+                    totalResult: 9999
+                },
+            };
+
+        },
+        methods: {
+            pagechange(currentPage) {
+                this.dataBind(currentPage.currentPage, currentPage.pageSize);
+            },
+            dataBind(currentPage, pageSize) {
+                var arr = new Array(pageSize);
+                for (var i = 0; i < pageSize; i++) {
+                    arr.push(this.dataCache[(currentPage - 1) * pageSize + i]);
+                }
+                this.transferData = arr;
+            },
+            shuchu() {
+                var datas = this.transferData;
+                var keys = this.value;
+                if (this.value) {
+                    for (var index in keys) {
+                        for (var i = 0; i < datas.length; i++) {
+                            if (datas[i].key == index) {
+                                console.log(datas[i].key + "   " + datas[i].label);
+                                break;
+                            }
+                        }
+                    }
+                }
+                console.log(this.value);
+            },
+
+            async clickEvent1() {
+                try {
+                    const {file} = await this.$XReadFile()
+                    this.$XModal.alert(`文件名：${file.name}，文件大小：${file.size}`)
+                } catch (e) {
+                }
+            },
+            async clickEvent2() {
+                try {
+                    const {file} = await this.$XReadFile({
+                        types: ['xlsx', 'html']
+                    })
+                    this.$XModal.alert(`文件名：${file.name}，文件大小：${file.size}`)
+                } catch (e) {
+                }
+            },
+            async clickEvent3() {
+                try {
+                    const {files} = await this.$XReadFile({
+                        multiple: true
+                    })
+                    this.$XModal.alert(`共：${files.length} 个文件`)
+                } catch (e) {
+                }
+            },
+            clickEvent6() {
+                this.$XSaveFile({
+                    filename: '文本',
+                    type: 'txt',
+                    content: '内容xxx'
+                })
+            },
+            clickEvent7() {
+                this.$XSaveFile({
+                    filename: '页面',
+                    type: 'html',
+                    content: '<html><head></head><body>内容xx</body></html>'
+                })
+            },
+            clickEvent10() {
+                // 请求文件
+                fetch('/vxe-table/static/other/img2.gif').then(response => {
+                    response.blob().then(blob => {
+                        // 下载到本地
+                        this.$XSaveFile({filename: '图片', type: 'gif', content: blob})
+                    })
+                })
+            }
+        },
+        mounted() {
+            Vue.prototype.$XModal = VXETable.modal
+            Vue.prototype.$XSaveFile = VXETable.saveFile
+            Vue.prototype.$XReadFile = VXETable.readFile
+
+            $.ajax({
+                url: "../data/Test.json",
+                type: "get",
+                success: function (data) {
+                    for (let i = 0; i < data.length; i++) {
+                        var tmp = {};
+                        var key = "key";
+                        var label = "label";
+                        tmp[label] = data[i].name;
+                        tmp[key] = i;
+                        app.dataCache.push(tmp);
+                    }
+                    app.dataBind(app.page1.currentPage, app.page1.pageSize);
+                }
+            })
+        }
+    })
+</script>
+</html>

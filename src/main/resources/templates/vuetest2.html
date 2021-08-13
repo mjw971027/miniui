@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vxe-table/lib/style.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="../static/jquery.min.js" type="text/javascript"></script>
+
+<!-- 引入脚本 -->
+<script src="https://cdn.jsdelivr.net/npm/xe-utils"></script>
+<script src="https://cdn.jsdelivr.net/npm/vxe-table"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<div id="app">
+    <div style="border: 1px solid #cccccc;padding: 10px">
+        <div style="dispaly:inline" v-if="hasSearch">
+            <el-form ref="inputRefs" :model="searchInput" :inline="true">
+                <el-form-item prop="tableDataName">
+                    <el-input icon="search" v-model="searchInput.tableDataName"
+                              :placeholder="searchHolder?searchHolder:'请输入搜索内容'" style="width:240px"
+                              @change="realTime"></el-input>
+                </el-form-item>
+            </el-form>
+        </div>
+        <el-row>
+            <el-col :span="10">
+
+                <el-table
+                        :data="tableData"
+                        border
+                        height="280"
+                        style="width: 100%;margin-bottom: 0px"
+                        @selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            width="40">
+                    </el-table-column>
+
+                    <el-table-column v-for="(item, key) in tableKey"
+                                     :key="key"
+                                     :prop="item.value"
+                                     :label="item.name"
+                                     :width="item.width"
+                                     show-overflow-tooltip
+                    >
+                    </el-table-column>
+                </el-table>
+            </el-col>
+
+            <el-col :span="4">
+                <div style="margin-top: 100%;margin-left:25%;margin-right:25%">
+                    <!-- <el-button @click="selectItems">获取选中数据</el-button> -->
+                    <el-button type="primary" @click="selectItems" icon="icon el-icon-d-arrow-right"></el-button>
+                </div>
+            </el-col>
+
+            <el-col :span="10">
+                <el-table
+                        :data="resultData"
+                        height="280"
+                        style="width: 100%;margin-bottom: 0px"
+                        border
+                >
+
+                    <el-table-column v-for="(item, key) in tableKey"
+                                     :key="key"
+                                     :prop="item.value"
+                                     :label="item.name"
+                                     :width="item.width"
+                                     show-overflow-tooltip
+                    >
+                    </el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                    size="mini"
+                                    type="danger"
+                                    @click.native.prevent="handleDelete(scope.$index, scope.row,resultData)">删除
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
+    </div>
+</div>
+<body>
+<script>
+    var app = new Vue({
+        /**
+         * 参数说明:
+         * searchHolder:  搜索框提示的内容
+         * receiveData:  接收到的数据-待选列表
+         * hasSearch: 是否需要搜索功能
+         * tableKey:  字段名
+         * isCheckValue: 用于初始化数据时，数据在已选的右边table中-已选列表
+         * dispatchData:  发送右边已选table中的数据到父组件事件
+         *
+         *
+         * 使用模板
+         *  <g-transfer  :hasSearch="true" :isCheckValue="exportFieldVlue" :searchHolder="pSearchHolder" :receiveData="exportFieldData"  @dispatchData="getCurrentNodeTransfer" :tableKey="tableKey"></g-transfer>
+         *
+         * $emit提交到父组件上的值是右边table框中该条的完整数据字段，若想只要某个字段需要在父组件中操作
+         *
+         * 修改记录：
+         *      2018年8月3日11:15:00
+         *      ge.libin
+         *      1.初始化赋值等操作原先在created钩子上赋值，现在改为用watch监听方式。同时原先界面有用v-if的方式去掉
+         *      2.删除搜索、重置按钮功能，改为输入框实时检索待选列表数据
+         * */
+        props: {
+            searchHolder: {type: String},
+            receiveData: {type: Array},
+            hasSearch: {type: Boolean},
+            tableKey: {type: Array},
+            isCheckValue: {type: Array}
+        },
+        data() {
+            return {
+                tableKey: [],
+                multipleSelection: [],
+                resultData: [],
+                searchInput: {
+                    tableDataName: "", //搜索框绑定值
+                },
+                filterTableDataEnd: [],
+                resetData: [], //用于搜索重置
+                filterBeforeData: [] //用于存放搜索操作前数据。
+            }
+        },
+
+        methods: {
+            realTime() {
+                // console.log("已执行实时搜索功能");
+                //每次手动将数据置空,因为会出现多次点击搜索情况
+                this.filterTableDataEnd = [];
+                //这里是为了阻止搜索框删除完最后一个值时再检索，数据会重复显示问题
+                if (this.searchInput.tableDataName == "") {
+                    this.tableData = this.resetData;
+                    return;
+                }
+                this.tableKey.forEach((v, i) => {
+                    this.resetData.forEach((value, index) => {
+                        if (value && value[v.value]) {
+                            if (value[v.value].indexOf(this.searchInput.tableDataName) >= 0) {
+                                this.filterTableDataEnd.push(value)
+                            }
+                        }
+                    });
+                });
+
+                this.tableData = this.filterTableDataEnd;
+            },
+
+            /**
+             * 跟据当前索引位置删除数据
+             * 同时把该条删除的数据添加到左边待选table中
+             */
+            handleDelete(index, row, resultData) {
+                resultData.splice(index, 1);//右边删除数据
+                this.filterBeforeData.push(row);
+                this.resetData = this.filterBeforeData;
+                //根据删除后得到的数据再进行一次搜索展示
+                this.realTime();
+                this.$emit('dispatchData', this.resultData);
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            selectItems: function () {
+                //等同下一行代码---数组合并,频繁使用用concat会造成内存浪费
+                this.resultData.push.apply(this.resultData, this.multipleSelection);
+                //把获取的数据发送到父组件
+                this.$emit('dispatchData', this.resultData);
+                //在返回push数据后剩余的待选列表所有数据赋值到resetData中，然后再在待选列表中显示检索删除被剩余的数据
+                this.filterBeforeData = this.overlap(this.filterBeforeData, this.resultData);
+                this.resetData = this.filterBeforeData;
+                //删除左边被选中的数据,返回待选列表中被剩余的数据
+                this.tableData = this.overlap(this.tableData, this.resultData);
+
+            },
+            /**
+             * 删除选中item
+             * @param arr 数据
+             * @param arr2
+             * @returns {Array}
+             */
+            overlap: function (arr, arr2) {
+                var arr3 = new Array();
+                var index = 0, i = 0, j = 0;
+                for (i = 0; i < arr.length; i++) {
+                    var has = false;
+                    for (j = 0; j < arr2.length; j++) {
+                        if (arr[i] == arr2[j]) {
+                            has = true;
+                            break;
+                        }
+                    }
+                    if (!has) {
+                        arr3[index++] = arr[i];
+                    }
+                }
+                return arr3;
+            },
+        },
+        created() {
+            // this.tableData = this.receiveData;
+            // this.resetData = this.tableData;
+            // if(this.isCheckValue){
+            //   this.resultData = this.isCheckValue;
+            //   //数据初始化时把数据emit到父组件操作方法中
+            //   this.$emit('dispatchData',this.resultData);
+            // }
+        },
+        watch: {
+            receiveData(val) {
+                this.tableData = val;
+                this.resetData = val;
+                this.filterBeforeData = val;
+            },
+            isCheckValue(val) {
+                this.resultData = val;
+                this.$emit('dispatchData', this.resultData);
+            }
+        },
+        computed: {},
+        mounted() {
+
+            $.ajax({
+                url: "../data/Test.json",
+                type: "get",
+                success: function (data) {
+                    // for (let i = 0; i <data.length ; i++) {
+                    //   var tmp={};
+                    //   var key="key";
+                    //   var label="label";
+                    //   tmp[label]=data[i].name;
+                    //   tmp[key]=i;
+                    //   app.dataCache.push(tmp);
+                    // }
+                    // app.dataBind(app.page1.currentPage,app.page1.pageSize);
+
+                }
+            })
+        }
+    })
+</script>
+
+</body>
+</html>

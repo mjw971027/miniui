@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/boot.js" type="text/javascript"></script>
+<script src="../static/jquery.min.js" type="text/javascript"></script>
+<script src="../static/js/work1.js" type="text/javascript"></script>
+<script src="../static/js/common.js" type="text/javascript"></script>
+<style>
+    html,
+    body {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    span.t1 {
+        font-size: 14px;
+        padding-left: 4px;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="mini-toolbar">
+    <span class="t1">钢板申请计划处理</span>
+</div>
+<div class="mini-toolbar" style="margin-bottom: 4px">
+    <a id="btnSearch" class="mini-button" plain="true" iconcls="icon-search">查询</a>
+</div>
+<div class="mini-fit" style="box-sizing: border-box">
+    <div id="tabs" class="mini-tabs" activeIndex="0" style="width:100%;height:100%;">
+        <div title="预处理计划内">
+            <div class="mini-toolbar">
+                <span class="t1">公司属性:</span>
+                <input id="combCmp" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       showNullItem="true" nullItemText="请选择..."/>
+                <span class="t1">计划作业组织:</span>
+                <input id="combDept" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       showNullItem="true" nullItemText="请选择..."/>
+                <input id="combOrg" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       showNullItem="true" nullItemText="请选择..."/>
+                <span class="t1">预处理日期:</span>
+                <input id="date1" class="mini-datepicker" style="width:100px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       showNullItem="true" nullItemText="请选择..."
+                       onvaluechanged="shuchu()"
+                />
+                <input id="date2" class="mini-datepicker" style="width:100px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       readonly="true"
+                       showNullItem="true" nullItemText="请选择..."/>
+                <span class="t1">工程号:</span>
+                <input id="combProj" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       showNullItem="true" nullItemText="请选择..."/>
+                <span class="t1">分段号:</span>
+                <input id="combSub" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       showNullItem="true" nullItemText="请选择..."/>
+                <span class="t1">钢板分道备注:</span>
+                <input id="combRemark" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       showNullItem="true" nullItemText="请选择..."
+                       popupWidth="200"/>
+                <span class="t1">预约状态:</span>
+                <input id="combStatus1" class="mini-combobox" style="width:80px;" textField="text" valueField="id"
+                       emptyText="请选择..."
+                       data=[{id:0,text:"All"},{id:1,text:"未预约"},{id:2,text:"已预约"}]
+                       value="2"/>
+                <span class="t1">发放状态:</span>
+                <input id="combStatus2" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                       emptyText="请选择..."
+                       data=[{id:0,text:"All"},{id:1,text:"未发放"},{id:2,text:"已发放"}]
+                       value="1"/>
+            </div>
+            <div class="mini-fit">
+                <div class="mini-splitter" style="width:100%;height:100%;">
+                    <div size="30%" showCollapseButton="true">
+                        <div class="mini-toolbar" borderStyle="border:none">
+                            <span class="t1" style="padding-right:100px;">钢板预处理计划</span>
+                            <span class="t1">是否存在差异</span>
+                            <input id="combDef" class="mini-combobox" style="width:150px;" textField="text"
+                                   valueField=""
+                                   emptyText="请选择..."
+                                   data=[{id:0,text:"All"},{id:1,text:"Y"},{id:2,text:"N"}]
+                                   value="1"
+                                   showNullItem="false" nullItemText="请选择..."/>
+                        </div>
+                        <div class="mini-fit">
+                            <div id="handleGrid" class="mini-datagrid" style="width:100%;height:100%;"
+                                 borderStyle="border:none"
+                                 allowResize="false"
+                                 idField="id" allowResize="true"
+                                 sizeList="[300,500,1000]" pageSize="300"
+                                 showHeader="false" title="钢板预处理计划"
+                                 multiSelect="true"
+                                 datafield="list"
+                            >
+
+                                <div property="columns">
+                                    <div type="indexcolumn" width="60">序号</div>
+                                    <div field="" width="60" headerAlign="center" allowSort="true">工程号</div>
+                                    <div field="" width="60" headerAlign="center" allowSort="true">分段号</div>
+                                    <div field="" width="100" renderer="onGenderRenderer" headerAlign="center">钢板分道备注
+                                    </div>
+                                    <div field="" align="right" width="100" allowSort="true" headerAlign="center">
+                                        计划预处理日期
+                                    </div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">是否存在差异</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div showCollapseButton="true">
+                        <div class="mini-toolbar" borderStyle="border:none">
+                            <span class="t1" style="padding-right:200px;">预处理计划内申请明细</span>
+                            <div id="checkDef" class="mini-checkbox" value=0 trueValue=1 falseValue="0"></div>
+                            <span class="t1" style="padding-right: 4px">明细与计划不一致</span>
+                            <button id="btnSys" class="mini-button">同步处理日期</button>
+                            <span class="separator"></span>
+                            <span class="t1">预处理日期:</span>
+                            <input id="combHandelDate1" class="mini-datepicker" style="width:150px;" textField="text"
+                                   valueField=""
+                                   emptyText="请选择..."
+                                   showNullItem="true" nullItemText="请选择..."/>
+                            <button id="btnHandle1" class="mini-button" iconcls="icon-ok">批处理</button>
+                            <span class="separator"></span>
+                            <button id="btnSaveIn" class="mini-button" iconcls="icon-save">保存</button>
+                        </div>
+                        <div class="mini-fit">
+                            <div id="applyGrid" class="mini-datagrid" style="width:100%;height:100%;"
+                                 borderStyle="border:none"
+                                 allowResize="false"
+                                 idField="id" allowResize="true"
+                                 sizeList="[300,500,1000]" pageSize="300"
+                                 showHeader="false"
+                                 multiSelect="true"
+                                 datafield="list"
+                                 showSummaryRow="true" ondrawsummarycell="onDrawSummaryCell"
+                            >
+                                <div property="columns">
+                                    <div type="checkcolumn"></div>
+                                    <div field="1" width="120" headerAlign="center" allowSort="false">发放工程号</div>
+                                    <div field="2" width="120" headerAlign="center" allowSort="false">分段号</div>
+                                    <div field="3" width="100" renderer="onGenderRenderer" headerAlign="center">钢板分道备注
+                                    </div>
+                                    <div field="4" width="100" allowSort="true" headerAlign="center">预处理日期
+                                    </div>
+                                    <div field="5" width="100" allowSort="true" headerAlign="center">采购工程号</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">材质</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">厚</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">宽</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">长</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">图纸页码</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">申请数</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">发放数</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">预约未发放数</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">申请作业组织</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--                        <div class="mini-toolbar">-->
+                        <!--                            <span class="t1">总行数:</span>-->
+                        <!--                            <div id="total1" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                        <!--                                 style="width: 50px"></div>-->
+                        <!--                            <span class="t1">选中行数:</span>-->
+                        <!--                            <div id="total2" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                        <!--                                 style="width: 50px"></div>-->
+                        <!--                            <span class="t1">总行数</span>-->
+                        <!--                            <div id="total3" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                        <!--                                 style="width: 50px"></div>-->
+                        <!--                            <span class="t1">总行数</span>-->
+                        <!--                            <div id="total4" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                        <!--                                 style="width: 50px"></div>-->
+                        <!--                            <span class="t1">总行数</span>-->
+                        <!--                            <div id="total5" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                        <!--                                 style="width: 50px"></div>-->
+                        <!--                        </div>-->
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div title="预处理计划外">
+            <div class="mini-fit">
+                <div class="mini-toolbar">
+                    <span class="t1">公司属性:</span>
+                    <input id="combCmp2" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."/>
+                    <span class="t1">申请作业组织:</span>
+                    <input id="combDept2" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."/>
+                    <input id="combOrg2" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."/>
+                    <span class="t1">预处理日期:</span>
+                    <input id="date12" class="mini-datepicker" style="width:100px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."
+                           onvaluechanged="shuchu2()"
+                    />
+                    <input id="date22" class="mini-datepicker" style="width:100px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           readonly="true"
+                           showNullItem="true" nullItemText="请选择..."/>
+                    <span class="t1">工程号:</span>
+                    <input id="combProj2" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."/>
+                    <span class="t1">分段号:</span>
+                    <input id="combSub2" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."/>
+                    <span class="t1">钢板分道备注:</span>
+                    <input id="combRemark2" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."
+                           popupWidth="200"/>
+                    <span class="t1">预约状态:</span>
+                    <input id="combStatus12" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           data=[{id:0,text:"All"},{id:1,text:"未预约"},{id:2,text:"已预约"}]
+                           value="1"/>
+                    <span class="t1">发放状态:</span>
+                    <input id="combStatus22" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                           emptyText="请选择..."
+                           data=[{id:0,text:"All"},{id:1,text:"未发放"},{id:2,text:"已发放"}]
+                           value="1"/>
+
+                </div>
+                <div class="mini-toolbar" style="width: 100%" borderStyle="border-top:none">
+                    <span class="t1">预处理计划外申请明细</span>
+                    <span class="t1" style="padding-left: 300px">预处理日期</span>
+
+                    <input id="combHandelDate2" class="mini-datepicker" style="width:150px;" textField="text"
+                           valueField=""
+                           emptyText="请选择..."
+                           showNullItem="true" nullItemText="请选择..."/>
+                    <button style="padding-left: 10px" class="mini-button" id="btnHandle2" iconcls="icon-ok">批处理
+                    </button>
+                    <span class="separator"></span>
+                    <button style="padding-left: 10px" class="mini-button" id="btnSaveOut" iconcls="icon-save">保存
+                    </button>
+                </div>
+                <div class="mini-fit">
+                    <div id="applyGrid2" class="mini-datagrid" style="width:100%;height:100%;"
+                         borderStyle="border-top:none"
+                         allowResize="false"
+                         idField="id" allowResize="true"
+                         sizeList="[300,500,1000]" pageSize="300"
+                         showHeader="false" title="钢板预处理计划"
+                         multiSelect="true"
+                         datafield="list"
+                    >
+
+                        <div property="columns">
+                            <div type="checkcolumn"></div>
+                            <div field="" width="120" headerAlign="center" allowSort="true">发放工程号</div>
+                            <div field="" width="120" headerAlign="center" allowSort="true">分段号</div>
+                            <div field="" width="100" renderer="onGenderRenderer" headerAlign="center">钢板分道备注</div>
+                            <div field="" align="right" width="100" allowSort="true" headerAlign="center">预处理日期</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">采购工程号</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">材质</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">厚</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">宽</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">长</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">图纸页码</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">申请数</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">发放数</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">预约未发放数</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">申请作业组织</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mini-toolbar">
+                    <span class="t1">总行数:</span>
+                    <div id="total21" class="mini-textbox" borderStyle="border:none" readOnly="true"
+                         style="width: 50px"></div>
+                    <span class="t1">选中行数:</span>
+                    <div id="total22" class="mini-textbox" borderStyle="border:none" readOnly="true"
+                         style="width: 50px"></div>
+                    <span class="t1">总行数</span>
+                    <div id="total23" class="mini-textbox" borderStyle="border:none" readOnly="true"
+                         style="width: 50px"></div>
+                    <span class="t1">总行数</span>
+                    <div id="total24" class="mini-textbox" borderStyle="border:none" readOnly="true"
+                         style="width: 50px"></div>
+                    <span class="t1">总行数</span>
+                    <div id="total25" class="mini-textbox" borderStyle="border:none" readOnly="true"
+                         style="width: 50px"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    mini.parse();
+
+    function onDrawSummaryCell(e) {
+        var result = e.result;
+        var grid = e.sender;
+        var rows = e.data;
+
+        if (e.field == "1") {
+            e.cellHtml = "总计:" + grid.getData().length;
+        }
+
+        if (e.field == "2") {
+            e.cellHtml = "选中行数:" + grid.getSelecteds().length;
+        }
+        if (e.field == "3") {
+            e.cellHtml = "总申请数:" + grid.getData().length;
+        }
+        if (e.field == "4") {
+            e.cellHtml = "总发放数:" + grid.getData().length;
+        }
+        if (e.field == "5") {
+            e.cellHtml = "未发放数:" + grid.getData().length;
+        }
+    }
+</script>
+
+</html>

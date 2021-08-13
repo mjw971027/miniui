@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vxe-table/lib/style.css">
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script src="../static/jquery.min.js" type="text/javascript"></script>
+
+<!-- 引入脚本 -->
+<script src="https://cdn.jsdelivr.net/npm/xe-utils"></script>
+<script src="https://cdn.jsdelivr.net/npm/vxe-table"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<style type="text/css">
+    .keyword-lighten {
+        color: #000;
+        background-color: #FFFF00;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title1</title>
+</head>
+<body>
+<div id="app">
+    <vxe-toolbar>
+        <template #buttons>
+            <vxe-input v-model="filterName1" type="search" placeholder="试试全表搜索" @keyup="searchEvent1"></vxe-input>
+        </template>
+    </vxe-toolbar>
+    <vxe-grid
+            show-overflow
+            ref="gridOptions"
+            v-bind="gridOptions">
+    </vxe-grid>
+
+    <vxe-toolbar perfect>
+        <template #buttons>
+            <vxe-button icon="fa fa-plus" status="perfect" content="新增" @click="add"></vxe-button>
+            <vxe-button icon="fa fa-trash-o" status="perfect" content="删除" @click="del"></vxe-button>
+            <vxe-button icon="fa fa-save" status="perfect" content="保存" @click="save"></vxe-button>
+        </template>
+    </vxe-toolbar>
+    <vxe-grid
+            show-overflow
+            ref="gridOptions1"
+            v-bind="gridOptions1">
+    </vxe-grid>
+</div>
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: "#app",
+        data() {
+            return {
+                filterName1: '',
+                listdata: [],
+                gridOptions: {
+                    border: true,
+                    resizable: true,
+                    showOverflow: true,
+                    height: 300,
+                    align: 'center',
+                    toolbarConfig: {
+                        slots: {
+                            // 自定义工具栏模板
+                            buttons: 'toolbar_buttons'
+                        },
+                        enabled: false
+                    },
+                    columns: [
+                        {type: 'checkbox', title: "选择", width: 80},
+                        {field: 'id', title: '序号', width: 100},
+                        {field: 'name', title: 'name'},
+                        {field: 'sex', title: 'sex', showHeaderOverflow: true},
+                        {field: 'address', title: 'Address', showOverflow: true}
+                    ],
+                    data: []
+                },
+                gridOptions1: {
+                    border: false,
+                    resizable: true,
+                    showOverflow: true,
+                    height: 300,
+                    align: 'left',
+                    toolbarConfig: {
+                        slots: {
+                            // 自定义工具栏模板
+                            buttons: 'toolbar_buttons',
+
+                        },
+                        enabled: false
+                    },
+                    columns: [
+                        {type: 'checkbox', title: "选择", width: 80},
+                        {field: 'id', title: '序号', width: 100},
+                        {field: 'name', title: 'name'},
+                        {field: 'sex', title: 'sex', showHeaderOverflow: true},
+                        {field: 'address', title: 'Address', showOverflow: true}
+                    ],
+                    data: []
+                }
+            }
+        },
+        methods: {
+            add(rows) {
+                const $grid = this.$refs.gridOptions;
+                var data = $grid.getCheckboxRecords(true);
+                console.log($grid.getCheckboxRecords(true));
+                for (var i = 0; i < data.length; i++) {
+                    for (var j = 0; j < this.gridOptions1.data.length; j++) {
+                        if (data[i].id == this.gridOptions1.data[j].id) {
+                            this.$XModal.alert('不能选中重复得', '提示框');
+                            return;
+
+                        }
+                    }
+                    app.gridOptions1.data.push(data[i]);
+                }
+                $grid.removeCheckboxRow();
+            },
+            del(rows) {
+                const $grid = this.$refs.gridOptions1;
+                var data = $grid.getCheckboxRecords(true);
+                console.log($grid.getCheckboxRecords(true));
+
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    app.gridOptions.data.push(data[i]);
+                }
+                $grid.removeCheckboxRow();
+            },
+            save() {
+            },
+            searchEvent1() {
+                const filterName = XEUtils.toValueString(this.filterName1).trim().toLowerCase()
+                if (filterName) {
+                    const filterRE = new RegExp(filterName, 'gi')
+                    const searchProps = ['id', 'name', 'sex', 'address']
+                    const rest = this.gridOptions.data.filter(item => searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(filterName) > -1))
+                    this.gridOptions.data = rest.map(row => {
+                        const item = Object.assign({}, row)
+                        searchProps.forEach(key => {
+                            item[key] = XEUtils.toValueString(item[key]).replace(filterRE, match => match)
+                        })
+                        return item
+                    })
+                } else {
+                    this.gridOptions.data = this.listdata;
+                }
+            }
+        },
+        mounted() {
+            Vue.prototype.$XModal = VXETable.modal
+            Vue.prototype.$XSaveFile = VXETable.saveFile
+            Vue.prototype.$XReadFile = VXETable.readFile
+
+            $.ajax({
+                url: "../data/Test.json",
+                type: "get",
+                success: function (data) {
+                    app.gridOptions.data = data;
+                    app.listdata = data;
+                }
+            })
+        }
+    })
+</script>
+
+</html>

@@ -71,6 +71,7 @@
                      allowCellEdit="true" allowCellSelect="true" multiSelect="true"
                      editNextOnEnterKey="true" editNextRowCell="true"
                      SortMode="client"
+                     showSummaryRow="true" ondrawsummarycell="onDrawSummaryCell"
                      title="表格面板">
                     <div property="columns">
 
@@ -143,6 +144,7 @@
         $("#span1").css("color", "#0f0");
         $("#span2").css("color", "#000");
         console.log("datagrid1");
+        console.log(grid.getSelected());
     });
     $("#mytest1").click(function () {
         $("#span1").css("color", "#000");
@@ -189,12 +191,7 @@
     // }
 
     function print1() {
-        let pd = grid.getCurrentCell();
-        if (pd) {
-            console.log("选中");
-            let data = grid.getData();
-            console.log(data);
-        } else console.log("未选中");
+        grid.updateRow(grid.getSelected(), {name: "mjwxxxxx"});
     }
 
     function search() {
@@ -282,6 +279,21 @@
         )
     }
 
+    function onDrawSummaryCell(e) {
+        var result = e.result;
+        var grid = e.sender;
+        var rows = e.data;
+        var total = 0;
+        var selected = 0;
+        if (grid.getData()) {
+            if (grid.getSelected()) {
+                total = Object.keys(grid.getData()).length;
+                selected = Object.keys(grid.getSelected()).length;
+            }
+        }
+        e.cellHtml = "总行数: " + total + "选中行数: " + selected;
+
+    }
 </script>
 </body>
 </html>

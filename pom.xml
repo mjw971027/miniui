@@ -196,6 +196,15 @@
         <!--            <artifactId>spring-security-config</artifactId>-->
         <!--            <version>5.3.8.RELEASE</version>-->
         <!--        </dependency>-->
+        <!--        pom-->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>1.6.4</version>
+            <scope>compile</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>

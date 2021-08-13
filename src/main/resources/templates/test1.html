@@ -23,15 +23,63 @@
 </div>
 </body>
 <script>
-  mini.parse();
-  var rbl = mini.get("rbl");
-  rbl.loadData([{id: 1, text: "第一号"}, {id: 2, text: "第二号"}])
-  rbl.on("valuechanged", function (e) {
-    console.log(rbl.getValue() + ":" + rbl.getText());
-  });
-  var str = "19971027,mjw-----,end";
-  var arr = str.split(",");
-  console.log(arr);
+    var bool = isValid("(])");
+    console.log(bool);
+
+    function isValid(s) {
+        var stack = [];
+        for (var i = 0, item; i < s.length; i++) {
+            item = s.charAt(i);
+            if ('(' === item) {
+                stack.push('(');
+            } else if ('[' === item) {
+                stack.push('[');
+            } else if ('{' === item) {
+                stack.push('{');
+            } else if (')' === item) {
+                if (stack.length > 0) {
+                    if ('(' === stack[stack.length - 1]) {
+                        stack.pop();
+                        continue;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+
+            } else if ('}' === item) {
+                if (stack.length > 0) {
+                    if ('{' === stack[stack.length - 1]) {
+                        stack.pop();
+                        continue;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+
+            } else if (']' === item) {
+                if (stack.length > 0) {
+                    if ('[' === stack[stack.length - 1]) {
+                        stack.pop();
+                        continue;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+
+            }
+        }
+        if (stack.length > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 </script>
 </html>
 

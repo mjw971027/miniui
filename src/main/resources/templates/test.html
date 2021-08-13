@@ -26,11 +26,9 @@
 <body>
 <h1>单元格自动计算</h1>
 
-
 <div id="datagrid1" class="mini-datagrid" style="width:800px;height:280px;"
      idField="id" allowCellEdit="true" allowCellSelect="true" showFooter="false"
-     url="../data/grid2.txt"
-     ondrawcell="onDrawCell" oncellcommitedit="onCellCommitEdit"
+
      showSummaryRow="true" ondrawsummarycell="onDrawSummaryCell"
 >
     <div property="columns">
@@ -61,17 +59,27 @@
         }
     }
 
+    // function onCellEditenter(e){
+    //         var record = e.record;
+    //
+    //         if (e.field == "total") {
+    //             var price = record.price;
+    //             var quantity = record.quantity;
+    //             e.cellHtml = price * quantity;
+    //             e.record.price = price * 0.5;
+    //             e.record.quantity = quantity * 0.5;
+    //         }
+    // }
     function onDrawCell(e) {
         var record = e.record;
-
-        if (e.field == "total") {
-            var price = record.price;
+        if (e.field == "quantity") {
             var quantity = record.quantity;
-            // e.cellHtml = price * quantity;
-            e.price = price * 0.3;
-            e.quality = quantity * 0.5;
+            e.cellHtml = quantity * 0.5;
         }
-
+        if (e.field == "price") {
+            var price = record.price;
+            e.cellHtml = price * 0.5;
+        }
     }
 
     function onDrawSummaryCell(e) {
@@ -79,22 +87,21 @@
         var grid = e.sender;
         var rows = e.data;
 
-        if (e.field == "total") {
-            var total = 0;
-            for (var i = 0, l = rows.length; i < l; i++) {
-                var row = rows[i];
-                var t = row.price * row.quantity;
-                if (isNaN(t)) continue;
-                total += t;
-            }
+        if (e.field == "price") {
 
-            e.cellHtml = "总计: " + total;
+            e.cellHtml = "总计: " + 1;
         }
     }
 
+    function addRow() {
+        var rows = {price: 100};
+        ;
+        grid.addRow(rows, 0);
+    }
 </script>
 
 <div class="description">
+    <button id="add" class="mini-button" onclick="addRow"></button>
     <h3>Description</h3>
     <p>“总计”列的值由“单价”和“数量”相乘而来。</p>
 </div>

@@ -14,28 +14,42 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
 public class ExcelTest {
     public static void main(String[] args) throws IOException {
-//        ExcelTest excelTest=new ExcelTest();
-//        excelTest.test1();
-//        String str = "aaa";
-//
-//        String[] strArray = str.split(",");
-//        for (String s : strArray) {
-//            System.out.println(s);}
-        Date date = new Date();
-//可以转成你想要的格式 yyyy/MM/dd HH:mm:ss 等等
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-        String dateString = format.format(date);
-        System.out.println(dateString);
+        int tmp[] = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+        int x = maxSubArray(tmp);
+        System.out.println(x);
     }
 
+    public static int maxSubArray(int[] nums) {
+        int pre = 0, maxAns = nums[0];
+        for (int x : nums) {
+            pre = Math.max(pre + x, x);
+            maxAns = Math.max(maxAns, pre);
+        }
+        return maxAns;
+    }
+
+    public static double myPow(double x, int n) {
+        double sum = x;
+        if (n > 0) {
+            for (int i = 0; i < n - 1; i++) {
+                sum = sum * x;
+            }
+        } else if (n == 0) {
+            sum = 1.0;
+        } else {
+            for (int i = 0; i < -n - 1; i++) {
+                sum = sum * x;
+            }
+            sum = 1 / sum;
+        }
+        return sum;
+    }
 
     public void test1() throws IOException {
         //创建HSSFWorkbook对象(excel的文档对象)

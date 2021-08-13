@@ -5,9 +5,11 @@
     <title>index</title>
     <script src="../static/boot.js" type="text/javascript"></script>
     <script src="../static/jquery.min.js" type="text/javascript"></script>
+
 </head>
 <body>
 我的一个页面
+<button onclick="clickOne()">test</button>
 <!--<div id="mytest" class="mini-datagrid" style="width:700px;height:250px;"-->
 <!--url="../user"-->
 <!--idField="id" allowResize="true"-->
@@ -26,6 +28,212 @@
 <!--    var grid = mini.get("mytest");-->
 
 <!--    grid.load();-->
-<!--</script>-->
+<!--</script>-->1
 </body>
+<script type="text/javascript">
+    // function clickOne(){
+    //     websqlDeleteAllDataFromTable('websqlTable');
+    //
+    //     // $.ajax({
+    //     //     url:"../data/Test.json",
+    //     //     data:{},
+    //     //     success:function (data){
+    //     //         console.log(data[0]);
+    //     //     }
+    //     // })
+    // }
+    //
+    // var dataBase = window.openDatabase('websql', '1.0', 'Datura练习', 4*1024*1024,function() {});
+    //
+    // var tableName = 'websqlTable';//创建表的名称
+    // //这里定一个变量来存建表相关信息，并声明主键，需要存储的字段及格式（NAME、AGE、HEIGHT、WEIGHT）
+    // var creatTableSQL = 'CREATE TABLE IF  NOT EXISTS '+ tableName + ' (rowid INTEGER PRIMARY KEY AUTOINCREMENT, NAME text,AGE text,HEIGHT text,WEIGTH text)';
+    // dataBase.transaction(function (ctx,result) {
+    //     ctx.executeSql(creatTableSQL,[],function(ctx,result){
+    //         alert("表创建成功 " + tableName);//建表成功
+    //     },function(tx, error){
+    //         alert('创建表失败:' + tableName + error.message);//建表失败
+    //     });
+    // });
+    //
+    // function websqlInsterDataToTable(tableName,NAME,AGE,HEIGHT,WEIGTH){
+    //     var insterTableSQL = 'INSERT INTO ' + tableName + ' (NAME,AGE,HEIGHT,WEIGTH) VALUES (?,?,?,?)';
+    //     dataBase.transaction(function (ctx) {
+    //         ctx.executeSql(insterTableSQL,[NAME,AGE,HEIGHT,WEIGTH],function (ctx,result){
+    //                 console.log("插入" + tableName  + NAME + "成功");
+    //             },
+    //             function (tx, error) {
+    //                 alert('插入失败: ' + error.message);
+    //             });
+    //     });
+    // }
+    // websqlInsterDataToTable('websqlTable',"小红","18","175cm","40kg");
+    // websqlInsterDataToTable('websqlTable',"小黄","17","180cm","45kg");
+    // websqlInsterDataToTable('websqlTable',"小蓝","19","185cm","70kg");
+    // websqlInsterDataToTable('websqlTable',"小绿","19","175cm","60kg");
+    // websqlInsterDataToTable('websqlTable',"小青","21","162cm","52kg");
+    // websqlInsterDataToTable('websqlTable',"小紫","25","195cm","80kg");
+    //
+    // function websqlGetAllData(tableName){
+    //     var selectALLSQL = 'SELECT * FROM ' + tableName;
+    //     dataBase.transaction(function (ctx) {
+    //         ctx.executeSql(selectALLSQL,[],function (ctx,result){
+    //                 alert('查询成功: ' + tableName + result.rows.length);
+    //                 var len = result.rows.length;
+    //                 for(var i = 0;i < len;i++) {
+    //                     console.log("NAME = "  + result.rows.item(i).NAME);
+    //                     console.log("AGE = "  + result.rows.item(i).AGE);
+    //                     console.log("HEIGHT = "  + result.rows.item(i).HEIGHT);
+    //                     console.log("WEIGTH = "  + result.rows.item(i).WEIGTH);
+    //                     console.log("-------- 我是分割线 -------");
+    //                 }
+    //             },
+    //             function (tx, error) {
+    //                 alert('查询失败: ' + error.message);
+    //             });
+    //     });
+    // }
+    // // websqlGetAllData('websqlTable');
+    //
+    //
+    // function websqlGetAData(tableName,name){
+    //     var selectSQL = 'SELECT * FROM ' + tableName + ' WHERE NAME = ?'
+    //     dataBase.transaction(function (ctx) {
+    //         ctx.executeSql(selectSQL,[name],function (ctx,result){
+    //                 alert('查询成功: ' + tableName + result.rows.length);
+    //                 var len = result.rows.length;
+    //                 for(var i = 0;i < len;i++) {
+    //                     console.log("NAME = "  + result.rows.item(i).NAME);
+    //                     console.log("AGE = "  + result.rows.item(i).AGE);
+    //                     console.log("HEIGHT = "  + result.rows.item(i).HEIGHT);
+    //                     console.log("WEIGTH = "  + result.rows.item(i).WEIGTH);
+    //                 }
+    //             },
+    //             function (tx, error) {
+    //                 alert('查询失败: ' + error.message);
+    //             });
+    //     });
+    // }
+    // // websqlGetAData('websqlTable',"小紫");
+    //
+    // function websqlDeleteAllDataFromTable(tableName){
+    //     var deleteTableSQL = 'DELETE FROM ' + tableName;
+    //     localStorage.removeItem(tableName);
+    //     dataBase.transaction(function (ctx,result) {
+    //         ctx.executeSql(deleteTableSQL,[],function(ctx,result){
+    //             alert("删除表成功 " + tableName);
+    //         },function(tx, error){
+    //             alert('删除表失败:' + tableName + error.message);
+    //         });
+    //     });
+    // }
+    // // websqlDeleteAllDataFromTable('websqlTable');
+    //
+    //
+    // function websqlUpdateAData(tableName,name,age){
+    //     var updateDataSQL = 'UPDATE ' + tableName + ' SET AGE = ? WHERE NAME = ?';
+    //     dataBase.transaction(function (ctx,result) {
+    //         ctx.executeSql(updateDataSQL,[age,name],function(ctx,result){
+    //             alert("更新成功 " + tableName + name);
+    //         },function(tx, error){
+    //             alert('更新失败:' + tableName  + name + error.message);
+    //         });
+    //     });
+    // }
+    // // websqlUpdateAData('websqlTable',"小红","1000")
+
+    (function () {
+        /*
+         * 假如待选变量：  ID,NUM,TOTAL，AVL TEST
+         * 正确的公式例子：ID*NUM+(TOTAL/AVL)*0.5
+         * 错误的公式例子：ID**|0.5
+         */
+
+        function fn(string, obj) {
+            // 剔除空白符
+            string = string.replace(/\s/g, '');
+
+            // 错误情况，空字符串
+            if ("" === string) {
+                return false;
+            }
+
+            // 错误情况，运算符连续
+            if (/[\+\-\*\/]{2,}/.test(string)) {
+                return false;
+            }
+
+            // 空括号
+            if (/\(\)/.test(string)) {
+                return false;
+            }
+            // /错误情况，使用除()+-*/之外的字符
+            if (/[^\+\-\*\/0-9.a-zA-Z\(\)]/.test(string)) {
+                return false;
+            }
+
+            //运算符号不能在首末位
+            if (/^[\+\-\*\/.]|[\+\-\*\/.]$/.test(string)) {
+                return false;
+            }
+            // 错误情况，括号不配对
+            var stack = [];
+            for (var i = 0, item; i < string.length; i++) {
+                item = string.charAt(i);
+                if ('(' === item) {
+                    stack.push('(');
+                } else if (')' === item) {
+                    if (stack.length > 0) {
+                        stack.pop();
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            if (0 !== stack.length) {
+                return false;
+            }
+
+            // 错误情况，(后面是运算符
+            if (/\([\+\-\*\/]/.test(string)) {
+                return false;
+            }
+
+            // 错误情况，)前面是运算符
+            if (/[\+\-\*\/]\)/.test(string)) {
+                return false;
+            }
+
+            // 错误情况，(前面不是运算符
+            if (/[^\+\-\*\/]\(/.test(string)) {
+                return false;
+            }
+
+            // 错误情况，)后面不是运算符
+            if (/\)[^\+\-\*\/]/.test(string)) {
+                return false;
+            }
+            // 错误情况，变量没有来自“待选公式变量”
+            var tmpStr = string.replace(/[\(\)\+\-\*\/]{1,}/g, '`');
+            var array = tmpStr.split('`');
+            for (var i = 0, item; i < array.length; i++) {
+                item = array[i];
+                if (/[A-Z]/i.test(item) && 'undefined' === typeof (obj[item])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // 测试
+        var fields = {
+            'A': 1,
+            'B': 1,
+            'C': 1,
+            'D': 1
+        };
+        // 提交到服务器端的字符串不应该包含空白符，或者应该禁止用户输入空白符
+        alert(fn('A+C*(A+C)', fields));
+    })();
+</script>
 </html>
