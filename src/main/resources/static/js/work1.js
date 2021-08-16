@@ -200,7 +200,29 @@ var page = {
     //查询
     searchData() {
         if (this.tabs_id == 1) {
+            if (!this.combCmp.getValue()) {
+                mini.alert("未选择公司主体");
+                return;
+            }
+
+
+            if (!this.combDept.getValue()) {
+                mini.alert("未选择公司部门");
+                return;
+            }
+
+            if (!this.combOrg.getValue()) {
+                mini.alert("未选择公司主体");
+                return;
+            }
+            if (!this.combCmp.getValue()) {
+                mini.alert("未选择公司主体");
+            }
+            if (!this.combCmp.getValue()) {
+                mini.alert("未选择公司主体");
+            }
             var params = {};
+            this.tool.dataLoadDw(this.handleGrid, this.ip + "", params)
             this.tool.dataLoadDw(this.applyGrid, this.ip + "", params);
             this.num = this.applyGrid.getData().length;
         } else {

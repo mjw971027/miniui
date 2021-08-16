@@ -45,19 +45,19 @@
     mini.parse();
 
     var grid = mini.get("datagrid1");
-    grid.load();
+    // grid.load();
 
     //////////////////////////////////////////
     //提交单元格编辑数据前激发
-    function onCellCommitEdit(e) {
-        var editor = e.editor;
-
-        editor.validate();
-        if (editor.isValid() == false) {
-            alert(editor.getErrorText());
-            e.cancel = true;
-        }
-    }
+    // function onCellCommitEdit(e) {
+    //     var editor = e.editor;
+    //
+    //     editor.validate();
+    //     if (editor.isValid() == false) {
+    //         alert(editor.getErrorText());
+    //         e.cancel = true;
+    //     }
+    // }
 
     // function onCellEditenter(e){
     //         var record = e.record;
@@ -70,17 +70,17 @@
     //             e.record.quantity = quantity * 0.5;
     //         }
     // }
-    function onDrawCell(e) {
-        var record = e.record;
-        if (e.field == "quantity") {
-            var quantity = record.quantity;
-            e.cellHtml = quantity * 0.5;
-        }
-        if (e.field == "price") {
-            var price = record.price;
-            e.cellHtml = price * 0.5;
-        }
-    }
+    // function onDrawCell(e) {
+    //     var record = e.record;
+    //     if (e.field == "quantity") {
+    //         var quantity = record.quantity;
+    //         e.cellHtml = quantity * 0.5;
+    //     }
+    //     if (e.field == "price") {
+    //         var price = record.price;
+    //         e.cellHtml = price * 0.5;
+    //     }
+    // }
 
     function onDrawSummaryCell(e) {
         var result = e.result;
@@ -93,11 +93,11 @@
         }
     }
 
-    function addRow() {
-        var rows = {price: 100};
-        ;
-        grid.addRow(rows, 0);
-    }
+    // function addRow() {
+    //     var rows = {price: 100};
+    //     ;
+    //     grid.addRow(rows, 0);
+    // }
 </script>
 
 <div class="description">
