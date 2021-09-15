@@ -108,10 +108,12 @@ var page = {
         this.date22.setValue(date1);
 
 
-        // this.combCmp.setUrl(this.ip+"");
-        // this.combCmp2.setUrl(this.ip+"");
+        // this.combCmp.setUrl("../../mf/common/getNewCompany");
+        // this.combCmp2.setUrl("../../mf/common/getNewCompany");
         // this.combProj.setUrl();
         // this.combProj2.setUrl();
+        // this.combRemark.setUrl();
+        // this.combRemark.setUrl();
     },
     eventBind: function () {
         //公司选择到部门
@@ -121,11 +123,11 @@ var page = {
         this.combDept.on("valuechanged", this.tool.myBind(this.deptToOrg1, page));
         this.combDept2.on("valuechanged", this.tool.myBind(this.deptToOrg2, page));
         //工程号选择到分段号
-        this.combProj.on("valuechanged", this.tool.myBind(this.projToSub1, page));
-        this.combProj2.on("valuechanged", this.tool.myBind(this.projToSub2, page));
+        // this.combProj.on("valuechanged", this.tool.myBind(this.projToSub1, page));
+        // this.combProj2.on("valuechanged", this.tool.myBind(this.projToSub2, page));
         //分段号，分道备注
-        this.combRemark.on("valuechanged", this.tool.myBind(this.subToRmk1, page));
-        this.combRemark2.on("valuechanged", this.tool.myBind(this.subToRmk2, page))
+        // this.combRemark.on("valuechanged", this.tool.myBind(this.subToRmk1, page));
+        // this.combRemark2.on("valuechanged", this.tool.myBind(this.subToRmk2, page))
         //换页时
         this.tabs.on("activechanged", this.tool.myBind(this.changeTabs, page));
         //
@@ -142,7 +144,7 @@ var page = {
         this.btnSys.on("click", this.tool.myBind(this.Sys, page));
         //
         this.applyGrid.on("rowclick", this.tool.myBind(this.updateTotal1, page));
-        // this.applyGrid.on("drawsummarycell", this.tool.myBind(this.onDrawSummaryCell1, page));
+        this.applyGrid.on("drawsummarycell", this.tool.myBind(this.onDrawSummaryCell1, page));
 
         this.applyGrid2.on("rowclick", this.tool.myBind(this.updateTotal2, page));
 
@@ -192,9 +194,9 @@ var page = {
     changeDef: function () {
         console.log(this.checkDef.getValue());
         if (this.checkDef.getValue() == 1) {
-
+            page.searchData();
         } else {
-
+            page.searchData();
         }
     },
     //查询
@@ -204,28 +206,47 @@ var page = {
                 mini.alert("未选择公司主体");
                 return;
             }
-
-
             if (!this.combDept.getValue()) {
                 mini.alert("未选择公司部门");
                 return;
             }
 
             if (!this.combOrg.getValue()) {
-                mini.alert("未选择公司主体");
+                mini.alert("未选择公司科室");
                 return;
             }
-            if (!this.combCmp.getValue()) {
-                mini.alert("未选择公司主体");
+            if (!this.combProj.getValue()) {
+                mini.alert("未选择工程号");
+                return;
             }
-            if (!this.combCmp.getValue()) {
-                mini.alert("未选择公司主体");
-            }
+            // if (!this.combSub.getValue()) {
+            //     mini.alert("未输入分段");
+            // }
             var params = {};
             this.tool.dataLoadDw(this.handleGrid, this.ip + "", params)
             this.tool.dataLoadDw(this.applyGrid, this.ip + "", params);
             this.num = this.applyGrid.getData().length;
         } else {
+            if (!this.combCmp2.getValue()) {
+                mini.alert("未选择公司主体");
+                return;
+            }
+
+
+            if (!this.combDept2.getValue()) {
+                mini.alert("未选择公司部门");
+                return;
+            }
+
+            if (!this.combOrg2.getValue()) {
+                mini.alert("未选择公司科室");
+                return;
+            }
+            if (!this.combProj2.getValue()) {
+                mini.alert("未选择工程号");
+                return;
+            }
+
             var params = {};
             this.tool.dataLoadDw(this.applyGrid2, this.ip + "", params);
             this.num2 = this.applyGrid2.getData().length;
@@ -327,7 +348,28 @@ var page = {
     updateTotal2() {
 
     },
+    onDrawSummaryCell1(e) {
+        var result = e.result;
+        var grid = e.sender;
+        var rows = e.data;
 
+        if (e.field == "1") {
+            e.cellHtml = "总计:" + grid.getData().length;
+        }
+
+        if (e.field == "2") {
+            e.cellHtml = "选中行数:" + grid.getSelecteds().length;
+        }
+        if (e.field == "3") {
+            e.cellHtml = "总申请数:" + grid.getData().length;
+        }
+        if (e.field == "4") {
+            e.cellHtml = "总发放数:" + grid.getData().length;
+        }
+        if (e.field == "5") {
+            e.cellHtml = "未发放数:" + grid.getData().length;
+        }
+    }
 }
 
 function shuchu() {

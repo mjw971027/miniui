@@ -52,8 +52,9 @@ public class Test1 {
 //        int x=1323;
 //        BigDecimal bigDecimal=new BigDecimal(x);
 //        System.out.println(bigDecimal);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
-        System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+//        System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+        System.out.println('2' - '0');
     }
     private MockMvc mvc;
 

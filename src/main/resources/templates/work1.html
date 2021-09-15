@@ -36,7 +36,7 @@
         <div title="预处理计划内">
             <div class="mini-toolbar">
                 <span class="t1">公司属性:</span>
-                <input id="combCmp" class="mini-combobox" style="width:100px;" textField="text" valueField=""
+                <input id="combCmp" class="mini-combobox" style="width:100px;" textField="compDesc" valueField="compCd"
                        emptyText="请选择..."
                        showNullItem="true" nullItemText="请选择..."/>
                 <span class="t1">计划作业组织:</span>
@@ -61,8 +61,8 @@
                        emptyText="请选择..."
                        showNullItem="true" nullItemText="请选择..."/>
                 <span class="t1">分段号:</span>
-                <input id="combSub" class="mini-combobox" style="width:100px;" textField="text" valueField=""
-                       emptyText="请选择..."
+                <input id="combSub" class="mini-textbox" style="width:100px;" textField="text" valueField=""
+                       emptyText="请输入..."
                        showNullItem="true" nullItemText="请选择..."/>
                 <span class="t1">钢板分道备注:</span>
                 <input id="combRemark" class="mini-combobox" style="width:100px;" textField="text" valueField=""
@@ -145,7 +145,7 @@
                                  showHeader="false"
                                  multiSelect="true"
                                  datafield="list"
-                                 showSummaryRow="true" ondrawsummarycell="onDrawSummaryCell"
+                                 showSummaryRow="true"
                             >
                                 <div property="columns">
                                     <div type="checkcolumn"></div>
@@ -164,6 +164,7 @@
                                     <div field="" width="100" allowSort="true" headerAlign="center">申请数</div>
                                     <div field="" width="100" allowSort="true" headerAlign="center">发放数</div>
                                     <div field="" width="100" allowSort="true" headerAlign="center">预约未发放数</div>
+                                    <div field="" width="100" allowSort="true" headerAlign="center">申请日期</div>
                                     <div field="" width="100" allowSort="true" headerAlign="center">申请作业组织</div>
                                 </div>
                             </div>
@@ -179,7 +180,8 @@
             <div class="mini-fit">
                 <div class="mini-toolbar">
                     <span class="t1">公司属性:</span>
-                    <input id="combCmp2" class="mini-combobox" style="width:80px;" textField="text" valueField=""
+                    <input id="combCmp2" class="mini-combobox" style="width:80px;" textField="compDesc"
+                           valueField="compCd"
                            emptyText="请选择..."
                            showNullItem="true" nullItemText="请选择..."/>
                     <span class="t1">申请作业组织:</span>
@@ -203,8 +205,8 @@
                            emptyText="请选择..."
                            showNullItem="true" nullItemText="请选择..."/>
                     <span class="t1">分段号:</span>
-                    <input id="combSub2" class="mini-combobox" style="width:80px;" textField="text" valueField=""
-                           emptyText="请选择..."
+                    <input id="combSub2" class="mini-textbox" style="width:80px;" textField="text" valueField=""
+                           emptyText="请输入..."
                            showNullItem="true" nullItemText="请选择..."/>
                     <span class="t1">钢板分道备注:</span>
                     <input id="combRemark2" class="mini-combobox" style="width:100px;" textField="text" valueField=""
@@ -246,6 +248,7 @@
                          showHeader="false" title="钢板预处理计划"
                          multiSelect="true"
                          datafield="list"
+                         showSummaryRow="true"
                     >
 
                         <div property="columns">
@@ -262,28 +265,30 @@
                             <div field="" width="100" allowSort="true" headerAlign="center">图纸页码</div>
                             <div field="" width="100" allowSort="true" headerAlign="center">申请数</div>
                             <div field="" width="100" allowSort="true" headerAlign="center">发放数</div>
+
                             <div field="" width="100" allowSort="true" headerAlign="center">预约未发放数</div>
+                            <div field="" width="100" allowSort="true" headerAlign="center">申请日期</div>
                             <div field="" width="100" allowSort="true" headerAlign="center">申请作业组织</div>
                         </div>
                     </div>
                 </div>
-                <div class="mini-toolbar">
-                    <span class="t1">总行数:</span>
-                    <div id="total21" class="mini-textbox" borderStyle="border:none" readOnly="true"
-                         style="width: 50px"></div>
-                    <span class="t1">选中行数:</span>
-                    <div id="total22" class="mini-textbox" borderStyle="border:none" readOnly="true"
-                         style="width: 50px"></div>
-                    <span class="t1">总行数</span>
-                    <div id="total23" class="mini-textbox" borderStyle="border:none" readOnly="true"
-                         style="width: 50px"></div>
-                    <span class="t1">总行数</span>
-                    <div id="total24" class="mini-textbox" borderStyle="border:none" readOnly="true"
-                         style="width: 50px"></div>
-                    <span class="t1">总行数</span>
-                    <div id="total25" class="mini-textbox" borderStyle="border:none" readOnly="true"
-                         style="width: 50px"></div>
-                </div>
+                <!--                <div class="mini-toolbar">-->
+                <!--                    <span class="t1">总行数:</span>-->
+                <!--                    <div id="total21" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                <!--                         style="width: 50px"></div>-->
+                <!--                    <span class="t1">选中行数:</span>-->
+                <!--                    <div id="total22" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                <!--                         style="width: 50px"></div>-->
+                <!--                    <span class="t1">总行数</span>-->
+                <!--                    <div id="total23" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                <!--                         style="width: 50px"></div>-->
+                <!--                    <span class="t1">总行数</span>-->
+                <!--                    <div id="total24" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                <!--                         style="width: 50px"></div>-->
+                <!--                    <span class="t1">总行数</span>-->
+                <!--                    <div id="total25" class="mini-textbox" borderStyle="border:none" readOnly="true"-->
+                <!--                         style="width: 50px"></div>-->
+                <!--                </div>-->
             </div>
 
         </div>
@@ -291,30 +296,8 @@
 </div>
 </body>
 <script type="text/javascript">
-    mini.parse();
 
-    function onDrawSummaryCell(e) {
-        var result = e.result;
-        var grid = e.sender;
-        var rows = e.data;
 
-        if (e.field == "1") {
-            e.cellHtml = "总计:" + grid.getData().length;
-        }
-
-        if (e.field == "2") {
-            e.cellHtml = "选中行数:" + grid.getSelecteds().length;
-        }
-        if (e.field == "3") {
-            e.cellHtml = "总申请数:" + grid.getData().length;
-        }
-        if (e.field == "4") {
-            e.cellHtml = "总发放数:" + grid.getData().length;
-        }
-        if (e.field == "5") {
-            e.cellHtml = "未发放数:" + grid.getData().length;
-        }
-    }
 </script>
 
 </html>

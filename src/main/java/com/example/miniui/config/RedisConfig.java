@@ -32,6 +32,7 @@ public class RedisConfig extends CachingConfigurerSupport {
      * 编写自定义的 redisTemplate
      * 这是一个比较固定的模板
      */
+    @Override
     @Bean
     public KeyGenerator keyGenerator() {
         return new KeyGenerator() {
@@ -117,9 +118,9 @@ public class RedisConfig extends CachingConfigurerSupport {
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         jackson2JsonRedisSerializer.setObjectMapper(om);
 
-        // 配置序列化（解决乱码的问题）,过期时间300秒
+        // 配置序列化（解决乱码的问题）,过期时间9000秒
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(300))
+                .entryTtl(Duration.ofSeconds(9000))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 .disableCachingNullValues();

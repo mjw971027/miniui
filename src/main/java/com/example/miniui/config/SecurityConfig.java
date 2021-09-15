@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService myUserDetailsService;//调用判断是否匹配数据集
     @Autowired
-    private AuthenticationProvider authenticationProvider;  //自定义的安全认证
+    private MyAuthenticationProvider authenticationProvider;  //自定义的安全认证
     @Autowired
     private MyAuthenticationSucessHandler myAuthenticationSuccessHandler;//登陆成功返的处理
     @Autowired
