@@ -64,7 +64,9 @@ var page = {
                     data: rows1[i].id,
                     type: "get",
                     success: function (data) {
-
+                        if (data == 1) {
+                            mini.alert("删除成功！");
+                        }
                     }
                 })
             }
@@ -78,7 +80,9 @@ var page = {
                     data: rows2[i].id,
                     type: "get",
                     success: function (data) {
-
+                        if (data == 1) {
+                            mini.alert("删除成功！");
+                        }
                     }
                 })
             }
