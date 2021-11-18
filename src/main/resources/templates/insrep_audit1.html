@@ -77,14 +77,15 @@
     <div class="mini-toolbar">
         <span>审批过程记录</span>
     </div>
-    <div id="auditdatagrid" class="mini-datagrid" style="width:100%;height:300px;"
+    <div id="auditdatagrid" class="mini-datagrid" style="width:100%;height:250px;"
          borderStyle="border:none"
          allowResize="false"
          idField="id" allowResize="true"
          sizeList="[300,500,1000]" pageSize="300"
          showHeader="false" title="钢板预处理计划"
          multiSelect="true"
-         datafield="list"
+         showPager="false"
+
     >
         <div property="columns">
             <div field="" width="60" headerAlign="center" allowSort="true">审批人</div>
@@ -116,7 +117,8 @@
         <input id="btnSave" class="mini-button" iconcls="icon-ok" text="保存">
         <input id="btnClose" class="mini-button" iconcls="icon-cancel" text="关闭">
 
-
+    </div>
+</div>
         <!--    </div>-->
         <!--    <button onclick="handleAllTags()">得出id</button>-->
         <!--</div>-->
