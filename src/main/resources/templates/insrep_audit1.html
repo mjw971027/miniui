@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en">
+<script src="../static/boot.js" type="text/javascript"></script>
+<script src="../static/jquery.min.js" type="text/javascript"></script>
+<script src="../static/js/insrep_audit1.js" type="text/javascript"></script>
+<script src="../static/js/common.js" type="text/javascript"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<style>
+    html,
+    body {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<body>
+<h1 align="center">出险报案申请审批</h1>
+<div class="mini-toolbar">
+    <div style="width: 100%;">
+        <span style="padding-right: 500px">出险信息</span>
+
+        <span>申请单号：</span>
+        <div id="txtBillNum" class="mini-textbox" style="display: inline-block;vertical-align: middle;padding-left: 5px"
+             readonly="true"></div>
+
+    </div>
+
+    <table style="width:100%;">
+        <tr>
+            <td style="width:80px;">公司名称：</td>
+            <td style="width:150px;"><input id="txtComp" class="mini-textbox" readonly="true"/></td>
+            <td style="width:80px;">出险部门：</td>
+            <td style="width:150px;"><input id="txtDept" class="mini-textbox" readonly="true"/></td>
+            <td style="width:80px;">申请人：</td>
+            <td style="width:150px;"><input id="txtApply" class="mini-textbox" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>项目号/资产编号：</td>
+            <td><input id="txtProj" class="mini-combobox" readonly="true"/></td>
+            <td>内部报案时间：</td>
+            <td><input id="dateRepIn" class="mini-datepicker" format="yyyy-MM-dd" readonly="true"/></td>
+            <td>出险时间：</td>
+            <td><input id="dateAccident" class="mini-datepicker" format="yyyy-MM-dd" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>预估损失金额（万元）：</td>
+            <td><input id="txtLossAmunt" class="mini-combobox" readonly="true"/></td>
+            <td>现场勘察联系人：</td>
+            <td><input id="txtContact" class="mini-combobox" readonly="true"/></td>
+            <td>联系人电话：</td>
+            <td><input id="txtContactNum" class="mini-combobox" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>报案保险类别：</td>
+            <td><input id="txtBaoxian" class="mini-combobox" readonly="true"/></td>
+            <td>事故类别：</td>
+            <td><input id="txtAccidentType" class="mini-combobox" readonly="true"/></td>
+            <td>事故名称：</td>
+            <td><input id="txtAccidentName" class="mini-combobox" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>事故说明：</td>
+            <td><input id="txtDes" class="mini-combobox" readonly="true"/></td>
+
+        </tr>
+        <tr>
+            <td>事故情况简介：</td>
+            <td><input id="txtIntroduction" class="mini-combobox" readonly="true"/></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
