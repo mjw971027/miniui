@@ -176,15 +176,15 @@
                 //这是读取input时要分类，如果时div就不需要
                 if (/text/.test(arrayOfDocFonts[i].id)) {
                     res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 5));
-                }else if (/value/.test(arrayOfDocFonts[i].id)){
+                } else if (/value/.test(arrayOfDocFonts[i].id)) {
                     res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 6));
                 }
             }
             tmp += 1;
         }
-        var newres=[];
-        var myset=new Set(res);
-        for (var val of myset){
+        var newres = [];
+        var myset = new Set(res);
+        for (var val of myset) {
             newres.push(val);
         }
         var str = "";
