@@ -4,6 +4,7 @@
 <script src="../static/jquery.min.js" type="text/javascript"></script>
 <script src="../static/js/insrep_audit2.js" type="text/javascript"></script>
 <script src="../static/js/common.js" type="text/javascript"></script>
+<script src="../static/js/miniuiExcelUtils.js" type="text/javascript"></script>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -151,9 +152,17 @@
 
     </div>
 </div>
-<button onclick="handleAllTags()">得出id</button>
+<button onclick="downloadexec()">得出id</button>
 </body>
 <script type="text/javascript">
+    function downloadexec() {
+        mini.parse();
+        var datagrid = mini.get("auditdatagrid");
+        var str = ExportTable(datagrid.getData(), ExportExcel(datagrid));
+        downloadExcel(str);
+
+    }
+
     function handleAllTags() {
         var arrayOfDocFonts;
         var res = [];

@@ -12,7 +12,407 @@
     }
   </style>
 </head>
+<div id="wea_rich_text_default_font" style="font-family:微软雅黑;font-size:12;"><p>-- Create table</p>
 
+    <p>create table MA.T_INS_CASE</p>
+
+    <p>(</p>
+
+    <p>&nbsp; tid &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; VARCHAR2(44) default SYS_GUID() not
+        null,</p>
+
+    <p>&nbsp; insurance_type &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(50),</p>
+
+    <p>&nbsp; company_id &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(50),</p>
+
+    <p>&nbsp; dept_id &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; VARCHAR2(50),</p>
+
+    <p>&nbsp; project_no &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(50),</p>
+
+    <p>&nbsp; report_date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TIMESTAMP(6),</p>
+
+    <p>&nbsp; accident_date &nbsp; &nbsp; &nbsp; &nbsp; TIMESTAMP(6),</p>
+
+    <p>&nbsp; estimated_loss_amount NUMBER(20,6),</p>
+
+    <p>&nbsp; contacts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(20),</p>
+
+    <p>&nbsp; contact_number &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(30),</p>
+
+    <p>&nbsp; accident_category_id &nbsp;VARCHAR2(50),</p>
+
+    <p>&nbsp; accident_name &nbsp; &nbsp; &nbsp; &nbsp; VARCHAR2(80),</p>
+
+    <p>&nbsp; accident_description &nbsp;VARCHAR2(150),</p>
+
+    <p>&nbsp; accident_introduction VARCHAR2(2000),</p>
+
+    <p>&nbsp; case_no &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; VARCHAR2(50),</p>
+
+    <p>&nbsp; pay_date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;TIMESTAMP(6),</p>
+
+    <p>&nbsp; bill_num &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(30),</p>
+
+    <p>&nbsp; create_user_id &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(44),</p>
+
+    <p>&nbsp; create_date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TIMESTAMP(6),</p>
+
+    <p>&nbsp; update_user_id &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(44),</p>
+
+    <p>&nbsp; update_date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TIMESTAMP(6),</p>
+
+    <p>&nbsp; process_id &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NUMBER(10),</p>
+
+    <p>&nbsp; approval_status &nbsp; &nbsp; &nbsp; VARCHAR2(10) default &#39;00&#39;,</p>
+
+    <p>&nbsp; case_status &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; VARCHAR2(10) default &#39;00&#39;,</p>
+
+    <p>&nbsp; claim_status &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(10)</p>
+
+    <p>)</p>
+
+    <p>tablespace MAT</p>
+
+    <p>&nbsp; pctfree 10</p>
+
+    <p>&nbsp; initrans 1</p>
+
+    <p>&nbsp; maxtrans 255;</p>
+
+    <p>-- Add comments to the table&nbsp;</p>
+
+    <p>comment on table MA.T_INS_CASE</p>
+
+    <p>&nbsp; is &#39;出险报案申请单&#39;;</p>
+
+    <p>-- Add comments to the columns&nbsp;</p>
+
+    <p>comment on column MA.T_INS_CASE.tid</p>
+
+    <p>&nbsp; is &#39;主键ID&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.insurance_type</p>
+
+    <p>&nbsp; is &#39;报案保险类别ID(MA.T_INS_INSURANCE_TYPE2)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.company_id</p>
+
+    <p>&nbsp; is &#39;公司主体ID(BA.T_COMPANY)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.dept_id</p>
+
+    <p>&nbsp; is &#39;出险部门ID(CP.ORGANIZATION)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.project_no</p>
+
+    <p>&nbsp; is &#39;项目号/资财编号&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.report_date</p>
+
+    <p>&nbsp; is &#39;内部报案时间&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.accident_date</p>
+
+    <p>&nbsp; is &#39;出险时间&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.estimated_loss_amount</p>
+
+    <p>&nbsp; is &#39;预估损失金额&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.contacts</p>
+
+    <p>&nbsp; is &#39;现场勘察联系人&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.contact_number</p>
+
+    <p>&nbsp; is &#39;联系人电话&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.accident_category_id</p>
+
+    <p>&nbsp; is &#39;事故类别ID(MA.T_INS_ACCIDENT_CATEGORY)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.accident_name</p>
+
+    <p>&nbsp; is &#39;事故名称&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.accident_description</p>
+
+    <p>&nbsp; is &#39;事故说明&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.accident_introduction</p>
+
+    <p>&nbsp; is &#39;事故情况简介&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.case_no</p>
+
+    <p>&nbsp; is &#39;报案号&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.pay_date</p>
+
+    <p>&nbsp; is &#39;赔付日期&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.bill_num</p>
+
+    <p>&nbsp; is &#39;申请单号&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.create_user_id</p>
+
+    <p>&nbsp; is &#39;创建人ID(CP.USERINFO)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.create_date</p>
+
+    <p>&nbsp; is &#39;创建/登记日期&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.update_user_id</p>
+
+    <p>&nbsp; is &#39;最新修改人ID(CP.USERINFO)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.update_date</p>
+
+    <p>&nbsp; is &#39;最新更新日期&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.process_id</p>
+
+    <p>&nbsp; is &#39;BPM流程ID&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.approval_status</p>
+
+    <p>&nbsp; is &#39;BPM流程状态(00空;01审批中;02审批通过;03审批不通过;04退回修改)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.case_status</p>
+
+    <p>&nbsp; is &#39;报案状态(00未报案;01报案中;02报案完成)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE.claim_status</p>
+
+    <p>&nbsp; is &#39;理赔状态&#39;;</p>
+
+    <p>-- Create/Recreate primary, unique ａｎｄ foreign key constraints&nbsp;</p>
+
+    <p>alter table MA.T_INS_CASE</p>
+
+    <p>&nbsp; add constraint PK_T_INS_CASE_TID primary key (TID)</p>
+
+    <p>&nbsp; using index&nbsp;</p>
+
+    <p>&nbsp; tablespace MAT</p>
+
+    <p>&nbsp; pctfree 10</p>
+
+    <p>&nbsp; initrans 2</p>
+
+    <p>&nbsp; maxtrans 255;</p>
+
+    <p>&nbsp;</p>
+
+    <p>-- Create table</p>
+
+    <p>create table MA.T_INS_CASE_INSURANCE</p>
+
+    <p>(</p>
+
+    <p>&nbsp; tid &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; VARCHAR2(44) not null,</p>
+
+    <p>&nbsp; supplier_cd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; CHAR(6),</p>
+
+    <p>&nbsp; insurance_type &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(44),</p>
+
+    <p>&nbsp; insurance_subcategory VARCHAR2(44),</p>
+
+    <p>&nbsp; insurance_no &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(30),</p>
+
+    <p>&nbsp; deductible_amount &nbsp; &nbsp; NUMBER(20,6),</p>
+
+    <p>&nbsp; report_date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TIMESTAMP(6),</p>
+
+    <p>&nbsp; remark &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(500),</p>
+
+    <p>&nbsp; create_user_id &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(44),</p>
+
+    <p>&nbsp; create_date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TIMESTAMP(6),</p>
+
+    <p>&nbsp; update_user_id &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(44),</p>
+
+    <p>&nbsp; update_date &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; TIMESTAMP(6)</p>
+
+    <p>)</p>
+
+    <p>tablespace MAT</p>
+
+    <p>&nbsp; pctfree 10</p>
+
+    <p>&nbsp; initrans 1</p>
+
+    <p>&nbsp; maxtrans 255;</p>
+
+    <p>-- Add comments to the table&nbsp;</p>
+
+    <p>comment on table MA.T_INS_CASE_INSURANCE</p>
+
+    <p>&nbsp; is &#39;出险报案申请单-资财信息&#39;;</p>
+
+    <p>-- Add comments to the columns&nbsp;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.tid</p>
+
+    <p>&nbsp; is &#39;主键,同出险报案申请单ID(MA.T_INS_CASE)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.supplier_cd</p>
+
+    <p>&nbsp; is &#39;保险公司(BA.BA2020)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.insurance_type</p>
+
+    <p>&nbsp; is &#39;保险险种&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.insurance_subcategory</p>
+
+    <p>&nbsp; is &#39;险种小类&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.insurance_no</p>
+
+    <p>&nbsp; is &#39;保险单号&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.deductible_amount</p>
+
+    <p>&nbsp; is &#39;免赔额&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.report_date</p>
+
+    <p>&nbsp; is &#39;对外报案时间&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.remark</p>
+
+    <p>&nbsp; is &#39;备注&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.create_user_id</p>
+
+    <p>&nbsp; is &#39;创建人ID(CP.USERINFO)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.create_date</p>
+
+    <p>&nbsp; is &#39;创建/登记日期&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.update_user_id</p>
+
+    <p>&nbsp; is &#39;最新修改人ID(CP.USERINFO)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_INSURANCE.update_date</p>
+
+    <p>&nbsp; is &#39;最新更新日期&#39;;</p>
+
+    <p>-- Create/Recreate primary, unique ａｎｄ foreign key constraints&nbsp;</p>
+
+    <p>alter table MA.T_INS_CASE_INSURANCE</p>
+
+    <p>&nbsp; add constraint PK_T_INS_CASE_INSURANCE_TID primary key (TID)</p>
+
+    <p>&nbsp; using index&nbsp;</p>
+
+    <p>&nbsp; tablespace MAT</p>
+
+    <p>&nbsp; pctfree 10</p>
+
+    <p>&nbsp; initrans 2</p>
+
+    <p>&nbsp; maxtrans 255;</p>
+
+    <p>&nbsp;</p>
+
+    <p>-- Create table</p>
+
+    <p>create table MA.T_INS_CASE_OPINION</p>
+
+    <p>(</p>
+
+    <p>&nbsp; tid &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(44) default SYS_GUID() not null,</p>
+
+    <p>&nbsp; process_id &nbsp; &nbsp; NUMBER(10),</p>
+
+    <p>&nbsp; task_id &nbsp; &nbsp; &nbsp; &nbsp;NUMBER(10),</p>
+
+    <p>&nbsp; step_name &nbsp; &nbsp; &nbsp;VARCHAR2(50),</p>
+
+    <p>&nbsp; menu_name &nbsp; &nbsp; &nbsp;VARCHAR2(50),</p>
+
+    <p>&nbsp; opinion &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(1000),</p>
+
+    <p>&nbsp; create_user_id VARCHAR2(44),</p>
+
+    <p>&nbsp; create_date &nbsp; &nbsp;TIMESTAMP(6),</p>
+
+    <p>&nbsp; bill_id &nbsp; &nbsp; &nbsp; &nbsp;VARCHAR2(44)</p>
+
+    <p>)</p>
+
+    <p>tablespace MAT</p>
+
+    <p>&nbsp; pctfree 10</p>
+
+    <p>&nbsp; initrans 1</p>
+
+    <p>&nbsp; maxtrans 255;</p>
+
+    <p>-- Add comments to the table&nbsp;</p>
+
+    <p>comment on table MA.T_INS_CASE_OPINION</p>
+
+    <p>&nbsp; is &#39;出险报案申请单-审核记录&#39;;</p>
+
+    <p>-- Add comments to the columns&nbsp;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.tid</p>
+
+    <p>&nbsp; is &#39;主键&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.process_id</p>
+
+    <p>&nbsp; is &#39;流程ID&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.task_id</p>
+
+    <p>&nbsp; is &#39;任务ID&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.step_name</p>
+
+    <p>&nbsp; is &#39;节点名称&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.menu_name</p>
+
+    <p>&nbsp; is &#39;意见&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.opinion</p>
+
+    <p>&nbsp; is &#39;意见说明&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.create_user_id</p>
+
+    <p>&nbsp; is &#39;操作人ID(CP.USERINFO)&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.create_date</p>
+
+    <p>&nbsp; is &#39;操作日期&#39;;</p>
+
+    <p>comment on column MA.T_INS_CASE_OPINION.bill_id</p>
+
+    <p>&nbsp; is &#39;保单ID(MA.T_INS_CASE)&#39;;</p>
+
+    <p>-- Create/Recreate primary, unique ａｎｄ foreign key constraints&nbsp;</p>
+
+    <p>alter table MA.T_INS_CASE_OPINION</p>
+
+    <p>&nbsp; add constraint PK_T_INS_CASE_OPINION_TID primary key (TID)</p>
+
+    <p>&nbsp; using index&nbsp;</p>
+
+    <p>&nbsp; tablespace MAT</p>
+
+    <p>&nbsp; pctfree 10</p>
+
+    <p>&nbsp; initrans 2</p>
+
+    <p>&nbsp; maxtrans 255;</p>
+</div>
 <body>
 
 <label style="display: inline-block;vertical-align: middle">这个很好</label>
