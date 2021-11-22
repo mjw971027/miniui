@@ -75,7 +75,7 @@
         </tr>
     </table>
 </div>
-<div class="mini-toolbar">
+<div class="mini-toolbar" borderStyle="border:none">
     <span>审批过程记录</span>
 </div>
 <div class="mini-toolbar">
@@ -83,28 +83,28 @@
         <tr>
             <td style="width: 100px;">保险公司：</td>
             <td style="width: 190px;">
-                <input class="mini-combobox" id="cbbBaoxian" textfield="" idfield="">
+                <input class="mini-combobox" id="cbbBaoxian" textfield="" idfield="" readonly="true">
             </td>
             <td>保险险种:</td>
             <td></td>
             <td>保险单号:</td>
-            <td><input class="mini-combobox" id="cbbCaseNo"></td>
+            <td><input class="mini-textbox" id="cbbCaseNo" readonly="true"></td>
         </tr>
         <tr>
             <td>免赔金额(RMB):</td>
             <td>
-                <input class="mini-combobox" id="cbbMianpei">
+                <input class="mini-combobox" id="cbbMianpei" readonly="true">
             </td>
 
             <td>对外报案时间:</td>
             <td>
-                <input class="mini-datepicker" id="dateAccidentOut" format="yyyy-MM-dd">
+                <input class="mini-datepicker" id="dateAccidentOut" format="yyyy-MM-dd" readonly="true">
             </td>
         </tr>
         <tr>
             <td>其他信息：</td>
             <td colspan="5">
-                <input class="mini-textarea" id="txtOther" style="width: 100%">
+                <input class="mini-textarea" id="txtOther" style="width: 100%" readonly="true">
             </td>
         </tr>
     </table>
@@ -152,7 +152,9 @@
 
 </div>
 
-<button onclick="downloadexec()">得出id</button>
+<!--<button onclick="handleAllTags()">得出id</button>-->
+
+<!--<button onclick="downloadexec()">下载exec</button>-->
 </body>
 <script type="text/javascript">
     function downloadexec() {
