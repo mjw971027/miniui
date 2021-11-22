@@ -25,6 +25,7 @@
         <tr>
             <td style="width:100%;">
                 <div id="idname" class="mini-combobox" style="width: 90px;" textField="name" valueField="name"
+                     virtualScroll="true"
                      url="../user" onvaluechanged="test1">
                     <div property="columns" style="width: 90px;">
                         <div header="id" field="id" visible="false"></div>
@@ -63,11 +64,12 @@
                      url="../userlist"
                      idField="id"
                      datafield="list"
-                     pageSize="10"
-                     sizeList="[10,20,40,100]"
+                     pageSize="10000"
+                     sizeList="[10000,20,40,100]"
                      onselectionchanged="getNTitle"
                      onellbeginedit="onCellBeginEdit"
                      showPager="true"
+                     virtualScroll="true"
                      allowResize="false"
                      allSortColumn="false"
                      allowCellEdit="true" allowCellSelect="true" multiSelect="true"

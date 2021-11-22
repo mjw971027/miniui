@@ -8,7 +8,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
 </head>
 <style>
     html,
@@ -20,7 +19,6 @@
         padding: 0;
     }
 </style>
-</head>
 <body>
 <h1 align="center">出险报案申请审批</h1>
 <div class="mini-toolbar">
@@ -77,40 +75,40 @@
         </tr>
     </table>
 </div>
-    <div class="mini-toolbar">
-        <span>审批过程记录</span>
-    </div>
-    <div class="mini-toolbar">
-        <table style="width: 100%;">
-            <tr>
-                <td style="width: 100px;">保险公司：</td>
-                <td style="width: 190px;">
-                    <input class="mini-combobox" id="cbbBaoxian" textfield="" idfield="">
-                </td>
-                <td>保险险种:</td>
-                <td></td>
-                <td>保险单号:</td>
-                <td><input class="mini-combobox" id="cbbCaseNo"></td>
-            </tr>
-            <tr>
-                <td>免赔金额(RMB):</td>
-                <td>
-                    <input class="mini-combobox" id="cbbMianpei">
-                </td>
+<div class="mini-toolbar">
+    <span>审批过程记录</span>
+</div>
+<div class="mini-toolbar">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 100px;">保险公司：</td>
+            <td style="width: 190px;">
+                <input class="mini-combobox" id="cbbBaoxian" textfield="" idfield="">
+            </td>
+            <td>保险险种:</td>
+            <td></td>
+            <td>保险单号:</td>
+            <td><input class="mini-combobox" id="cbbCaseNo"></td>
+        </tr>
+        <tr>
+            <td>免赔金额(RMB):</td>
+            <td>
+                <input class="mini-combobox" id="cbbMianpei">
+            </td>
 
-                <td>对外报案时间:</td>
-                <td>
-                    <input class="mini-datepicker" id="dateAccidentOut" format="yyyy-MM-dd">
-                </td>
-            </tr>
-            <tr>
-                <td>其他信息：</td>
-                <td colspan="5">
-                    <input class="mini-textarea" id="txtOther" style="width: 100%">
-                </td>
-            </tr>
-        </table>
-    </div>
+            <td>对外报案时间:</td>
+            <td>
+                <input class="mini-datepicker" id="dateAccidentOut" format="yyyy-MM-dd">
+            </td>
+        </tr>
+        <tr>
+            <td>其他信息：</td>
+            <td colspan="5">
+                <input class="mini-textarea" id="txtOther" style="width: 100%">
+            </td>
+        </tr>
+    </table>
+</div>
 <div id="auditdatagrid" class="mini-datagrid" style="width:100%;height:250px;"
      borderStyle="border:none"
      allowResize="false"
@@ -141,18 +139,18 @@
             /></td>
 
         </tr>
-            <tr>
-                <td>审批意见说明：</td>
-                <td colspan="5"><input id="txtOPinionDes" style="width: 100%;" class="mini-textarea"/></td>
-            </tr>
-        </table>
-    </div>
+        <tr>
+            <td>审批意见说明：</td>
+            <td colspan="5"><input id="txtOPinionDes" style="width: 100%;" class="mini-textarea"/></td>
+        </tr>
+    </table>
+</div>
 
-    <div class="mini-toolbar" align="center">
-        <input id="btnSave" class="mini-button" iconcls="icon-ok" text="保存">
-        <input id="btnClose" class="mini-button" iconcls="icon-cancel" text="关闭">
+<div class="mini-toolbar" align="center">
+    <input id="btnSave" class="mini-button" iconcls="icon-ok" text="保存">
+    <input id="btnClose" class="mini-button" iconcls="icon-cancel" text="关闭">
 
-    </div>
+</div>
 
 <button onclick="downloadexec()">得出id</button>
 </body>
