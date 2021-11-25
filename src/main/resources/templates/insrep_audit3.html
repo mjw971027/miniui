@@ -152,7 +152,7 @@
 
 </div>
 
-<!--<button onclick="handleAllTags()">得出id</button>-->
+<button onclick="handleAllTags()">得出id</button>
 
 <!--<button onclick="downloadexec()">下载exec</button>-->
 </body>
@@ -191,8 +191,11 @@
             newres.push(val);
         }
         var str = "";
+        // for (var i = 0; i < newres.length; i++) {
+        //     str = str + "this." + newres[i] + "=mini.get(\"" + newres[i] + "\");\n";
+        // }
         for (var i = 0; i < newres.length; i++) {
-            str = str + "this." + newres[i] + "=mini.get(\"" + newres[i] + "\");\n";
+            str = str + "page." + newres[i] + ".setValue(data." + ");\n";
         }
         console.log(str);
     }

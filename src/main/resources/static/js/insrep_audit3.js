@@ -40,7 +40,36 @@ var page = {
         this.btnClose = mini.get("btnClose");
     },
     setDate(date) {
-
+        var pid = requestParams.pid;
+        mini.ajax(
+            {
+                url: "../DataDetail",
+                type: "get",
+                data: {pid: pid},
+                success: function (data) {
+                    // page.txtBillNum.setValue(data.);
+                    // page.txtComp.setValue(data.);
+                    // page.txtDept.setValue(data.);
+                    // page.txtApply.setValue(data.);
+                    // page.txtProj.setValue(data.);
+                    // page.dateRepIn.setValue(data.);
+                    // page.dateAccident.setValue(data.);
+                    // page.txtLossAmunt.setValue(data.);
+                    // page.txtContact.setValue(data.);
+                    // page.txtContactNum.setValue(data.);
+                    // page.txtBaoxian.setValue(data.);
+                    // page.txtAccidentType.setValue(data.);
+                    // page.txtAccidentName.setValue(data.);
+                    // page.txtDes.setValue(data.);
+                    // page.txtIntroduction.setValue(data.);
+                    // page.cbbBaoxian.setValue(data.);
+                    // page.cbbCaseNo.setValue(data.);
+                    // page.cbbMianpei.setValue(data.);
+                    // page.dateAccidentOut.setValue(data.);
+                    //
+                }
+            }
+        )
     },
     dataBind() {
 
