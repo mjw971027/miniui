@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/boot.js" type="text/javascript"></script>
+<script src="../static/jquery.min.js" type="text/javascript"></script>
+<script src="../static/js/insrep_check.js" type="text/javascript"></script>
+<script src="../static/js/common.js" type="text/javascript"></script>
+<script src="../static/js/miniuiExcelUtils.js" type="text/javascript"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>报案理赔申请单</title>
+</head>
+<style>
+    html,
+    body {
+        /*overflow: hidden;*/
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<body>
+<h1 align="center">报案理赔申请单</h1>
+<div class="mini-toolbar">
+    <span style="font-weight: bold">保险信息</span>
+</div>
+<div class="mini-toolbar">
+
+
+    <table style="width:100%;">
+        <tr>
+            <td style="width:60px;" COLSPAN="4">出险信息：</td>
+            <td style="width:60px;">申请单号：</td>
+            <td style="width:120px;"><input id="txtBillNum" style="width: 100%;" class="mini-textbox" readonly="true"/>
+            </td>
+
+        </tr>
+        <tr>
+            <td style="width:60px;">公司名称：</td>
+            <td style="width:120px;"><input id="txtComp" class="mini-textbox" readonly="true"/></td>
+            <td style="width:60px;">出险部门：</td>
+            <td style="width:120px;"><input id="txtDept" class="mini-textbox" readonly="true"/></td>
+            <td style="width:60px;">申请人：</td>
+            <td style="width:120px;"><input id="txtApply" class="mini-textbox" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>项目号/资产编号：</td>
+            <td><input id="txtProj" class="mini-textbox" readonly="true"/></td>
+            <td>内部报案时间：</td>
+            <td><input id="dateRepIn" class="mini-datepicker" format="yyyy-MM-dd" readonly="true"/></td>
+            <td>出险时间：</td>
+            <td><input id="dateAccident" class="mini-datepicker" format="yyyy-MM-dd" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>预估损失金额（万元）：</td>
+            <td><input id="txtLossAmunt" class="mini-textbox" readonly="true"/></td>
+            <td>现场勘察联系人：</td>
+            <td><input id="txtContact" class="mini-textbox" readonly="true"/></td>
+            <td>联系人电话：</td>
+            <td><input id="txtContactNum" class="mini-textbox" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>报案保险类别：</td>
+            <td><input id="txtBaoxian" class="mini-textbox" readonly="true"/></td>
+            <td>事故类别：</td>
+            <td><input id="txtAccidentType" class="mini-textbox" readonly="true"/></td>
+            <td>事故名称：</td>
+            <td><input id="txtAccidentName" class="mini-textbox" readonly="true"/></td>
+        </tr>
+        <tr>
+            <td>事故说明：</td>
+            <td colspan="5"><input id="txtDes" style="width: 100%;" class="mini-textbox" readonly="true"/></td>
+
+        </tr>
+        <tr>
+            <td>事故情况简介：</td>
+            <td colspan="5"><input id="txtIntroduction" style="width: 100%;" class="mini-textbox" readonly="true"/></td>
+        </tr>
+    </table>
+</div>
+<div class="mini-toolbar" borderStyle="border:none">
+    <span style="font-weight: bold">出险信息</span>
+</div>
+<div class="mini-toolbar">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 100px;">保险公司：</td>
+            <td style="width: 190px;">
+                <input class="mini-combobox" id="cbbBaoxian" textfield="" idfield="" readonly="true">
+            </td>
+            <td>保险险种:</td>
+            <td></td>
+            <td>保险单号:</td>
+            <td><input class="mini-textbox" id="cbbCaseNo" readonly="true"></td>
+        </tr>
+        <tr>
+            <td>免赔金额(RMB):</td>
+            <td>
+                <input class="mini-combobox" id="cbbMianpei" readonly="true">
+            </td>
+
+            <td>对外报案时间:</td>
+            <td>
+                <input class="mini-datepicker" id="dateAccidentOut" format="yyyy-MM-dd" readonly="true">
+            </td>
+        </tr>
+        <tr>
+            <td>其他信息：</td>
+            <td colspan="5">
+                <input class="mini-textarea" id="txtOther" style="width: 100%" readonly="true">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-toolbar" borderStyle="border:none">
+    <span style="font-weight: bold">损失信息</span>
+</div>
+<div class="mini-toolbar">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 70px">总损失信息</td>
+            <td style="width: 200px">综核损金额（不含税）</td>
+            <td>残值</td>
+            <td>免赔额</td>
+            <td>赔款金额</td>
+            <td>币种</td>
+        </tr>
+        <tr>
+            <td style="width: 70px"></td>
+            <td style="width: 200px">
+                <input class="mini-textbox" id="txtHesuanNo" readonly="true"/>
+            </td>
+            <td>
+                <input class="mini-textbox" id="txtCanZhi" readonly="true"/>
+            </td>
+            <td>
+                <input class="mini-textbox" id="txtMianPei" readonly="true"/>
+            </td>
+            <td>
+                <input class="mini-textbox" id="txtPeiKuan" readonly="true"/>
+            </td>
+            <td>
+                <input class="mini-textbox" id="txtBizhong" readonly="true"/>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="sunshigrid" class="mini-datagrid" style="width:100%;height:100px;"
+     borderStyle="border:none"
+     allowResize="false"
+     showPager="false"
+     idField="id" allowResize="false"
+     sizeList="[300,500,1000]" pageSize="300"
+     showHeader="false" title="审批过程记录"
+     multiSelect="false"
+>
+    <div property="columns">
+        <div type="indexcolumn">序号</div>
+        <div field="" width="100" headerAlign="center" allowSort="true">损失内容</div>
+        <div field="" width="200" renderer="onGenderRenderer" headerAlign="center">核损金额（含税）
+        </div>
+        <div field="" align="right" width="100" allowSort="true" headerAlign="center">
+            核损金额（不含税）
+        </div>
+        <div field="" align="right" width="100" allowSort="true" headerAlign="center">
+            币种
+        </div>
+        <div field="" align="right" width="100" allowSort="true" headerAlign="center">
+            备注
+        </div>
+    </div>
+</div>
+<div id="auditdatagrid" class="mini-datagrid" style="width:100%;height:250px;"
+     borderStyle="border:none"
+     allowResize="false"
+     showPager="false"
+     idField="id" allowResize="false"
+     sizeList="[300,500,1000]" pageSize="300"
+     showHeader="true" title="审批过程记录"
+     multiSelect="false"
+>
+    <div property="columns">
+        <div field="" width="60" headerAlign="center" allowSort="true">审批人</div>
+        <div field="" width="100" headerAlign="center" allowSort="true">审批意见</div>
+        <div field="" width="200" renderer="onGenderRenderer" headerAlign="center">审批意见说明
+        </div>
+        <div field="" align="right" width="100" allowSort="true" headerAlign="center">
+            审批日期
+        </div>
+    </div>
+</div>
+<div class="mini-toolbar" borderStyle="border-bottom:none">
+    <span style="font-weight: bold">反馈信息</span>
+</div>
+<div class="mini-toolbar">
+    <span>报案号：</span>
+    <input class="mini-textbox" id="txtBaoAn" readonly="true">
+    <span>赔付日期：</span>
+    <input class="mini-datepicker" id="datePeifu" readonly="true">
+</div>
+<div id="lipeiGrid" class="mini-datagrid" style="width:100%;height:200px;"
+     borderStyle="border:none"
+     allowResize="false"
+     showPager="false"
+     idField="id" allowResize="false"
+     sizeList="[300,500,1000]" pageSize="300"
+     showHeader="true" title="审批过程记录"
+     multiSelect="false"
+>
+    <div property="columns">
+        <div type="indexcolumn">序号</div>
+        <div field="" width="60" headerAlign="center" allowSort="true">理赔材料清单名称</div>
+        <div field="" width="100" headerAlign="center" allowSort="true">清单附件</div>
+    </div>
+</div>
+<div class="mini-toolbar" align="center">
+    <button class="mini-button" id="btnClose">关闭</button>
+</div>
+<!--<div class="mini-toolbar">-->
+<!--    <table style="width:100%;">-->
+<!--        <tr>-->
+<!--            <td>审批意见：</td>-->
+<!--            <td colspan="5"><input id="radioOpinion" style="width: 100%;" class="mini-radiobuttonlist"-->
+<!--                                   textField="text" valueField="id"-->
+<!--                                   data=[{id:"1",text:"同意"},{id:"0",text:"不同意"},{id:"3",text:"退回修改"}]-->
+<!--            /></td>-->
+
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>审批意见说明：</td>-->
+<!--            <td colspan="5"><input id="txtOPinionDes" style="width: 100%;" class="mini-textarea"/></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--</div>-->
+
+<!--<div class="mini-toolbar" align="center">-->
+<!--    <input id="btnSave" class="mini-button" iconcls="icon-ok" text="保存">-->
+<!--    <input id="btnClose" class="mini-button" iconcls="icon-cancel" text="关闭">-->
+
+<!--</div>-->
+</body>
+<script>
+    function downloadexec() {
+        mini.parse();
+        var datagrid = mini.get("auditdatagrid");
+        console.log(datagrid.getData());
+        // var str = ExportTable(datagrid.getData(), ExportExcel(datagrid));
+        // downloadExcel(str);
+
+    }
+
+    function handleAllTags() {
+        var arrayOfDocFonts;
+        var res = [];
+        if (document.all || document.getElementById) {
+            arrayOfDocFonts = document.getElementsByTagName("input");
+        }
+        var tmp = 0;
+        for (var i = 0; i < arrayOfDocFonts.length; i++) {
+            if (arrayOfDocFonts[i].id != "") {
+                console.log(arrayOfDocFonts[i].id);
+                //这是读取input时要分类，如果时div就不需要
+                if (/text/.test(arrayOfDocFonts[i].id)) {
+                    res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 5));
+                } else if (/value/.test(arrayOfDocFonts[i].id)) {
+                    res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 6));
+                }
+            }
+            tmp += 1;
+        }
+        var newres = [];
+        var myset = new Set(res);
+        for (var val of myset) {
+            newres.push(val);
+        }
+        var str = "";
+        // for (var i = 0; i < newres.length; i++) {
+        //     str = str + "this." + newres[i] + "=mini.get(\"" + newres[i] + "\");\n";
+        // }
+        for (var i = 0; i < newres.length; i++) {
+            str = str + "page." + newres[i] + ".setValue(data." + ");\n";
+        }
+        console.log(str);
+    }
+</script>
+</html>
