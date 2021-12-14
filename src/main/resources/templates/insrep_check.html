@@ -31,50 +31,54 @@
         <tr>
             <td style="width:60px;" COLSPAN="4">出险信息：</td>
             <td style="width:60px;">申请单号：</td>
-            <td style="width:120px;"><input id="txtBillNum" style="width: 100%;" class="mini-textbox" readonly="true"/>
+            <td style="width:120px;"><input id="txtBillNum" style="width: 100%;" class="mini-textbox" readonly="true"
+                                            enabled="false"/>
             </td>
 
         </tr>
         <tr>
             <td style="width:60px;">公司名称：</td>
-            <td style="width:120px;"><input id="txtComp" class="mini-textbox" readonly="true"/></td>
+            <td style="width:120px;"><input id="txtComp" class="mini-textbox" readonly="true" enabled="false"/></td>
             <td style="width:60px;">出险部门：</td>
-            <td style="width:120px;"><input id="txtDept" class="mini-textbox" readonly="true"/></td>
+            <td style="width:120px;"><input id="txtDept" class="mini-textbox" readonly="true" enabled="false"/></td>
             <td style="width:60px;">申请人：</td>
-            <td style="width:120px;"><input id="txtApply" class="mini-textbox" readonly="true"/></td>
+            <td style="width:120px;"><input id="txtApply" class="mini-textbox" readonly="true" enabled="false"/></td>
         </tr>
         <tr>
             <td>项目号/资产编号：</td>
             <td><input id="txtProj" class="mini-textbox" readonly="true"/></td>
             <td>内部报案时间：</td>
-            <td><input id="dateRepIn" class="mini-datepicker" format="yyyy-MM-dd" readonly="true"/></td>
+            <td><input id="dateRepIn" class="mini-datepicker" format="yyyy-MM-dd" readonly="true" enabled="false"/></td>
             <td>出险时间：</td>
-            <td><input id="dateAccident" class="mini-datepicker" format="yyyy-MM-dd" readonly="true"/></td>
+            <td><input id="dateAccident" class="mini-datepicker" format="yyyy-MM-dd" readonly="true" enabled="false"/>
+            </td>
         </tr>
         <tr>
             <td>预估损失金额（万元）：</td>
-            <td><input id="txtLossAmunt" class="mini-textbox" readonly="true"/></td>
+            <td><input id="txtLossAmunt" class="mini-textbox" readonly="true" enabled="false"/></td>
             <td>现场勘察联系人：</td>
-            <td><input id="txtContact" class="mini-textbox" readonly="true"/></td>
+            <td><input id="txtContact" class="mini-textbox" readonly="true" enabled="false"/></td>
             <td>联系人电话：</td>
-            <td><input id="txtContactNum" class="mini-textbox" readonly="true"/></td>
+            <td><input id="txtContactNum" class="mini-textbox" readonly="true" enabled="false"/></td>
         </tr>
         <tr>
             <td>报案保险类别：</td>
-            <td><input id="txtBaoxian" class="mini-textbox" readonly="true"/></td>
+            <td><input id="txtBaoxian" class="mini-textbox" readonly="true" enabled="false"/></td>
             <td>事故类别：</td>
-            <td><input id="txtAccidentType" class="mini-textbox" readonly="true"/></td>
+            <td><input id="txtAccidentType" class="mini-textbox" readonly="true" enabled="false"/></td>
             <td>事故名称：</td>
-            <td><input id="txtAccidentName" class="mini-textbox" readonly="true"/></td>
+            <td><input id="txtAccidentName" class="mini-textbox" readonly="true" enabled="false"/></td>
         </tr>
         <tr>
             <td>事故说明：</td>
-            <td colspan="5"><input id="txtDes" style="width: 100%;" class="mini-textbox" readonly="true"/></td>
+            <td colspan="5"><input id="txtDes" style="width: 100%;" class="mini-textbox" readonly="true"
+                                   enabled="false"/></td>
 
         </tr>
         <tr>
             <td>事故情况简介：</td>
-            <td colspan="5"><input id="txtIntroduction" style="width: 100%;" class="mini-textbox" readonly="true"/></td>
+            <td colspan="5"><input id="txtIntroduction" style="width: 100%;" class="mini-textbox" readonly="true"
+                                   enabled="false"/></td>
         </tr>
     </table>
 </div>
@@ -86,28 +90,28 @@
         <tr>
             <td style="width: 100px;">保险公司：</td>
             <td style="width: 190px;">
-                <input class="mini-combobox" id="cbbBaoxian" textfield="" idfield="" readonly="true">
+                <input class="mini-combobox" id="cbbBaoxian" textfield="" idfield="" readonly="true" enabled="false">
             </td>
             <td>保险险种:</td>
             <td></td>
             <td>保险单号:</td>
-            <td><input class="mini-textbox" id="cbbCaseNo" readonly="true"></td>
+            <td><input class="mini-textbox" id="cbbCaseNo" readonly="true" enabled="false"></td>
         </tr>
         <tr>
             <td>免赔金额(RMB):</td>
             <td>
-                <input class="mini-combobox" id="cbbMianpei" readonly="true">
+                <input class="mini-combobox" id="cbbMianpei" readonly="true" enabled="false">
             </td>
 
             <td>对外报案时间:</td>
             <td>
-                <input class="mini-datepicker" id="dateAccidentOut" format="yyyy-MM-dd" readonly="true">
+                <input class="mini-datepicker" id="dateAccidentOut" format="yyyy-MM-dd" readonly="true" enabled="false">
             </td>
         </tr>
         <tr>
             <td>其他信息：</td>
             <td colspan="5">
-                <input class="mini-textarea" id="txtOther" style="width: 100%" readonly="true">
+                <input class="mini-textarea" id="txtOther" style="width: 100%" readonly="true" enabled="false">
             </td>
         </tr>
     </table>
@@ -128,19 +132,19 @@
         <tr>
             <td style="width: 70px"></td>
             <td style="width: 200px">
-                <input class="mini-textbox" id="txtHesuanNo" readonly="true"/>
+                <input class="mini-textbox" id="txtHesuanNo" readonly="true" enabled="false"/>
             </td>
             <td>
-                <input class="mini-textbox" id="txtCanZhi" readonly="true"/>
+                <input class="mini-textbox" id="txtCanZhi" readonly="true" enabled="false"/>
             </td>
             <td>
-                <input class="mini-textbox" id="txtMianPei" readonly="true"/>
+                <input class="mini-textbox" id="txtMianPei" readonly="true" enabled="false"/>
             </td>
             <td>
-                <input class="mini-textbox" id="txtPeiKuan" readonly="true"/>
+                <input class="mini-textbox" id="txtPeiKuan" readonly="true" enabled="false"/>
             </td>
             <td>
-                <input class="mini-textbox" id="txtBizhong" readonly="true"/>
+                <input class="mini-textbox" id="txtBizhong" readonly="true" enabled="false"/>
             </td>
         </tr>
     </table>
@@ -194,9 +198,9 @@
 </div>
 <div class="mini-toolbar">
     <span>报案号：</span>
-    <input class="mini-textbox" id="txtBaoAn" readonly="true">
+    <input class="mini-textbox" id="txtBaoAn" readonly="true" enabled="false">
     <span>赔付日期：</span>
-    <input class="mini-datepicker" id="datePeifu" readonly="true">
+    <input class="mini-datepicker" id="datePeifu" readonly="true" enabled="false">
 </div>
 <div id="lipeiGrid" class="mini-datagrid" style="width:100%;height:200px;"
      borderStyle="border:none"
@@ -214,38 +218,17 @@
     </div>
 </div>
 <div class="mini-toolbar" align="center">
-    <button class="mini-button" id="btnClose">关闭</button>
+    <button class="mini-button" id="btnClose" onclick="handleAllTags()">关闭</button>
 </div>
-<!--<div class="mini-toolbar">-->
-<!--    <table style="width:100%;">-->
-<!--        <tr>-->
-<!--            <td>审批意见：</td>-->
-<!--            <td colspan="5"><input id="radioOpinion" style="width: 100%;" class="mini-radiobuttonlist"-->
-<!--                                   textField="text" valueField="id"-->
-<!--                                   data=[{id:"1",text:"同意"},{id:"0",text:"不同意"},{id:"3",text:"退回修改"}]-->
-<!--            /></td>-->
 
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td>审批意见说明：</td>-->
-<!--            <td colspan="5"><input id="txtOPinionDes" style="width: 100%;" class="mini-textarea"/></td>-->
-<!--        </tr>-->
-<!--    </table>-->
-<!--</div>-->
-
-<!--<div class="mini-toolbar" align="center">-->
-<!--    <input id="btnSave" class="mini-button" iconcls="icon-ok" text="保存">-->
-<!--    <input id="btnClose" class="mini-button" iconcls="icon-cancel" text="关闭">-->
-
-<!--</div>-->
 </body>
 <script>
     function downloadexec() {
         mini.parse();
         var datagrid = mini.get("auditdatagrid");
         console.log(datagrid.getData());
-        // var str = ExportTable(datagrid.getData(), ExportExcel(datagrid));
-        // downloadExcel(str);
+        var str = ExportTable(datagrid.getData(), ExportExcel(datagrid));
+        downloadExcel(str);
 
     }
 
@@ -256,6 +239,7 @@
             arrayOfDocFonts = document.getElementsByTagName("input");
         }
         var tmp = 0;
+        console.log(arrayOfDocFonts);
         for (var i = 0; i < arrayOfDocFonts.length; i++) {
             if (arrayOfDocFonts[i].id != "") {
                 console.log(arrayOfDocFonts[i].id);
@@ -278,9 +262,9 @@
         //     str = str + "this." + newres[i] + "=mini.get(\"" + newres[i] + "\");\n";
         // }
         for (var i = 0; i < newres.length; i++) {
-            str = str + "page." + newres[i] + ".setValue(data." + ");\n";
+            str = str + "this." + newres[i] + "=mini.get(\"" + newres[i] + "\");\n";
         }
         console.log(str);
-    }
+    }   
 </script>
 </html>

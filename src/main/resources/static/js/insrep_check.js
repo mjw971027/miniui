@@ -32,11 +32,14 @@ var page = {
         this.cbbCaseNo = mini.get("cbbCaseNo");
         this.cbbMianpei = mini.get("cbbMianpei");
         this.dateAccidentOut = mini.get("dateAccidentOut");
-        this.txtOther = mini.get("txtOther")
-        this.auditdatagrid = mini.get("auditdatagrid");
-        this.radioOpinion = mini.get("radioOpinion");
-        this.txtOPinionDes = mini.get("txtOPinionDes");
-        this.btnSave = mini.get("btnSave");
+        this.txtHesuanNo = mini.get("txtHesuanNo");
+        this.txtCanZhi = mini.get("txtCanZhi");
+        this.txtMianPei = mini.get("txtMianPei");
+        this.txtPeiKuan = mini.get("txtPeiKuan");
+        this.txtBizhong = mini.get("txtBizhong");
+        this.txtBaoAn = mini.get("txtBaoAn");
+        this.datePeifu = mini.get("datePeifu");
+
         this.btnClose = mini.get("btnClose");
     },
     setDate(date) {
