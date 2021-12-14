@@ -40,13 +40,40 @@ var page = {
         this.btnClose = mini.get("btnClose");
     },
     dataBind() {
-
+        this.pid="";
+            $.ajax({
+                url:page.ip+"/InsRep/getlist",
+                data:{pid:pid},
+                success:function (data){
+                    page.txtBillNum = mini.setValue(data);
+                    page.txtComp = mini.setValue(data);
+                    page.txtDept = mini.setValue(data);
+                    page.txtApply = mini.setValue(data);
+                    page.txtProj = mini.setValue(data);
+                    page.dateRepIn = mini.setValue(data);
+                    page.dateAccident = mini.setValue(data);
+                    page.txtLossAmunt = mini.setValue(data);
+                    page.txtContact = mini.setValue(data);
+                    page.txtContactNum = mini.setValue(data);
+                    page.txtBaoxian = mini.setValue(data);
+                    page.txtAccidentType = mini.setValue(data);
+                    page.txtAccidentName = mini.setValue(data);
+                    page.txtDes = mini.setValue(data);
+                    page.txtIntroduction = mini.setValue(data);
+                }
+            })
     },
     setDate(date) {
 
     },
     eventBind() {
+        this.btnSave.on("click", this.tool.myBind(this.save, page));
+        this.btnClose.on("click", this.tool.myBind(this.closeWindow, page))
+    },
+    save(){
 
+    },
+    closeWindow(){
 
     },
     judge(str) {
