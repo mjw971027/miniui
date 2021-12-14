@@ -13,6 +13,7 @@ var page = {
     init: function () {
         this.tool = new PageTool();
         this.ip = this.tool.getSiteIp();
+
         this.txtBillNum = mini.get("txtBillNum");
         this.txtComp = mini.get("txtComp");
         this.txtDept = mini.get("txtDept");
@@ -50,26 +51,7 @@ var page = {
                 type: "get",
                 data: {pid: pid},
                 success: function (data) {
-                    // page.txtBillNum.setValue(data.);
-                    // page.txtComp.setValue(data.);
-                    // page.txtDept.setValue(data.);
-                    // page.txtApply.setValue(data.);
-                    // page.txtProj.setValue(data.);
-                    // page.dateRepIn.setValue(data.);
-                    // page.dateAccident.setValue(data.);
-                    // page.txtLossAmunt.setValue(data.);
-                    // page.txtContact.setValue(data.);
-                    // page.txtContactNum.setValue(data.);
-                    // page.txtBaoxian.setValue(data.);
-                    // page.txtAccidentType.setValue(data.);
-                    // page.txtAccidentName.setValue(data.);
-                    // page.txtDes.setValue(data.);
-                    // page.txtIntroduction.setValue(data.);
-                    // page.cbbBaoxian.setValue(data.);
-                    // page.cbbCaseNo.setValue(data.);
-                    // page.cbbMianpei.setValue(data.);
-                    // page.dateAccidentOut.setValue(data.);
-                    //
+
                 }
             }
         )
