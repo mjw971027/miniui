@@ -236,7 +236,7 @@
         var arrayOfDocFonts;
         var res = [];
         if (document.all || document.getElementById) {
-            arrayOfDocFonts = document.getElementsByTagName("div");
+            arrayOfDocFonts = document.getElementsByTagName("input");
         }
         var tmp = 0;
         console.log(arrayOfDocFonts);
@@ -248,9 +248,10 @@
                     res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 5));
                 } else if (/value/.test(arrayOfDocFonts[i].id)) {
                     res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 6));
-                } else if (/grid/.test(arrayOfDocFonts[i].id) || /Grid/.test(arrayOfDocFonts[i].id)) {
-                    res.push(arrayOfDocFonts[i].id);
                 }
+                // else if (/grid/.test(arrayOfDocFonts[i].id) || /Grid/.test(arrayOfDocFonts[i].id)) {
+                //     res.push(arrayOfDocFonts[i].id);
+                // }
             }
             tmp += 1;
         }
