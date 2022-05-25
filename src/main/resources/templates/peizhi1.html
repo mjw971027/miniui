@@ -4,6 +4,8 @@
 <script src="../static/jquery.min.js" type="text/javascript"></script>
 <script src="../static/js/peizhi1.js" type="text/javascript"></script>
 <script src="../static/js/common.js" type="text/javascript"></script>
+<script src="../static/js/html2canvas.js" type="text/javascript"></script>
+<script src="../static/js/jspdf.debug.js" type="text/javascript"></script>
 <style>
     html,
     body {
@@ -19,64 +21,66 @@
     <title>Title</title>
 </head>
 <body>
-
-<div class="mini-toolbar">
-    <span style="font-size: 20px">报案理赔相关配置</span>
-</div>
-<div class="mini-fit">
+<div class="main" style="height: 100%;width: 1080px;">
     <div class="mini-toolbar">
-        <button id="btnSearch" class="mini-button" iconcls="icon-search">查询</button>
-        <button id="btnAdd" class="mini-button" iconcls="icon-add">新增</button>
-        <button id="btnSave" class="mini-button" iconcls="icon-save">保存</button>
-        <button id="btnDel" class="mini-button" iconcls="icon-remove">删除</button>
-
+        <span style="font-size: 20px">报案理赔相关配置</span>
     </div>
-    <div class="mini-toolbar" onclick="dgclick('index1')">
-        <span id="dgcss1">报案保险类别配置</span>
-    </div>
-    <div id="datagrid1" class="mini-datagrid" style="width:100%;height:40%;"
-         onrowclick="dgclick('index1')"
-         onheadercellclick="dgclick('index1')"
-         idField="id" allowResize="false"
-         allowCellEdit="true" allowCellSelect="true" multiSelect="true"
-         editNextOnEnterKey="true" editNextRowCell="true"
-         sizeList="[20,30,50,100]" pageSize="20"
-         showPager="false"
-         showHeader="false" title="报案保险类别配置">
-        <div property="columns">
-            <div field="code" name="code" width="30" headerAlign="center" allowSort="false">编码
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/>
-            </div>
-            <div field="name" name="name" width="120" headerAlign="center" allowSort="false">名称
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/>
-            </div>
-            <div field="ture" name="true" type="checkboxcolumn" trueValue="1" falseValue="0" width="30"
-                 headerAlign="center">有效性
-            </div>
+    <div class="mini-fit">
+        <div class="mini-toolbar">
+            <button id="btnSearch" class="mini-button" iconcls="icon-search">查询</button>
+            <button id="btnAdd" class="mini-button" iconcls="icon-add">新增</button>
+            <button id="btnSave" class="mini-button" iconcls="icon-save">保存</button>
+            <button id="btnDel" class="mini-button" iconcls="icon-remove">删除</button>
 
         </div>
-    </div>
-    <div class="mini-toolbar" style="margin-top: 60px" onclick="dgclick('index2')">
-        <span id="dgcss2">报案保险类别配置</span>
-    </div>
-    <div id="datagrid2" class="mini-datagrid" style="width:100%;height:40%"
-         onrowclick="dgclick('index2')"
-         onheadercellclick="dgclick('index2')"
-         idField="id" allowResize="false"
-         showPager="false"
-         allowCellEdit="true" allowCellSelect="true" multiSelect="true"
-         editNextOnEnterKey="true" editNextRowCell="true"
-         sizeList="[20,30,50,100]" pageSize="20"
-         showHeader="false" title="事故类别配置">
-        <div property="columns">
-            <div field="" width="30" headerAlign="center" allowSort="false">编码
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/></div>
-            <div field="" width="120" headerAlign="center" allowSort="false">名称
-                <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/></div>
-            <div field="" type="checkboxcolumn" width="30" headerAlign="center">有效性</div>
+        <div class="mini-toolbar" onclick="dgclick('index1')">
+            <span id="dgcss1">报案保险类别配置</span>
         </div>
-    </div>
+        <div id="datagrid1" class="mini-datagrid" style="width:100%;height:40%;"
+             onrowclick="dgclick('index1')"
+             onheadercellclick="dgclick('index1')"
+             idField="id" allowResize="false"
+             allowCellEdit="true" allowCellSelect="true" multiSelect="true"
+             editNextOnEnterKey="true" editNextRowCell="true"
+             sizeList="[20,30,50,100]" pageSize="20"
+             showPager="false"
+             showHeader="false" title="报案保险类别配置">
+            <div property="columns">
+                <div field="code" name="code" width="30" headerAlign="center" allowSort="false">编码
+                    <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/>
+                </div>
+                <div field="name" name="name" width="120" headerAlign="center" allowSort="false">名称
+                    <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/>
+                </div>
+                <div field="ture" name="true" type="checkboxcolumn" trueValue="1" falseValue="0" width="30"
+                     headerAlign="center">有效性
+                </div>
 
+            </div>
+        </div>
+        <div class="mini-toolbar" style="margin-top: 60px" onclick="dgclick('index2')">
+            <span id="dgcss2">报案保险类别配置</span>
+        </div>
+        <div id="datagrid2" class="mini-datagrid" style="width:100%;height:40%"
+             onrowclick="dgclick('index2')"
+             onheadercellclick="dgclick('index2')"
+             idField="id" allowResize="false"
+             showPager="false"
+             allowCellEdit="true" allowCellSelect="true" multiSelect="true"
+             editNextOnEnterKey="true" editNextRowCell="true"
+             sizeList="[20,30,50,100]" pageSize="20"
+             showHeader="false" title="事故类别配置">
+            <div property="columns">
+                <div field="" width="30" headerAlign="center" allowSort="false">编码
+                    <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/></div>
+                <div field="" width="120" headerAlign="center" allowSort="false">名称
+                    <input property="editor" class="mini-textbox" style="width:100%;" minWidth="200"/></div>
+                <div field="" type="checkboxcolumn" width="30" headerAlign="center">有效性</div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
 </body>
 </html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="../static/boot.js" type="text/javascript"></script>
+    <script src="../static/jquery.min.js" type="text/javascript"></script>
+    <script src="../static/js/meetingDetail.js" type="text/javascript"></script>
+    <script src="../static/js/common.js" type="text/javascript"></script>
+    <script src="../static/js/miniuiExcelUtils.js" type="text/javascript"></script>
+
+    <!--    pdf预览-->
+    <title>meetingdetail</title>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .lineDiv {
+            padding-top:4px;
+            margin-bottom: 4px;
+
+        }
+
+        .avgInput {
+            background-color: transparent;
+            border-style: solid;
+            border-color: grey;
+            border-width: 0 0 1px 0;
+            text-align: center;
+            width: 100px;
+            /*font-weight: bold;*/
+            color: #47444a;
+            font-family: Tahoma, Verdana, 宋体;
+            font-size: 12pt;
+        }
+        .avgInput {
+            background-color: transparent;
+            border-style: solid;
+            border-color: grey;
+            border-width: 0 0 1px 0;
+            text-align: center;
+            width: 100px;
+            /*font-weight: bold;*/
+            color: #47444a;
+            font-family: Tahoma, Verdana, 宋体;
+            font-size: 12pt;
+        }
+
+        .titleLabel {
+            width: 80px;
+            text-align: right;
+            margin-left: 5px;
+            margin-right: 5px;
+            color:maroon;
+            font-weight: bold;
+            font-family: Tahoma, Verdana, 宋体;
+            font-size: 12pt;
+        }
+
+        .planTitle {
+            font-family: Tahoma, Verdana, 宋体;
+            font-size: 12pt;
+        }
+
+        .mini-grid-cell-inner, .mini-grid-headerCell-inner, .mini-listbox td{
+            font-family: Tahoma, Verdana, 宋体;
+            font-size: 12pt;
+        }
+    </style>
+
+</head>
+<body>
+<div id="outer" style="height: 1100px;width: 1000px">
+            <div class="mini-fit">
+                <!--    用于第一个内容，显示是申请人，申请时间，申请部门和一个标题框-->
+                <!--用于显示申请公司类别和重要简介-->
+                <div class="innerdiv" style="height: 100px;">
+                    <div class="mini-fit">
+                        <!-- region 项目信息 -->
+                        <div class="mini-panel" title="项目信息" style="width: 100%; height: 100%" headerCls="planTitle">
+                                <div class="lineDiv">
+                                    <label class="titleLabel">项目名称：</label>
+                                    <input id="txtProName" class="avgInput" type="text" readonly="readonly" style="width: 520px; text-align: left; font-weight: bold;">
+                                    <label class="titleLabel">报审部门：</label>
+                                    <input id="txtDept" class="avgInput" type="text" readonly="readonly">
+                                    <label class="titleLabel">报审人：</label>
+                                    <input id="txtUserName" class="avgInput" type="text" readonly="readonly" style="width: 70px;">
+                                </div>
+
+                                <div class="lineDiv">
+                                    <label class="titleLabel">船　　型：</label>
+                                    <input id="txtShipType" class="avgInput" type="text" readonly="readonly" style="width: 200px; text-align: left;">
+                                    <label class="titleLabel">工 程 号：</label>
+                                    <input id="txtProjNo" class="avgInput" type="text" readonly="readonly" style="width: 570px; text-align: left;">
+                                </div>
+                        </div>
+                        <!-- endregion -->
+                    </div>
+                </div>
+
+
+                <!--    用于供应商信息的显示与操作按钮-->
+                <div class="innerdiv" style="height: 650px;">
+                    <div class="mini-fit">
+                        <div class="mini-panel" title="供应商" style="width: 100%; height: 100%;" bodyStyle="padding:0" borderStyle="border-top:none;" headerCls="planTitle">
+                            <div id="dataGrid3" class="mini-datagrid" style="width:100%;height:100%; " borderStyle="border:none"
+                                 idField="id" dataField="list" showPager="false" showFooter="true"
+                                 allowCellSelect="true" allowSortColumn="false" allowCellWrap="true" allowHeaderWrap="true"
+                                 fitColumns="false">
+                                <div property="footer" style="height: 130px">
+                                    <div class="lineDiv">
+                                        <label class="titleLabel" style="margin-left: 5px">与母型船/目标船技术差异：</label>
+                                    </div>
+                                    <div class="mini-fit">
+                                        <div class="mini-textarea" style="width:100%;height: 100%;" id="txtAppRemark" readonly="true"
+                                             inputStyle="font-family: Tahoma, Verdana, 宋体; font-size: 12pt;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--TODO-->
+                <div class="mini-splitter" style="width: 100%;height: 190px" borderStyle="border-top:none;">
+                    <div size="80%">
+                        <div class="mini-fit">
+                            <div class="mini-splitter" style="height: 100%;width: 100%" borderStyle="border:none">
+                                <div size="70%">
+                                    <!--    用于显示技术协议显示与操作按钮-->
+                                    <div class="mini-fit" >
+                                        <div class="mini-panel" id="panelForTIME"
+                                             title="技术协议" headerCls="planTitle"
+                                             showHeader="true"
+                                             showToolbar="false"
+                                             showFooter="false"
+                                             visible="true"
+                                             bodyStyle="padding:0"
+                                             borderStyle="border: none"
+                                             style="width: 100%;height: 100%">
+                                            <div class="mini-fit">
+                                                <div id="TIMEDataGridMain"
+                                                     class="mini-datagrid"
+                                                     style="width:60%;height: 100%;box-sizing: border-box;float: left"
+                                                     borderStyle="border-left:none;border-top:none;border-bottom:none"
+                                                     idField="id"
+                                                     dataField="list"
+                                                     allowResize="false"
+                                                     showPager="false"
+                                                     multiSelect="true"
+                                                     allowCellEdit="true"
+                                                     allowCellSelect="true"
+                                                     editNextOnEnterKey="true"
+                                                     allowSortColumn="false">
+                                                    <div property="columns">
+                                                        <div field="projNo"  headerAlign="center" align="center" width="50">工程号</div>
+                                                        <div field="techNo"  headerAlign="center" align="center" width="50">技术协议号</div>
+                                                        <div field="orgnDesc"  headerAlign="center" align="center" width="30">科室</div>
+                                                        <div field="porDesc"  headerAlign="center" align="center" width="80">技术协议描述</div>
+                                                    </div>
+                                                </div>
+
+                                                <div id="TIMEDataGridFile"
+                                                     class="mini-datagrid"
+                                                     style="width:40%; box-sizing: border-box;float: right"
+                                                     borderStyle="border-top:none;border-right:none;border-bottom:none"
+                                                     idField="id"
+                                                     dataField="list"
+                                                     allowResize="false"
+                                                     showPager="false"
+                                                     multiSelect="true"
+                                                     allowCellEdit="true"
+                                                     allowCellSelect="true"
+                                                     editNextOnEnterKey="true"
+                                                     allowSortColumn="false">
+                                                    <div property="columns">
+                                                        <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                                        <div field="fileName"  headerAlign="center" align="center" width="120">附件名称</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="mini-panel" id="panelForSEM"
+                                             title="技术协议" headerCls="planTitle"
+                                             showHeader="true"
+                                             showToolbar="false"
+                                             showFooter="false"
+                                             visible="false"
+                                             bodyStyle="padding:0"
+                                             borderStyle="border: none"
+                                             style="width: 100%;height: 100%">
+                                            <div class="mini-fit">
+                                                <div id="SEMDataGridMain"
+                                                     class="mini-datagrid"
+                                                     style="width:60%;height: 100%;box-sizing: border-box;float: left"
+                                                     borderStyle="border-left:none;border-top:none;border-bottom:none"
+                                                     idField="id"
+                                                     dataField="list"
+                                                     allowResize="false"
+                                                     showPager="false"
+                                                     multiSelect="true"
+                                                     allowCellEdit="true"
+                                                     allowCellSelect="true"
+                                                     editNextOnEnterKey="true"
+                                                     allowSortColumn="false">>
+                                                    <div property="columns">
+                                                        <div field="projNo"  headerAlign="center" align="center" width="50">工程号</div>
+                                                        <div field="techNo"  headerAlign="center" align="center" width="50">技术协议号</div>
+                                                        <div field="orgnDesc"  headerAlign="center" align="center" width="30">科室</div>
+                                                        <div field="porDesc"  headerAlign="center" align="center" width="80">技术协议描述</div>
+                                                    </div>
+                                                </div>
+
+                                                <div style="width: 40%;box-sizing: border-box;float: right">
+                                                    <div style="box-sizing: border-box;float: top;height: 60px">
+                                                        <div id="SEMDataGridFile"
+                                                             class="mini-datagrid"
+                                                             borderStyle="border:none"
+                                                             idField="id"
+                                                             dataField="list"
+                                                             allowResize="false"
+                                                             showPager="false"
+                                                             multiSelect="true"
+                                                             allowCellEdit="true"
+                                                             allowCellSelect="true"
+                                                             editNextOnEnterKey="true"
+                                                             allowSortColumn="false"
+                                                             selectedOnload="true"
+                                                        >
+                                                            <div property="columns">
+                                                                <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                                                <div field="fileName"  headerAlign="center" align="center" width="80">文件</div>
+                                                                <div field="upldDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center" width="80">上传日期</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="mini-toolbar" style="border-bottom:0">
+                                                            <span>厂商变更清单</span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div id="SEMDataGridSUBC"
+                                                             class="mini-datagrid"
+                                                             borderStyle="border:none"
+                                                             idField="id"
+                                                             dataField="list"
+                                                             allowResize="false"
+                                                             showPager="false"
+                                                             multiSelect="true"
+                                                             allowCellEdit="true"
+                                                             allowCellSelect="true"
+                                                             editNextOnEnterKey="true"
+                                                             allowSortColumn="false"
+                                                        >
+                                                            <div property="columns">
+                                                                <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                                                <div field="fileName"  headerAlign="center" align="center" width="80">文件</div>
+                                                                <div field="upldDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center" width="80">上传日期</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="mini-fit">
+                                        <div class="mini-panel" title="附件" style="width: 100%; height: 100%" bodyStyle="padding:0" borderStyle="border:none" headerCls="planTitle">
+                                            <div id="adataGrid01"
+                                                 class="mini-datagrid"
+                                                 visible="false"
+                                                 style="width:40%;height:100%;box-sizing: border-box;float: left"
+                                                 idField="id"
+                                                 dataField="list"
+                                                 allowResize="false"
+                                                 showPager="false"
+                                                 multiSelect="true"
+                                                 allowCellEdit="true"
+                                                 allowCellSelect="true"
+                                                 editNextOnEnterKey="true"
+                                                 allowSortColumn="false"
+                                                 borderStyle="border-top:none; border-left:none; border-bottom:none">
+                                                <div property="columns">
+                                                    <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                                    <div field="attchment"  headerAlign="center" align="center" width="80">附件类型</div>
+                                                    <!--                                            <div field="YN"  headerAlign="center" align="center" width="30">是否必须上传</div>-->
+                                                    <div field="num"  headerAlign="center" align="center" width="50">已上传附件数</div>
+                                                </div>
+                                            </div>
+
+                                            <div id="adataGrid02"
+                                                 class="mini-datagrid"
+                                                 style="width:100%;height:100%; box-sizing: border-box;float: right"
+                                                 borderStyle="border:none"
+                                                 idField="id"
+                                                 dataField="list"
+                                                 allowResize="false"
+                                                 showPager="false"
+                                                 multiSelect="true"
+                                                 allowCellEdit="true"
+                                                 allowCellSelect="true"
+                                                 editNextOnEnterKey="true"
+                                                 allowSortColumn="false">
+                                                <div property="columns">
+                                                    <div type="indexcolumn" headerAlign="center" width="35">序号</div>
+                                                    <!--                                                    <div type="checkcolumn" headerAlign="center" width="30"></div>-->
+<!--                                                    <div field="attchment"  headerAlign="center" align="center" width="80">附件类型</div>-->
+                                                    <!--                            <div field="fileName"  headerAlign="center" align="center" width="80">名称</div>-->
+                                                    <div name="action" headerAlign="center" align="center" width="100"  cellStyle="padding:0">名称</div>
+                                                    <div field="userName"  headerAlign="center" align="center" width="80">上传人</div>
+                                                    <div field="rgstDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center" width="80">上传日期</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mini-fit">
+                            <div class="mini-panel" title="评审会结果" style="width: 100%; height: 100%" bodyStyle="padding:0" borderStyle="border:none" headerCls="planTitle">
+                                <div class="mini-toolbar" borderStyle="border:none">
+                                    <!--<span style="padding-left: 5px">评审会状态:</span>-->
+                                    <div class="mini-combobox" id="combStatus" valueField="approveCd" textField="approveDesc"
+                                         style="padding-left: 5px; width: 120px;" inputStyle="font-family: Tahoma, Verdana, 宋体; font-size: 12pt;"></div>
+                                    <div class="mini-button" id="btnSetStatus" style="padding-left: 5px; font-family: Tahoma, Verdana, 宋体; font-size: 12pt;">确定</div>
+                                </div>
+                                <div class="mini-fit">
+                                    <div class="mini-textarea" style="width: 100%;height: 100%" id="textStatusRes" inputStyle="font-family: Tahoma, Verdana, 宋体; font-size: 12pt;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <!--    以下是意见显示和审批人可以写的意见-->
+            </div>
+
+
+
+</div>
+
+
+
+<!--供应商选择窗口-->
+
+<!--制造商选择窗口-->
+
+<!--导出用到的from-->
+<form id="excelForm" method="post" target="excelIFrame"></form>
+
+</body>
+
+</html>
