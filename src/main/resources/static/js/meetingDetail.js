@@ -60,21 +60,7 @@ var page = {
         this.SEMDataGridSUBC = mini.get("SEMDataGridSUBC");
 
 
-        //TIME面板
-        this.tab2panelForTIME = mini.get("tab2panelForTIME");
-        //SEM面板
-        this.tab2panelForSEM = mini.get("tab2panelForSEM");
-        //todo
-        //TIME技术协议DataGrid
-        this.tab2TIMEDataGridMain = mini.get("tab2TIMEDataGridMain");
-        //SEM技术协议DataGrid
-        this.tab2SEMDataGridMain = mini.get("tab2SEMDataGridMain");
-        //TIME附件
-        this.tab2TIMEDataGridFile = mini.get("tab2TIMEDataGridFile");
-        //SEM附件
-        this.tab2SEMDataGridFile = mini.get("tab2SEMDataGridFile");
-        //SEM厂商变更清单
-        this.tab2SEMDataGridSUBC = mini.get("tab2SEMDataGridSUBC");
+
 
         //审批状态下拉菜单
         this.combStatus = mini.get("combStatus");
@@ -82,50 +68,33 @@ var page = {
         this.btnSetStatus = mini.get("btnSetStatus");
         //审批状态建议
         this.textStatusRes = mini.get("textStatusRes");
+        this.txtAudit=mini.get("txtAudit");
+        this.txtAuditOpinion=mini.get("txtAuditOpinion")
+        this.dateAudit=mini.get("dateAudit")
+        this.txtAuditDept=mini.get("txtAuditDept")
+        this.txtAuditOpinionDept=mini.get("txtAuditOpinionDept")
+        this.dateAuditDept=mini.get("dateAuditDept")
+        this.test=mini.get("test");
 
 
-        //    tab2里的id
-        this.tab2EmpNo = mini.get("tab2EmpNo");
-        this.tab2date1 = mini.get("tab2date1");
-        this.tab2date2 = mini.get("tab2date2");
-        this.tab2ProName = mini.get("tab2ProName");
-        this.tab2CaseNo = mini.get("tab2CaseNo");
-        this.tab2ShipType = mini.get("tab2ShipType");
-        //查询
-        this.tab2BtnSearch = mini.get("tab2BtnSearch");
-        this.tab2SearchGrid = mini.get("tab2SearchGrid");
-        // this.tab2Remark = mini.get("tab2Remark");
-        this.tab2dataGrid3 = mini.get("tab2dataGrid3");
-        this.tab2textSubRemark =  document.getElementById("tab2textSubRemark");
-        this.tab2adataGrid01 = mini.get("tab2adataGrid01");
-        this.tab2adataGrid02 = mini.get("tab2adataGrid02");
+
 
         this.colNumLst = [];    //需要合并的列序号
 
     },
     dataBind: function () {
         this.dataGrid3.frozenColumns(0, 2);
-        this.tab2dataGrid3.frozenColumns(0, 2);
-
-
-        //设置日期
-        var date1 = new Date();
-        this.tab2date2.setValue(date1);
-        var date2 = new Date(new Date().setMonth(date1.getMonth() - 3));
-        this.tab2date1.setValue(date2);
-
+        this.savePdf();
 
     },
     eventBind: function () {
 
         this.adataGrid02.on("drawcell", this.tool.myBind(this.onActionRenderer, page));
-        this.tab2adataGrid02.on("drawcell", this.tool.myBind(this.onActionRenderer2, page));
 
         // //绑定计算数据事件
         // this.dataGrid3.on("rowclick", this.tool.myBind(this.showRemark, page));
         this.dataGrid3.on("load", this.tool.myBind(this.setRemark, page));
         this.dataGrid3.on("drawcell", this.tool.myBind(this.subcGridDrawcell, page));
-        this.tab2dataGrid3.on("rowclick", this.tool.myBind(this.tab2showRemark, page));
 
         //todo
         //点击SEM技术协议datagrid中的一格
@@ -143,32 +112,7 @@ var page = {
         this.SEMDataGridSUBC.on("drawcell", this.tool.myBind(this.drawSEMSUBCCell, page));
 
 
-        //点击SEM技术协议datagrid中的一格
-        this.tab2SEMDataGridMain.on("select", this.tool.myBind(this.tab2SEMDataGridclick, page));
-        //SEM技术协议加载完毕后，默认查询第一行对应的附件
-        this.tab2SEMDataGridMain.on("load", this.tool.myBind(this.tab2selectFirstRecord, page));
-        //TIME技术协议行选变化
-        this.tab2TIMEDataGridMain.on('select', this.tool.myBind(this.tab2TIMEDataGridclick, page));
-        this.tab2TIMEDataGridMain.on('load', this.tool.myBind(this.tab2selectFirstTimeTecord, page));
-        //将TIME附件名称变为链接
-        this.tab2TIMEDataGridFile.on("drawcell", this.tool.myBind(this.tab2drawTIMEFileCell, page));
-        //将SEM附件名称变为链接
-        this.tab2SEMDataGridFile.on("drawcell", this.tool.myBind(this.tab2drawSEMFileCell, page));
-        //将SEM厂商变更清单变为链接
-        this.tab2SEMDataGridSUBC.on("drawcell", this.tool.myBind(this.tab2drawSEMSUBCCell, page));
-
-
-
-
-        //    设置评审状态
-        this.btnSetStatus.on("click", this.tool.myBind(this.setStatusRes, page));
-        //    查询历史记录
-        this.tab2BtnSearch.on("click", this.tool.myBind(this.statusSearch, page));
-
-        //    时间变化
-        this.tab2date1.on("valuechanged", this.tool.myBind(this.changeDate1, page));
-        this.tab2date2.on("valuechanged", this.tool.myBind(this.changeDate2, page));
-
+        // this.test.on("click", this.tool.myBind(this.savePdf, page));
         // this.tab2SearchGrid.on("rowclick", this.tool.myBind(this.showtab2, page));
     },
     //一些内容的初始化
@@ -235,6 +179,52 @@ var page = {
             , shipType: this.tab2ShipType.getValue()
         };
         this.tool.dataLoadDw(this.tab2SearchGrid, page.ip + "/pvm/info/getHistory", param);
+    },
+    savePdf(){
+        var isDo = confirm("确定导出pdf页面");
+        if (!isDo) { return; }
+        var target = document.getElementsByClassName("main")[0];
+        target.style.background = "#FFFFFF";
+
+        html2canvas(target, {
+            dpi:500,
+            scale:2,
+            onrendered: function (canvas) {
+                var contentWidth = canvas.width;
+                var contentHeight = canvas.height;
+
+                //一页pdf显示html页面生成的canvas高度;
+                var pageHeight = contentWidth / 592.28 * 841.89;
+                //未生成pdf的html页面高度
+                var leftHeight = contentHeight;
+                //页面偏移
+                var position = 0;
+                //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+                var imgWidth = 595.28;
+                var imgHeight = 592.28 / contentWidth * contentHeight;
+
+                var pageData = canvas.toDataURL('image/jpeg', 1.0);
+
+                var pdf = new jsPDF('', 'pt', 'a4');
+
+                //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+                //当内容未超过pdf一页显示的范围，无需分页
+                if (leftHeight < pageHeight) {
+                    pdf.addImage(pageData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                } else {
+                    while (leftHeight > 0) {
+                        pdf.addImage(pageData, 'JPEG', 0, position, imgWidth, imgHeight)
+                        leftHeight -= pageHeight;
+                        position -= 841.89;
+                        //避免添加空白页
+                        if (leftHeight > 0) {
+                            pdf.addPage();
+                        }
+                    }
+                }
+                pdf.save("测试.pdf");
+            }
+        })
     },
 
     //评审结果中的确定按钮按下操作
@@ -317,6 +307,9 @@ var page = {
         document.getElementById("txtDept").value = realdata.Dept;
         this.chkId = "";
         this.chkNo = realdata.chkNo;
+        document.getElementById("txtChkNo").value=realdate.chkNo;
+        document.getElementById("txtVeriCd").value=realdata.verifMtTypeCd;
+        document.getElementById("txtCom").value=realdata.comCh;
         this.userId = realdata.userId;
         //会议ID
         this.auditMtId = realdata.auditMtId;
