@@ -38,8 +38,11 @@ var page = {
         this.txtOPinionDes = mini.get("txtOPinionDes");
         this.btnSave = mini.get("btnSave");
         this.btnClose = mini.get("btnClose");
+
     },
     dataBind() {
+        document.getElementById("txtOther").innerHTML=<span ></span>
+        this.cbbBaoxian.set({data:[{id:1,text:233}]})
         this.pid="";
             $.ajax({
                 url:page.ip+"/InsRep/getlist",
@@ -63,6 +66,7 @@ var page = {
                 }
             })
     },
+
     setDate(date) {
 
     },
