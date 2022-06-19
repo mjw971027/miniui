@@ -44,6 +44,7 @@ public class pdftest1 {
 //        document.addSubject("主题");
         document.add(image);
 
+
         document.add(new Paragraph(" "));
         document.add(new Paragraph(" "));
 
