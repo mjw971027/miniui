@@ -38,6 +38,7 @@ var page = {
     },
 
     eventBind() {
+        this.buttonSearch.on("click", this.tool.myBind(this.test, page));
 
 
     },
@@ -48,4 +49,26 @@ var page = {
             return false;
         }
     },
+    test(){
+        mini.open({
+            url:"../templates/MeetingDetail.html",
+            width:1050,
+            height:1020,
+            allowResize: Boolean,       //允许尺寸调节
+            allowDrag: Boolean,         //允许拖拽位置
+            showCloseButton: Boolean,   //显示关闭按钮
+            showMaxButton: Boolean,     //显示最大化按钮
+            showModal: Boolean,         //显示遮罩
+            onload:function (){
+                var iframe=this.getIFrameEl();
+                var data={};
+                iframe.contentWindow.DetailSetData(data);
+            },
+            ondestroy:function (action){
+                if (action=="ok"){
+
+                }
+            }
+        })
+    }
 }

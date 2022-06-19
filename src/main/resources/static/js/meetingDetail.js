@@ -74,7 +74,7 @@ var page = {
         this.txtAuditDept=mini.get("txtAuditDept")
         this.txtAuditOpinionDept=mini.get("txtAuditOpinionDept")
         this.dateAuditDept=mini.get("dateAuditDept")
-        this.test=mini.get("test");
+        this.test=mini.get("test1");
 
 
 
@@ -84,7 +84,6 @@ var page = {
     },
     dataBind: function () {
         this.dataGrid3.frozenColumns(0, 2);
-        this.savePdf();
 
     },
     eventBind: function () {
@@ -112,7 +111,7 @@ var page = {
         this.SEMDataGridSUBC.on("drawcell", this.tool.myBind(this.drawSEMSUBCCell, page));
 
 
-        // this.test.on("click", this.tool.myBind(this.savePdf, page));
+        this.test.on("click", this.tool.myBind(this.savePdf, page));
         // this.tab2SearchGrid.on("rowclick", this.tool.myBind(this.showtab2, page));
     },
     //一些内容的初始化
@@ -124,7 +123,7 @@ var page = {
 
         //评审会结果
         this.dbResultApprove = "";
-
+        this.savePdf();
     },
     // 将名称所在列变为链接
     onActionRenderer: function (e) {
@@ -222,9 +221,12 @@ var page = {
                         }
                     }
                 }
-                pdf.save("测试.pdf");
+                pdf.save("审查编号:"+page.chkNo+".pdf");
+
+
             }
         })
+
     },
 
     //评审结果中的确定按钮按下操作
