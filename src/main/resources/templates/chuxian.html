@@ -39,12 +39,18 @@
        allowInput="true"
        showRadioButton="true" showFolderCheckBox="false"
 />
-
+<input id="btnEdit1" class="mini-buttonedit" emptyText="请输入..." selectOnFocus="true"/>
 <script type="text/javascript">
+    // function setValue() {
+    //     var obj = mini.get("select1");
+    //     obj.setValue("base,button,ajax");
+    // }
+
     function setValue() {
-        var obj = mini.get("select1");
-        obj.setValue("base,button,ajax");
+        var set1 = mini.get("btnEdit1");
+        set1.setText("jieguosesdfasersadsf");
     }
+
 
     function getValue() {
         var obj = mini.get("select1");
