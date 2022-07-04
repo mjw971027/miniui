@@ -23,7 +23,7 @@
 <h1>TreeSelect 树形选择框</h1>
 
 <h4>多选</h4>
-<input id="select1" class="mini-treeselect" url="../data/listTree.txt" multiSelect="true"
+<input id="select1" class="mini-tree" url="../data/listTree.txt" multiSelect="true"
        textField="text" valueField="id" parentField="pid" checkRecursive="false" popupHeight="600"
        showFolderCheckBox="true" expandOnLoad="false" showClose="true" oncloseclick="onCloseClick"
        popupWidth="400"/>
@@ -54,6 +54,14 @@
 
     function getValue() {
         var obj = mini.get("select1");
+        var data = obj.getCheckedNodes();
+        var test = obj.getSelectedNode();
+        console.log(data);
+        console.log(test);
+
+        for (let i = 0; i < data.length; i++) {
+            console.log(obj.getAllChildNodes(test));
+        }
         alert(obj.getValue() + ":" + obj.getText());
     }
 
