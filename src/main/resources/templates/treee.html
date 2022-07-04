@@ -17,6 +17,7 @@
         <td valign="top" style="width:300px;">
             <ul id="tree1" class="mini-tree" url="../data/tree.txt" style="width:300px;padding:5px;"
                 showCheckBox="true" showFolderCheckBox="true" checkRecursive="false"
+                multiSelect="true" allowSelect="true" checkOnTextClick="true"
                 showTreeIcon="true" textField="text" idField="id" value="base" expandOnNodeClick="true">
             </ul>
 
@@ -56,7 +57,7 @@
             <input type="button" value="getCheckedNodes" onclick="getCheckedNodes()"/>
 
             <br/><br/>
-            <input type="button" value="findNodes" onclick="findNodes()"/>
+            <input type="button" value="reloadTree" onclick="findNodes()"/>
 
         </td>
     </tr>
@@ -117,19 +118,33 @@
         tree.setCheckRecursive(checked);
     }
 
+    function deWeight(arr1, arr2) {
+        return arr1.filter((v) => arr2.every((val) => v.id != val.id));
+    }
+
     function getSelectedNode() {
         var tree = mini.get("tree1");
-        var node = tree.getSelectedNode();
-        if (node) {
-            alert(node.text);
-        } else {
-            alert("请选中节点");
-        }
+        // var node = tree.getSelectedNode();
+        // if (node) {
+        //     alert(node.text);
+        // } else {
+        //     alert("请选中节点");
+        // }
+
+        var tmp = tree.getNode("forms");
+        var childNode = tree.getChildNodes(tmp);
+        // var allNode=tree.getList();
+        // var res=deWeight(allNode,childNode);
+        tree.loadData(childNode);
+
     }
 
     function getCheckedNodes() {
         var tree = mini.get("tree1");
+        var tmp = tree.getNode("65");
+        tree.checkNode(tmp);
         var nodes = tree.getCheckedNodes();
+
         console.log(nodes);
         for (let i = 0; i < nodes.length; i++) {
             tree.bubbleParent(nodes[i], function (node) {
@@ -176,10 +191,11 @@
 
     function findNodes() {
         var tree = mini.get("tree1");
-        var nodes = tree.findNodes(function (node) {
-            if (node.id == "button") return true;
-        });
-        alert("find: " + nodes[0].text);
+        // var nodes = tree.findNodes(function (node) {
+        //     if (node.id == "button") return true;
+        // });
+        // alert("find: " + nodes[0].text);
+        tree.reload();
     }
 </script>
 
