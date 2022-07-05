@@ -12,10 +12,11 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-@EnableSwagger2                // Swagger的开关，表示已经启用Swagger
+import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+
+@EnableSwagger2WebMvc                // Swagger的开关，表示已经启用Swagger
 @Configuration                 // 声明当前配置类
-public class swaggerConfig extends WebMvcConfigurationSupport  {
+public class swaggerConfig extends WebMvcConfigurationSupport {
     @Value("${swagger.basePackage}")
     private String basePackage;
     // controller接口所在的包
