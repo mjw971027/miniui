@@ -58,6 +58,7 @@
 
             <br/><br/>
             <input type="button" value="reloadTree" onclick="findNodes()"/>
+            <input type="button" value="合并" onclick="test()"/>
 
         </td>
     </tr>
@@ -197,6 +198,33 @@
         // alert("find: " + nodes[0].text);
         tree.reload();
     }
+
+    function test() {
+        let arr1 = [
+            {id: 1, name: "小明", age: 18},
+            {id: 2, name: "小猪", age: 12},
+            {id: 3, name: "小红", age: 16},
+            {id: 4, name: "小紫", age: 22},
+            {id: 5, name: "小绿", age: 20},
+        ]
+
+        let arr2 = [
+            {pid: 2, sex: "女"},
+            {pid: 5, sex: "男"},
+        ]
+
+        //调用
+        let majorList = this.deWeight(arr1, arr2)
+        console.log(majorList);
+    }
+
+    //函数封装
+    function deWeight(arr1, arr2) {
+        return arr1.filter((v) => arr2.every((val) => v.id != val.pid));
+    }
+
+
+
 </script>
 
 <div class="description">
