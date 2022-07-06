@@ -15,8 +15,6 @@ public class huiwen {
         dictionary.add("bat");
         String sentence = "the cattle was rattled by the battery";
         String res = replaceWords(dictionary, sentence);
-
-
         return;
     }
 
