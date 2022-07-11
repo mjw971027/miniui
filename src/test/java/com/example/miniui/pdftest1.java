@@ -1,14 +1,13 @@
+package com.example.miniui;
+
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import static com.itextpdf.text.Rectangle.NO_BORDER;
 
 public class pdftest1 {
     public static final String path="src/main/resources/hello.pdf";
@@ -17,6 +16,7 @@ public class pdftest1 {
     public static void main(String[] args) throws DocumentException, IOException {
         new pdftest1().createPdf(path);
     }
+
     public void createPdf(String filename) throws DocumentException, IOException {
         Rectangle pagesize=new Rectangle(PageSize.A4);
 
@@ -83,6 +83,7 @@ public class pdftest1 {
 
         return pdfPTable;
     }
+
     public PdfPCell getCell(String name,int n) throws DocumentException, IOException {
         BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
         Font fontChinese = new Font(bfChinese, 12, Font.NORMAL);
@@ -94,6 +95,7 @@ public class pdftest1 {
         pdfPCell.addElement(paragraph);
         return pdfPCell;
     }
+
     public PdfPCell getCell1(String name,int n) throws DocumentException, IOException {
         BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
         Font fontChinese = new Font(bfChinese, 12, Font.NORMAL);

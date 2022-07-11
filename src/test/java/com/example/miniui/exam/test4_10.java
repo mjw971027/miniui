@@ -1,4 +1,4 @@
-package exam;
+package com.example.miniui.exam;
 
 /**
  * Definition for singly-linked list.

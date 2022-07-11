@@ -59,7 +59,7 @@
             <br/><br/>
             <input type="button" value="reloadTree" onclick="findNodes()"/>
             <input type="button" value="合并" onclick="test()"/>
-
+            <input type="button" value="test" onclick="getshow()"/>
         </td>
     </tr>
 </table>
@@ -67,6 +67,30 @@
 
 <script type="text/javascript">
 
+    function show() {
+
+
+        if (Math.round(Math.random()) == 0) {
+
+            var res = [1, 2, 3, 4];
+            return false;
+        } else {
+            var res = "result";
+            return true;
+        }
+    }
+
+    function getshow() {
+        var count = 0
+        for (let i = 0; i < 800000; i++) {
+            var res = show();
+            if (res) {
+                count++;
+            }
+        }
+        console.log(count / 800000);
+
+    }
 
     function setAllowSelect(checked) {
         var tree = mini.get("tree1");
@@ -222,7 +246,6 @@
     function deWeight(arr1, arr2) {
         return arr1.filter((v) => arr2.every((val) => v.id != val.pid));
     }
-
 
 
 </script>
