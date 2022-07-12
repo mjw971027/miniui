@@ -243,4 +243,14 @@ public class huiwen {
         return nums;
     }
 
+    //    简单的链表求中间，快慢指针
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
 }
