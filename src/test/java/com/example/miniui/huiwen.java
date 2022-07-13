@@ -3,7 +3,9 @@ package com.example.miniui;
 
 import java.util.*;
 
+import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
+
 public class huiwen {
     public static void main(String[] args) {
         int[] num = {3, 2, 3, 2, 2, 2};
@@ -15,16 +17,21 @@ public class huiwen {
 //        dictionary.add("bat");
 //        String sentence = "the cattle was rattled by the battery";
 //        String res = replaceWords(dictionary, sentence);
-        int[][] test = {{0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
-                {0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-                {0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0},
-                {0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
-                {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}};
+//        int[][] test = {{0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+//                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
+//                {0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+//                {0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0},
+//                {0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0},
+//                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+//                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0},
+//                {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}};
+//
+//        int x = maxAreaOfIsland(test);
+        int[] nums = {1, 2, 2};
+        huiwen huiwen = new huiwen();
+        List<List<Integer>> lists = huiwen.permute(nums);
+        System.out.println(lists);
 
-        int x = maxAreaOfIsland(test);
         return;
     }
 
@@ -253,4 +260,151 @@ public class huiwen {
         }
         return slow;
     }
+
+    //找到k个最接近x的数
+    public static List<Integer> findClosestElements(int[] arr, int k, int x) {
+        int size = arr.length;
+
+        int left = 0;
+        int right = size - 1;
+
+        int removeNums = size - k;
+        while (removeNums > 0) {
+            if (x - arr[left] <= arr[right] - x) {
+                right--;
+            } else {
+                left++;
+            }
+            removeNums--;
+        }
+
+        List<Integer> res = new ArrayList<>();
+        for (int i = left; i < left + k; i++) {
+            res.add(arr[i]);
+        }
+        return res;
+    }
+
+    //斐波那契数列
+    public static void febo(int n) {
+
+        double first = 1;
+        double second = 1;
+        for (int i = 0; i < n; i++) {
+            double tmp = first + second;
+            first = second;
+            second = tmp;
+
+            System.out.println(tmp);
+        }
+    }
+
+    class Solution {
+        public List<List<Integer>> permute(int[] nums) {
+            List<List<Integer>> res = new ArrayList<List<Integer>>();
+
+            List<Integer> output = new ArrayList<Integer>();
+            for (int num : nums) {
+                output.add(num);
+            }
+
+            int n = nums.length;
+            backtrack(n, output, res, 0);
+            return res;
+        }
+
+        public void backtrack(int n, List<Integer> output, List<List<Integer>> res, int first) {
+            // 所有数都填完了
+            if (first == n) {
+                res.add(new ArrayList<Integer>(output));
+            }
+            for (int i = first; i < n; i++) {
+                // 动态维护数组
+                Collections.swap(output, first, i);
+                // 继续递归填下一个数
+                backtrack(n, output, res, first + 1);
+                // 撤销操作
+                Collections.swap(output, first, i);
+            }
+        }
+    }
+
+    public List<List<Integer>> permute(int[] nums) {
+        int len = nums.length;
+        // 使用一个动态数组保存所有可能的全排列
+        List<List<Integer>> res = new ArrayList<>();
+        if (len == 0) {
+            return res;
+        }
+
+        boolean[] used = new boolean[len];
+        Deque<Integer> path = new ArrayDeque<>(len);
+
+        dfs2(nums, len, 0, path, used, res);
+        return res;
+    }
+
+    private void dfs(int[] nums, int len, int depth,
+                     Deque<Integer> path, boolean[] used,
+                     List<List<Integer>> res) {
+        if (depth == len) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = 0; i < len; i++) {
+            if (!used[i]) {
+                path.addLast(nums[i]);
+                used[i] = true;
+
+                System.out.println("  递归之前 => " + path);
+                dfs(nums, len, depth + 1, path, used, res);
+
+                used[i] = false;
+                path.removeLast();
+                System.out.println("递归之后 => " + path);
+            }
+        }
+    }
+
+    private void dfs2(int[] nums, int len, int depth,
+                      Deque<Integer> path, boolean[] used,
+                      List<List<Integer>> res) {
+        if (depth == len) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = 0; i < len; i++) {
+            if (used[i] || (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])) {
+                continue;
+            }
+            path.addLast(nums[i]);
+            used[i] = true;
+            dfs2(nums, len, depth + 1, path, used, res);
+            used[i] = false;
+            path.removeLast();
+
+        }
+    }
+
+    private void dfs3(int[] nums, int len, int depth,
+                      Deque<Integer> path, boolean[] used,
+                      List<List<Integer>> res) {
+        if (depth == len) {
+            res.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = 0; i < len; i++) {
+            path.addLast(nums[i]);
+            used[i] = true;
+            dfs3(nums, len, depth + 1, path, used, res);
+            used[i] = false;
+            path.removeLast();
+
+        }
+    }
+
+
 }
