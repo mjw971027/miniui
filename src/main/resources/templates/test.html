@@ -27,18 +27,18 @@
 <h1>单元格自动计算</h1>
 
 <div id="datagrid1" class="mini-datagrid" style="width:800px;height:280px;"
-     idField="id" allowCellEdit="true" allowCellSelect="true" showFooter="false"
-
-     showSummaryRow="true" ondrawsummarycell="onDrawSummaryCell"
->
+     idField="id" allowCellEdit="true" allowCellSelect="true"
+     url="../data/Test.txt">
     <div property="columns">
-        <div field="price" width="120" headerAlign="center" allowSort="true">单价
+        <div field="id" width="120" headerAlign="center" allowSort="true">id
             <input property="editor" class="mini-textbox" style="width:100%;" vtype="float"/>
         </div>
-        <div field="quantity" width="120" headerAlign="center" allowSort="true">数量
+        <div field="name" width="120" headerAlign="center" allowSort="true">name
             <input property="editor" class="mini-textbox" style="width:100%;" vtype="int"/>
         </div>
-        <div field="total" width="120" headerAlign="center" allowSort="true">总计</div>
+        <div field="role" width="120" headerAlign="center" allowSort="true">role</div>
+        <div field="sex" width="120" headerAlign="center" allowSort="true">sex</div>
+        <div field="address" width="120" headerAlign="center" allowSort="true">address</div>
     </div>
 </div>
 <script type="text/javascript">
@@ -82,16 +82,7 @@
     //     }
     // }
 
-    function onDrawSummaryCell(e) {
-        var result = e.result;
-        var grid = e.sender;
-        var rows = e.data;
 
-        if (e.field == "price") {
-
-            e.cellHtml = "总计: " + 1;
-        }
-    }
 
     // function addRow() {
     //     var rows = {price: 100};
