@@ -27,11 +27,13 @@ public class huiwen {
 //                {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}};
 //
 //        int x = maxAreaOfIsland(test);
-        int[] nums = {1, 2, 2};
-        huiwen huiwen = new huiwen();
-        List<List<Integer>> lists = huiwen.permute(nums);
-        System.out.println(lists);
+//        int[] nums = {1, 2, 2};
+//        huiwen huiwen = new huiwen();
+//        List<List<Integer>> lists = huiwen.permute(nums);
+//        System.out.println(lists);
 
+        int[] nums = getIntNum(12353222);
+        System.out.println(nums);
         return;
     }
 
@@ -473,5 +475,18 @@ public class huiwen {
             path.removeLast();
         }
     }
+
+    public int maximum69Number(int num) {
+        String s = Integer.toString(num);
+        char[] ch = s.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            if (ch[i] == '6') {
+                ch[i] = '9';
+                break;
+            }
+        }
+        return Integer.parseInt(new String(ch));
+    }
+
 
 }
