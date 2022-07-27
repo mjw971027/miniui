@@ -236,7 +236,7 @@
         var arrayOfDocFonts;
         var res = [];
         if (document.all || document.getElementById) {
-            arrayOfDocFonts = document.getElementsByTagName("input");
+            arrayOfDocFonts = document.getElementsByTagName("div");
         }
         var tmp = 0;
         console.log(arrayOfDocFonts);
@@ -248,22 +248,20 @@
                     res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 5));
                 } else if (/value/.test(arrayOfDocFonts[i].id)) {
                     res.push(arrayOfDocFonts[i].id.substring(0, arrayOfDocFonts[i].id.length - 6));
+                } else if (/grid/.test(arrayOfDocFonts[i].id) || /Grid/.test(arrayOfDocFonts[i].id)) {
+                    res.push(arrayOfDocFonts[i].id);
                 }
-                // else if (/grid/.test(arrayOfDocFonts[i].id) || /Grid/.test(arrayOfDocFonts[i].id)) {
-                //     res.push(arrayOfDocFonts[i].id);
-                // }
             }
             tmp += 1;
         }
+        console.log(res);
         var newres = [];
         var myset = new Set(res);
         for (var val of myset) {
             newres.push(val);
         }
         var str = "";
-        // for (var i = 0; i < newres.length; i++) {
-        //     str = str + "this." + newres[i] + "=mini.get(\"" + newres[i] + "\");\n";
-        // }
+
         for (var i = 0; i < newres.length; i++) {
             str = str + "this." + newres[i] + "=mini.get(\"" + newres[i] + "\");\n";
         }
