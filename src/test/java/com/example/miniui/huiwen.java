@@ -33,7 +33,8 @@ public class huiwen {
 //        System.out.println(lists);
 
         int[] nums = getIntNum(12353222);
-        System.out.println(nums);
+        int res = findFirst("123569qwertyupadsfghjklzcxvbn,.;[]123");
+        System.out.println(res);
         return;
     }
 
@@ -488,5 +489,25 @@ public class huiwen {
         return Integer.parseInt(new String(ch));
     }
 
+    public static int findFirst(String str) {
+        if (str == null) {
+            return -1;
+        }
+        Map map = new HashMap();
+        int res = -1;
+        for (int i = 0; i < str.length(); i++) {
+
+            char x = str.charAt(i);
+            if (map.get(x) == null) {
+                map.put(x, 1);
+                continue;
+            } else if ((Integer) map.get(x) == 1) {
+                res = i;
+                break;
+            }
+        }
+        return res;
+
+    }
 
 }

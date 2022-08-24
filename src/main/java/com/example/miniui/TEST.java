@@ -1,5 +1,10 @@
 package com.example.miniui;
 
+import org.omg.CORBA.portable.InvokeHandler;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
 public class TEST {
 
     public static void main(String[] args) throws ClassNotFoundException {
@@ -7,6 +12,7 @@ public class TEST {
         Class c1 = Class.forName("com.example.miniui.User");
         System.out.println(c1);
 //        一个类只有一个class对象
+
 
     }
 }
@@ -56,5 +62,19 @@ class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+}
+
+class invokehodel implements InvocationHandler {
+
+    public User user;
+
+    public invokehodel(User user) {
+        this.user = user;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        return null;
     }
 }

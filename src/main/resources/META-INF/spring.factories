@@ -1,0 +1,4 @@
+org.springframework.boot.SpringApplicationRunListener=\
+com.example.miniui.context.myApplicationRunListener
+org.springframework.context.ApplicationListener=\
+com.example.miniui.context.myEnvironmentPostProcessorApplicationListener
