@@ -1,7 +1,9 @@
 package com.example.miniui.config;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
@@ -48,6 +50,7 @@ public class swaggerConfig extends WebMvcConfigurationSupport {
     //    protected void addViewControllers(ViewControllerRegistry registry) {
     //        registry.addViewController("/index").setViewName("templates/user.html");
     //    }
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
