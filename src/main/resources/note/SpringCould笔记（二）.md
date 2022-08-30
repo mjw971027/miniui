@@ -942,7 +942,7 @@ spring:
 
 ```java
 @Override
-@SentinelResource(value = "getBorrow", blockHandler = "blocked")   //指定blockHandler，也就是被限流之后的替代解决方案，这样就不会使用默认的抛出异常的形式了
+    @SentinelResource(value = "getBorrow", blockHandler = "blocked")   //指定blockHandler，也就是被限流之后的替代解决方案，这样就不会使用默认的抛出异常的形式了
 public UserBorrowDetail getUserBorrowDetailByUid(int uid) {
     List<Borrow> borrow = mapper.getBorrowsByUid(uid);
     User user = userClient.getUserById(uid);
