@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <!--[if lt IE 9]>
+    <script src="http://cdn.static.runoob.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <style>
+        div {
+            width: 150px;
+            height: 150px;
+            border: solid black 1px;
+            background: #rgb(255, 255, 255);
+        / / 初始默认为白色 　　
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="d"></div>
+红:<input type="range" id="r" min="0" max="255" value="255" onchange="changeColor()"><br>
+绿:<input type="range" id="g" min="0" max="255" value="255" onchange="changeColor()"><br>
+蓝:<input type="range" id="b" min="0" max="255" value="255" onchange="changeColor()"><br>
+
+<script>
+    function supports_geolocation() {
+        return !!navigator.geolocation;
+    }
+
+    function changeColor() {
+        var r = document.getElementById("r").value;
+        var g = document.getElementById("g").value;
+        var b = document.getElementById("b").value;
+        var div = document.getElementById("d");
+        div.style.background = "rgb(" + r + "," + g + "," + b + ")";
+        console.log(supports_geolocation());
+        console.log(colorRGBtoHex(div.style.backgroundColor))
+    }
+
+    function colorRGBtoHex(color) {
+        var rgb = color.split(',');
+        var r = parseInt(rgb[0].split('(')[1]);
+        var g = parseInt(rgb[1]);
+        var b = parseInt(rgb[2].split(')')[0]);
+        var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        return hex;
+    }
+</script>
+</body>
+</html>

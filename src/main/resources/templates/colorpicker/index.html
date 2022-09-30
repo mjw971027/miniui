@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+</head>
+<body>
+<style>
+    .select-color {
+    }
+
+    .select-color .select-color-aaa {
+        display: inline-block;
+        width: 256px;
+        height: 256px;
+        background-color: #ff0000;
+    }
+
+    .select-color .select-color-aa {
+        width: 256px;
+        height: 256px;
+        background-image: linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
+    }
+
+    .select-color .select-color-a {
+        width: 256px;
+        height: 256px;
+        background-image: linear-gradient(to top, #000, rgba(255, 255, 255, 0));
+    }
+
+    .select-color .select-color-a-pos {
+        width: 1px;
+        height: 1px;
+        border: 1px solid red;
+        background-color: #fff;
+        position: relative;
+    }
+
+    .select-color .select-color-b-group {
+        display: inline-block;
+        width: 220px;
+        height: 256px;
+    }
+
+    .select-color .select-color-b {
+        display: inline-block;
+        width: 32px;
+        height: 256px;
+    }
+
+    .select-color .select-color-ccc {
+        display: inline-block;
+        width: 128px;
+        height: 32px;
+    }
+
+    .select-color .select-color-cc {
+        display: inline-block;
+        width: 128px;
+        min-height: 40px;
+        border: 1px solid black;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <label>色彩选择器</label>
+        <div id="p2" class="select-color">
+
+            <div class="select-color-b-group">
+                <div id="select-color-b-ffxx00"
+                     class="select-color-b" style="background: -webkit-linear-gradient(top,#f00 0%,#ff0 100%);">
+                </div>
+                <div id="select-color-b-xxff00"
+                     class="select-color-b" style="background: -webkit-linear-gradient(top,#0f0 0%,#ff0 100%);">
+                </div>
+                <div id="select-color-b-00ffxx"
+                     class="select-color-b" style="background: -webkit-linear-gradient(top,#0f0 0%,#0ff 100%);">
+                </div>
+                <div id="select-color-b-00xxff"
+                     class="select-color-b" style="background: -webkit-linear-gradient(top,#00f 0%,#0ff 100%);">
+                </div>
+                <div id="select-color-b-xx00ff"
+                     class="select-color-b" style="background: -webkit-linear-gradient(top,#00f 0%,#f0f 100%);">
+                </div>
+                <div id="select-color-b-ff00xx"
+                     class="select-color-b" style="background: -webkit-linear-gradient(top,#f00 0%,#f0f 100%);">
+                </div>
+                <div class="select-color-b"
+                     style="display:none;background: -webkit-linear-gradient(top,#f00 0,#ff0 17%,#0f0 33%,#0ff 50%,#00f 67%,#f0f 83%,#f00 100%);">
+                </div>
+            </div>
+
+            <div class="select-color-aaa" id="select-color-aaa" style="background-color:#ff0000">
+                <div class="select-color-aa" id="select-color-aa">
+                    <div class="select-color-a" id="select-color-a">
+                        <div class="select-color-a-pos" id="select-color-a-pos">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="select-color-ccc">
+                <div class="select-color-cc">
+                    说明：先选一个基色，再选亮度
+                </div>
+                <div class="select-color-cc">
+                    <span id="select-color-result">颜色</span>
+                </div>
+                <div class="select-color-cc" id="select-color-show">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    // 颜色选择
+    var select_color_mark = {};
+
+    function select_color_init() {
+        // 右边色条绑定点击和拖动事件
+        select_color_b_bind('ffxx00');
+        select_color_b_bind('xxff00');
+        select_color_b_bind('00ffxx');
+        select_color_b_bind('00xxff');
+        select_color_b_bind('xx00ff');
+        select_color_b_bind('ff00xx');
+        // 左边绑定事件
+        select_color_a_bind();
+    }
+
+    function select_color_a_bind() {
+        var e;
+        e = document.getElementById('select-color-a');
+        e.onclick = function (event) {
+            select_color_a_clk(event);
+        }
+        e.onmousedown = function (event) {
+            select_color_a_mdown(event);
+        }
+        e.onmouseup = function (event) {
+            select_color_a_mup(event);
+        }
+        e.onmousemove = function (event) {
+            select_color_a_mmove(event);
+        }
+    }
+
+    function select_color_a_mdown(event) {
+        select_color_mark['ffffff'] = true;
+    }
+
+    function select_color_a_mup(event) {
+        select_color_mark['ffffff'] = false;
+    }
+
+    function select_color_a_mmove(event) {
+        if (select_color_mark['ffffff']) {
+            select_color_a_clk(event);
+        }
+    }
+
+    function select_color_a_clk(event) {
+        if (!event)
+            return;
+        // x y坐标获取
+        var x = event.offsetX;
+        var y = event.offsetY;
+        if (x < 0 || y < 0)
+            return;
+        console.log(x + ", " + y);
+        var pos = document.getElementById('select-color-a-pos');
+        pos.style.top = y + "px";
+        pos.style.left = x + "px";
+        // 底色获取
+        var c = document.getElementById('select-color-aaa').style.backgroundColor;
+        //console.log(c); // rgb(255, 0, 0)
+        c = c.substring(4, c.length - 1);
+        var arr = c.split(/\s*,\s*/g);
+        var r = parseInt(arr[0]);
+        var g = parseInt(arr[1]);
+        var b = parseInt(arr[2]);
+        console.log(r + "," + g + "," + b);
+
+        // 计算结果：
+        //     白--彩
+        //     黑--黑
+        // 先算白到彩之间的颜色与x的关系，再算得到的颜色到黑色与y的关系
+        r = 256 - x + x * r / 256; // 化简 (256 - x) * ((256 - r) / 256) + r;
+        g = 256 - x + x * g / 256;
+        b = 256 - x + x * b / 256;
+        //console.log(r + "," + g + "," + b);
+        r = r - r * y / 256; // 化简 r / 256 * (256 - y);
+        g = g - g * y / 256;
+        b = b - b * y / 256;
+        //console.log(r + "," + g + "," + b);
+        Math.floor(5 / 2)
+        r = Math.floor(r)
+        g = Math.floor(g)
+        b = Math.floor(b)
+        //console.log(r + "," + g + "," + b);
+        var ret1 = "rgb(" + r + "," + g + "," + b + ")";
+        var ret2 = "#";
+        ret2 += r < 10 ? ("0" + r) : (r.toString(16));
+        ret2 += g < 10 ? ("0" + g) : (g.toString(16));
+        ret2 += b < 10 ? ("0" + b) : (b.toString(16));
+
+        document.getElementById('select-color-show').style.backgroundColor = ret2;
+        document.getElementById('select-color-result').innerHTML = ret1 + "<br>" + ret2;
+    }
+
+    function select_color_b_bind(type) {
+        var e;
+        e = document.getElementById('select-color-b-' + type);
+        e.onclick = function (event) {
+            select_color_b_clk(event, type);
+        }
+        e.onmousedown = function (event) {
+            select_color_b_mdown(event, type);
+        }
+        e.onmouseup = function (event) {
+            select_color_b_mup(event, type);
+        }
+        e.onmousemove = function (event) {
+            select_color_b_mmove(event, type);
+        }
+    }
+
+    function select_color_b_mdown(event, type) {
+        select_color_mark[type] = true;
+    }
+
+    function select_color_b_mup(event, type) {
+        select_color_mark[type] = false;
+    }
+
+    function select_color_b_mmove(event, type) {
+        if (select_color_mark[type])
+            select_color_b_clk(event, type);
+    }
+
+    function select_color_b_clk(event, type) {
+        var x = event.offsetX;
+        var y = event.offsetY;
+        //console.log(x + ", " + y);
+
+        var z = y.toString(16);
+        if (y < 10)
+            z = '0' + z;
+        var c = type.replace('xx', z);
+        //console.log(type + ' -> ' + c);
+        document.getElementById('select-color-aaa').style.backgroundColor = '#' + c;
+    }
+
+    select_color_init();
+</script>
+
+</body>
+</html>

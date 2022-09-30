@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <title>javascript颜色选择器</title>
+    <style type="text/css">
+        #color_container {
+            width: 290px;
+            /*width:600px;*/
+            border: 1px solid #9c9c9c;
+            display: inline-block;
+            line-height: 0px;
+            padding: 10px;
+            background-color: #eeeeee;
+        }
+
+        #current_color {
+            width: 40px;
+        }
+
+        .color_picker {
+            width: 14px;
+            height: 14px;
+            border: 1px solid #ffffff;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    function colorPicker(insertNode) {
+        var cStart = 0;
+        var cHtml = "";
+        cHtml += "<div id='color_container'><input type='text' value='' id='current_color' /><input type='text' value='' id='colorValue' /><br />";
+
+        for (var r = cStart; r < 16; r += 3) {
+            for (var g = cStart; g < 16; g += 3) {
+                for (var n = cStart; n < 16; n += 3) {
+                    cHtml += "<span class='color_picker' style='background-color:#" + r.toString(16) + r.toString(16) + g.toString(16)
+                        + g.toString(16) + n.toString(16) + n.toString(16) + "'></span>";
+                }
+            }
+            cHtml += "<br />"
+        }
+        cHtml += "</div>";
+
+        function RGBToHex(rgb) {
+            if (rgb.indexOf("rgb") > -1) {    //IE9,FF,chrome等浏览器的背景颜色值是rgb格式
+                var rgbArray = rgb.replace("rgb(", "").replace(")", "").split(",");
+                var hexValue = "#";
+                for (var i = 0; i < rgbArray.length; i++) {
+                    hexValue += Math.floor(rgbArray[i] / 16).toString(16) + Math.floor(rgbArray[i] / 16).toString(16);
+                }
+                return hexValue.toUpperCase();
+            } else {  //IE6,7,8中的背景颜色值是16进制值,不需要转换
+                return rgb;
+            }
+        }
+
+        insertNode.innerHTML += cHtml;
+        window.onload = function () {
+            var allPicker = document.getElementsByTagName("span");
+            for (var i = 0; i < allPicker.length; i++) {
+                allPicker[i].onmouseover = function () {
+                    document.getElementById("colorValue").value = RGBToHex(this.style.backgroundColor);
+                    document.getElementById("current_color").style.backgroundColor = RGBToHex(this.style.backgroundColor);
+                }
+            }
+        }
+    }
+
+    colorPicker(document.body);
+</script>
+</body>
+</html>
