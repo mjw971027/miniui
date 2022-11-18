@@ -4,16 +4,27 @@ import org.omg.CORBA.portable.InvokeHandler;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class TEST {
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, ParseException {
 //        通过反射获取类的forname
         Class c1 = Class.forName("com.example.miniui.User");
         System.out.println(c1);
 //        一个类只有一个class对象
 
-
+        String str = "08:00";
+        System.out.println(str);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date date = sdf.parse(str);
+        long selftime = 421 * 60 * 1000;
+        Date aftertime = new Date(date.getTime() + selftime);
+        System.out.println(new Date());
+        System.out.println(aftertime);
+        System.out.println(sdf.format(aftertime));
     }
 }
 
