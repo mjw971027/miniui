@@ -9,3 +9,5 @@ this.btnAfterData = mini.get("btnAfterData");
 
 // 下载所有文件
 this.btnDownAll = mini.get("btnDownAll");
+
+this.txtRemark = mini.get("txtRemark");

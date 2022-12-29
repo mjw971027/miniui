@@ -38,25 +38,26 @@
                             <label class="tableTdTitle">业务员</label>
                         </td>
                         <td colspan="2">
-                            2
+                            <div id="txtEmpDesc"></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
                             <label class="tableTdTitle">业务科室</label>
                         </td>
                         <td style="width: 100px;">
-                            4
+                            <div id="txtOrgnDesc"></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
                             <label class="tableTdTitle">开工日期</label>
                         </td>
                         <td style="width: 100px;">
-                            6
+                            <div id="scDate"></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
                             <label class="tableTdTitle">下坞日期</label>
                         </td>
                         <td style="width: 100px;">
-                            8
+                            <div id="flDate">
+                            </div>
                         </td>
                     </tr>
                     <tr>
@@ -128,7 +129,7 @@
                             <label class="tableTdTitle"> 船型</label>
                         </td>
                         <td colspan="2">
-                            3
+                            <div id="txtProjType"></div>
                         </td>
                         <td colspan="2">
                             （有无技术协议）
@@ -175,7 +176,7 @@
                             <label class="tableTdTitle"> 业务员报审说明</label>
                         </td>
                         <td rowspan="4" style="width: auto;">
-                            8
+                            <div id="txtRemark"></div>
                         </td>
                     </tr>
                     <tr>
@@ -1202,6 +1203,47 @@
 
 </div>
 
+<div id="afterDataWindow" class="mini-window" title="添加设备编码" style="width:880px;height:500px;"
+     showMaxButton="true"
+     allowResize="true">
+    <div class="mini-datagrid" id="summaryGrid" pageSize="50"
+         title="汇总"
+         style="width:100%;height: 100%" showPager="false" showHeader="true" allowCellWrap="true"
+         idField="batchNo" totalField="total"
+         allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+        <div property="columns">
+            <div field="batchNo" headerAlign="center" align="center" width="50">供应商</div>
+            <div field="currAmt1" headerAlign="center" align="center" width="150">意见总数</div>
+            <div field="currCd1" headerAlign="center" align="center" width="50">O类</div>
+            <div field="currAmt2" headerAlign="center" align="center" width="150">A类</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">B类</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">关闭率</div>
+
+        </div>
+    </div>
+    <div class="mini-datagrid" id="mingXiGrid" pageSize="50"
+         style="width:100%;height: 100%" showPager="false" showHeader="true" allowCellWrap="true"
+         idField="batchNo" totalField="total" title="明细"
+         allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+        <div property="columns">
+            <div type="indexcolumn" headerAlign="center" align="center" width="30"></div>
+            <div field="batchNo" headerAlign="center" align="center" width="50">供货方</div>
+            <div field="currAmt1" headerAlign="center" align="left" width="50">工程号</div>
+            <div field="currCd1" headerAlign="center" align="center" width="50">物资描述</div>
+            <div field="currAmt2" headerAlign="center" align="left" width="50">合同编号</div>
+            <div field="currCd2" headerAlign="center" align="center" width="350">意见描述</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">严重程度</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">整改要求</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">提出部门</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">提出日期</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">意见状态</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">关闭日期</div>
+
+        </div>
+    </div>
+
+
+</div>
 
 </body>
 </html>
