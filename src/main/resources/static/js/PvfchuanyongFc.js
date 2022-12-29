@@ -211,9 +211,6 @@ var page = {
 // 下载所有文件
         this.btnDownAll = mini.get("btnDownAll");
 
-        this.txtShuilv = mini.get("txtShuilv");
-
-
     },
 
     dataBind() {
