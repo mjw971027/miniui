@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .infoTable {
+            border-collapse: collapse;
+        }
+
+        .infoTable > th, td, tr {
+            border: 1px solid darkgrey;
+        }
+
+        .tableTdTitle {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<table class="infoTable" style="width: 900px;">
+    <tr>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">业务员</label>
+        </td>
+        <td colspan="2">
+            2
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">业务科室</label>
+        </td>
+        <td style="width: 100px;">
+            4
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">开工日期</label>
+        </td>
+        <td style="width: 100px;">
+            6
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">下坞日期</label>
+        </td>
+        <td style="width: 100px;">
+            8
+        </td>
+    </tr>
+    <tr>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">项目名称</label>
+        </td>
+        <td colspan="2">
+            <input class="mini-textbox" id="txtProgramName" style="width: 95%;display: none" visible="false">
+            <div id="txtProgramName1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle"> 审查方式</label>
+        </td>
+        <td style="width: 100px;">
+            <div id="cbbVerfiType" class="mini-combobox" style=" width: 95%;"
+                 valueField="GUID_NO" textField="AUDIT_WAY" showNullItem="false" visible="false"
+                 visble="false"
+                 multiSelect="false" allowinput="false">
+            </div>
+            <div id="cbbVerfiType1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">开始日期</label>
+        </td>
+        <td>
+            <div id="StartDate" class="mini-datepicker" style="width: 95%;" value="new Date()" visible="false"
+                 format="yyyy-MM-dd">
+            </div>
+            <div id="StartDate1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle"> 结束日期</label>
+        </td>
+        <td style="width: 100px;">
+
+            <div id="EndDate" class="mini-datepicker" style="width: 95%;" value="new Date()" visible="false"
+                 format="yyyy-MM-dd">
+            </div>
+            <div id="EndDate1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">合同船号</label>
+        </td>
+        <td style="width: 150px;">
+            <div class="mini-buttonedit" name="cmbProjNo" id="cmbProjNo" showClose="true" allowInput="false"
+                 visible="false"
+                 style="width: 99%;">
+                <div property="columns">
+                    <div header="工程号" width="25%" field="code" headerAlign="center" align="left"></div>
+                    <div header="描述" width="75%" field="description" headerAlign="center" align="left"></div>
+                </div>
+            </div>
+            <div id="cmbProjNo1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" style="width: 50px;">
+            <label class="tableTdTitle"> 船型</label>
+        </td>
+        <td colspan="2">
+            3
+        </td>
+        <td colspan="2">
+            （有无技术协议）
+        </td>
+        <td colspan="2">
+            (是否开口)
+        </td>
+
+    </tr>
+
+</table>
+<table class="infoTable" style="width: 100%;">
+    <tr>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">交货日期</label>
+        </td>
+        <td style="width: 100px;">
+            <div id="JiaohuoDate" class="mini-datepicker" style="width: 95%;;" visible="false"
+                 value="new Date()"
+                 format="yyyy-MM-dd">
+            </div>
+            <div id="JiaohuoDate1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">采购方式</label>
+        </td>
+        <td colspan="4">
+            <div id="cmbProType" class="mini-combobox" style="width: 95%" textField="PROGRAM_DESC" visible="false"
+                 valueField="GUID_NO" multiSelect="false" popupWidth="300" allowinput="false"
+                 showNullItem="true">
+                <div property="columns">
+                    <div header="类别编码" width="80" field="GUID_NO" headerAlign="center" align="center"></div>
+                    <div header="描述" width="200" field="PROGRAM_DESC" headerAlign="center" align="center"></div>
+                </div>
+            </div>
+            <div id="cmbProType1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" rowspan="4" style="width: 90px;" align="center">
+            <label class="tableTdTitle"> 业务员报审说明</label>
+        </td>
+        <td rowspan="4" style="width: auto;">
+            8
+        </td>
+    </tr>
+    <tr>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle"> 数量（单位）</label>
+        </td>
+        <td style="width: 100px;">
+            <div id="txtBuyNum" class="mini-textbox" style="width:95%;" visible="false"
+                 multiSelect="false">
+            </div>
+            <div id="cmbDanwei" class="mini-combobox" style="width:95%;" textField="UNT_DESC" visible="false"
+                 valueField="STD_UNT"
+                 multiSelect="false">
+            </div>
+            <div id="txtBuyNum1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle"> 材质（规格）</label>
+        </td>
+        <td colspan="4">
+            <div id="txtCaizhi" class="mini-textbox" style="width:95%;" visible="false"
+                 multiSelect="false">
+            </div>
+            <div id="txtCaizhi1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+
+    </tr>
+    <tr>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle"> 成本代码</label>
+        </td>
+        <td style="width: 100px;">
+            <div id="cmbCodeChengben" class="mini-combobox" style="width:95%;" textField="nodeDesc" visible="false"
+                 valueField="nodeCdDisplay"
+                 multiSelect="false">
+            </div>
+            <div id="cmbCodeChengben1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle">目标成本</label>
+        </td>
+        <td style="width: 100px;">
+            <div id="goalRmb" class="mini-textbox" style="width: 95%;" visible="false">
+            </div>
+            <div id="goalRmb1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td style="width: 50px;">
+            人民币
+        </td>
+        <td style="width: 100px;">
+            <div id="goalDoller" class="mini-textbox" style="width: 95%;" visible="false">
+            </div>
+            <div id="goalDoller1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+        <td style="width: 50px;">
+            美元
+        </td>
+    </tr>
+    <tr>
+        <td class="tableTdTitle" style="width: 100px;">
+            <label class="tableTdTitle"> 超目标成本说明</label>
+        </td>
+        <td colspan="6">
+            <div class="mini-textarea" id="txtPassCost" style="height: 40px;width: 100%;" visible="false"></div>
+            <div id="txtPassCost1"
+                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>

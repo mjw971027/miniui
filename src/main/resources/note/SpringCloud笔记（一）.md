@@ -1549,7 +1549,7 @@ spring:
 然后启动我们的配置服务器，通过以下格式进行访问：
 
 * http://localhost:8700/{服务名称}/{环境}/{Git分支}
-* http://localhost:8700/{Git分支}/{服务名称}-{环境}.yml
+* http://localhost:8700/{Git分支}/{服务名称}-{环境}.yml·
 
 比如我们要访问图书服务的生产环境代码，可以使用 http://localhost:8700/bookservice/prod/main 链接，它会显示详细信息：
 

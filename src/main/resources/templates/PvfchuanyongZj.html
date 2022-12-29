@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>船用申请（技术协议</title>
+    <script src="../static/boot.js" type="text/javascript"></script>
+    <script src="../static/jquery.min.js" type="text/javascript"></script>
+    <script src="../static/js/common.js" type="text/javascript"></script>
+    <script src="../static/js/PvfchuanyongZj.js" type="text/javascript"></script>
+
+    <script src="../static/js/html2canvas.js" type="text/javascript"></script>
+    <script src="../static/js/jspdf.debug.js" type="text/javascript"></script>
+    <style type="text/css">
+        .infoTable {
+            border-collapse: collapse;
+        }
+
+        .infoTable > th, td, tr {
+            border: 1px solid darkgrey;
+        }
+
+        .tableTdTitle {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="mini-tabs" activeIndex="0" style="width:100%;height:100%;">
+    <div title="项目信息">
+        <div class="innerdiv" style="height: 200px;">
+            <div class="mini-fit">
+                <div class="mini-toolbar">
+                    <label>项目信息</label>
+                </div>
+                <table class="infoTable" style="width: 900px;">
+                    <tr>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">业务员</label>
+                        </td>
+                        <td colspan="2">
+                            2
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">业务科室</label>
+                        </td>
+                        <td style="width: 100px;">
+                            4
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">开工日期</label>
+                        </td>
+                        <td style="width: 100px;">
+                            6
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">下坞日期</label>
+                        </td>
+                        <td style="width: 100px;">
+                            8
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">项目名称</label>
+                        </td>
+                        <td colspan="2">
+                            <input class="mini-textbox" id="txtProgramName" style="width: 95%;display: none"
+                                   visible="false">
+                            <div id="txtProgramName1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle"> 审查方式</label>
+                        </td>
+                        <td style="width: 100px;">
+                            <div id="cbbVerfiType" class="mini-combobox" style=" width: 95%;"
+                                 valueField="GUID_NO" textField="AUDIT_WAY" showNullItem="false" visible="false"
+                                 visble="false"
+                                 multiSelect="false" allowinput="false">
+                            </div>
+                            <div id="cbbVerfiType1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">开始日期</label>
+                        </td>
+                        <td>
+                            <div id="StartDate" class="mini-datepicker" style="width: 95%;" value="new Date()"
+                                 visible="false"
+                                 format="yyyy-MM-dd">
+                            </div>
+                            <div id="StartDate1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle"> 结束日期</label>
+                        </td>
+                        <td style="width: 100px;">
+
+                            <div id="EndDate" class="mini-datepicker" style="width: 95%;" value="new Date()"
+                                 visible="false"
+                                 format="yyyy-MM-dd">
+                            </div>
+                            <div id="EndDate1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">合同船号</label>
+                        </td>
+                        <td style="width: 150px;">
+                            <div class="mini-buttonedit" name="cmbProjNo" id="cmbProjNo" showClose="true"
+                                 allowInput="false" visible="false"
+                                 style="width: 99%;">
+                                <div property="columns">
+                                    <div header="工程号" width="25%" field="code" headerAlign="center"
+                                         align="left"></div>
+                                    <div header="描述" width="75%" field="description" headerAlign="center"
+                                         align="left"></div>
+                                </div>
+                            </div>
+                            <div id="cmbProjNo1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" style="width: 50px;">
+                            <label class="tableTdTitle"> 船型</label>
+                        </td>
+                        <td colspan="2">
+                            3
+                        </td>
+                        <td colspan="2">
+                            （有无技术协议）
+                        </td>
+                        <td colspan="2">
+                            (是否开口)
+                        </td>
+
+                    </tr>
+
+                </table>
+                <table class="infoTable" style="width: 100%;">
+                    <tr>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">交货日期</label>
+                        </td>
+                        <td style="width: 100px;">
+                            <div id="JiaohuoDate" class="mini-datepicker" style="width: 95%;;" visible="false"
+                                 value="new Date()"
+                                 format="yyyy-MM-dd">
+                            </div>
+                            <div id="JiaohuoDate1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">采购方式</label>
+                        </td>
+                        <td colspan="4">
+                            <div id="cmbProType" class="mini-combobox" style="width: 95%" textField="PROGRAM_DESC"
+                                 visible="false"
+                                 valueField="GUID_NO" multiSelect="false" popupWidth="300" allowinput="false"
+                                 showNullItem="true">
+                                <div property="columns">
+                                    <div header="类别编码" width="80" field="GUID_NO" headerAlign="center"
+                                         align="center"></div>
+                                    <div header="描述" width="200" field="PROGRAM_DESC" headerAlign="center"
+                                         align="center"></div>
+                                </div>
+                            </div>
+                            <div id="cmbProType1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" rowspan="4" style="width: 90px;" align="center">
+                            <label class="tableTdTitle"> 业务员报审说明</label>
+                        </td>
+                        <td rowspan="4" style="width: auto;">
+                            8
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle"> 数量（单位）</label>
+                        </td>
+                        <td style="width: 100px;">
+                            <div id="txtBuyNum" class="mini-textbox" style="width:95%;" visible="false"
+                                 multiSelect="false">
+                            </div>
+                            <div id="cmbDanwei" class="mini-combobox" style="width:95%;" textField="UNT_DESC"
+                                 visible="false"
+                                 valueField="STD_UNT"
+                                 multiSelect="false">
+                            </div>
+                            <div id="txtBuyNum1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle"> 材质（规格）</label>
+                        </td>
+                        <td colspan="4">
+                            <div id="txtCaizhi" class="mini-textbox" style="width:95%;" visible="false"
+                                 multiSelect="false">
+                            </div>
+                            <div id="txtCaizhi1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle"> 成本代码</label>
+                        </td>
+                        <td style="width: 100px;">
+                            <div id="cmbCodeChengben" class="mini-combobox" style="width:95%;" textField="nodeDesc"
+                                 visible="false"
+                                 valueField="nodeCdDisplay"
+                                 multiSelect="false">
+                            </div>
+                            <div id="cmbCodeChengben1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td class="tableTdTitle" style="width: 100px;">
+                            <label class="tableTdTitle">目标成本</label>
+                        </td>
+                        <td style="width: 100px;">
+                            <div id="goalRmb" class="mini-textbox" style="width: 95%;" visible="false">
+                            </div>
+                            <div id="goalRmb1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td style="width: 50px;">
+                            人民币
+                        </td>
+                        <td style="width: 100px;">
+                            <div id="goalDoller" class="mini-textbox" style="width: 95%;" visible="false">
+                            </div>
+                            <div id="goalDoller1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                        <td style="width: 50px;">
+                            美元
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tableTdTitle" style="width: 100px;height: 40px;">
+                            <label class="tableTdTitle"> 超目标成本说明</label>
+                        </td>
+                        <td colspan="6">
+                            <div class="mini-textarea" id="txtPassCost" style="height: 40px;width: 100%;"
+                                 visible="false"></div>
+                            <div id="txtPassCost1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+                        </td>
+                    </tr>
+
+                </table>
+
+
+            </div>
+
+        </div>
+
+        <div class="innerdiv" style="height: 160px;">
+            <div class="mini-fit">
+                <div class="mini-toolbar">
+                    <div style="display: inline-block">
+                        <label>供应商</label>
+                        <label style="padding-left: 100px;">当前1美元兑换人民币汇率</label>
+                        <div id="txtHuilvUS" class="mini-textbox" style="width: 80px" enabled="false"></div>
+                        <label style="padding-left: 100px;">当前1欧元兑换人民币汇率</label>
+                        <div id="txtHuilvEU" class="mini-textbox" style="width: 80px" enabled="false"></div>
+                        <div id="radioButtonProduce2" class="mini-radiobuttonlist"
+                             style="width: 100px;display: inline-block;vertical-align: middle;display: none"
+                             valueField="id"
+                             textField="text"></div>
+                        <input type="text" value="" id="txtSupport2" class="mini-textbox"
+                               style="width: 150px; display: none"/>
+                        <input id="txtSupport" name="look" class="mini-lookup" style="width:150px;display: none"
+                               textField="SUBC_DESC_CH" valueField="SUBC_CD" popupWidth="auto"
+                               popup="#subcWindow" grid="#subcGrid" multiSelect="false" value="" text=""/>
+                        <div id="subcWindow" class="mini-panel" title="header" iconCls="icon-add"
+                             style="width:450px;height:250px;"
+                             showToolbar="true" showCloseButton="true" showHeader="false" bodyStyle="padding:0"
+                             borderStyle="border:0">
+                            <div property="toolbar" style="padding:5px;padding-left:8px;text-align:center;">
+                                <div style="float:left;padding-bottom:2px;">
+                                    <span>制造商代码：</span>
+                                    <input id="txtSubcCd" class="mini-textbox" style="width:70px;"/>
+                                    <span>制造商名称：</span>
+                                    <input id="txtSubcDesc" class="mini-textbox" style="width:70px;"/>
+                                    <a class="mini-button" id="btnSearchSubc" style="margin-left: 2px;">查询</a>
+                                </div>
+
+                                <div style="clear:both;"></div>
+                            </div>
+                            <div class="mini-fit">
+                                <div id="subcGrid" class="mini-datagrid"
+                                     style="width:100%;height:100%;"
+                                     idField="SUBC_CD" dataField="list"
+                                     showPager="true" sizeList="[50,100,200,300]" pageSize="100"
+                                     allowCellSelect="true" multiSelect="true" selectOnLoad="true">
+                                    <div property="columns">
+                                        <div type="indexcolumn" width="40" headerAlign="center">序号</div>
+                                        <div type="checkcolumn"></div>
+                                        <div field="SUBC_CD" width="90" headerAlign="center" align="center">制造商代码
+                                        </div>
+                                        <div field="SUBC_DESC_CH" width="200" headerAlign="center" align="left">
+                                            制造商中文名称
+                                        </div>
+                                        <div field="SUBC_DESC_EN" width="200" headerAlign="center" align="left">
+                                            制造商英文名称
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <label id="labdaili"
+                               style="display: inline-block;vertical-align: middle;display: none">制造商</label>
+                        <div id="radioButtonProduce" class="mini-radiobuttonlist"
+                             style="width: 100px;display: none;vertical-align: middle" valueField="id"
+                             textField="text"></div>
+                        <input type="text" value="" id="txtProduce2" class="mini-textbox"
+                               style="width: 150px; display: none">
+                        <input id="txtProduce" name="look" class="mini-lookup" style="width:150px;display: none"
+                               textField="SUBC_DESC_CH" valueField="SUBC_CD" popupWidth="auto"
+                               popup="#gridPanel2" grid="#prodGrid" multiSelect="false" value="" text=""/>
+                        <div id="gridPanel2" class="mini-panel" title="header" iconCls="icon-add"
+                             style="width:450px;height:250px;"
+                             showToolbar="true" showCloseButton="true" showHeader="false" bodyStyle="padding:0"
+                             borderStyle="border:0">
+                            <div property="toolbar" style="padding:5px;padding-left:8px;text-align:center;">
+                                <div style="float:left;padding-bottom:2px;">
+                                    <span>代理商代码：</span>
+                                    <input id="txtProdCd" class="mini-textbox" style="width:70px;"/>
+                                    <span>代理商名称：</span>
+                                    <input id="txtProdDesc" class="mini-textbox" style="width:70px;"/>
+                                    <a class="mini-button" id="btnSearchProdCd" style="margin-left: 2px;">查询</a>
+                                </div>
+
+                                <div style="clear:both;"></div>
+                            </div>
+                            <div class="mini-fit">
+                                <div id="prodGrid" class="mini-datagrid" style="width:100%;height:100%;"
+                                     idField="SUBC_CD" dataField="list"
+                                     showPager="true" sizeList="[50,100,200,300]" pageSize="100"
+                                     allowCellSelect="true" multiSelect="false" selectOnLoad="true">
+                                    <div property="columns">
+                                        <div type="indexcolumn" width="30" headerAlign="center">序号</div>
+                                        <div type="checkcolumn"></div>
+                                        <div field="SUBC_CD" width="90" headerAlign="center" align="center">代理商代码
+                                        </div>
+                                        <div field="SUBC_DESC_CH" width="200" headerAlign="center" align="center">
+                                            代理商中文名称
+                                        </div>
+                                        <div field="SUBC_DESC_EN" width="200" headerAlign="center" align="center">
+                                            代理商英文名称
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <label style="display: none;vertical-align: middle">项目合同方</label>
+
+                        <input type="text" value="" id="txtProduce3" class="mini-textbox"
+                               style="width: 150px; display: none">
+                        <input id="txtHeton" name="look" class="mini-lookup" style="width:150px;display: none"
+                               textField="SUBC_DESC_CH" valueField="SUBC_CD" popupWidth="auto"
+                               popup="#gridPanel3" grid="#prodGrid3" multiSelect="false" value="" text=""/>
+                        <div id="gridPanel3" class="mini-panel" title="header" iconCls="icon-add"
+                             style="width:450px;height:250px;"
+                             showToolbar="true" showCloseButton="true" showHeader="false" bodyStyle="padding:0"
+                             borderStyle="border:0">
+                            <div property="toolbar" style="padding:5px;padding-left:8px;text-align:center;">
+                                <div style="float:left;padding-bottom:2px;">
+                                    <span>项目合同方代码：</span>
+                                    <input id="txtProdCd3" class="mini-textbox" style="width:70px;"/>
+                                    <span>项目合同方名称：</span>
+                                    <input id="txtProdDesc3" class="mini-textbox" style="width:70px;"/>
+                                    <a class="mini-button" id="btnSearchProdCd3" style="margin-left: 2px;">查询</a>
+                                </div>
+
+                                <div style="clear:both;"></div>
+                            </div>
+                            <div class="mini-fit">
+                                <div id="prodGrid3" class="mini-datagrid" style="width:100%;height:100%;"
+                                     idField="SUBC_CD" dataField="list"
+                                     showPager="true" sizeList="[50,100,200,300]" pageSize="100"
+                                     allowCellSelect="true" multiSelect="false" selectOnLoad="true">
+                                    <div property="columns">
+                                        <div type="indexcolumn" width="30" headerAlign="center">序号</div>
+                                        <div type="checkcolumn"></div>
+                                        <div field="SUBC_CD" width="90" headerAlign="center" align="center">
+                                            项目合同方代码
+                                        </div>
+                                        <div field="SUBC_DESC_CH" width="200" headerAlign="center" align="left">
+                                            项目合同方中文名称
+                                        </div>
+                                        <div field="SUBC_DESC_EN" width="200" headerAlign="center" align="left">
+                                            项目合同方英文名称
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <button id="btnBaoJia" style="display: inline-block" class="mini-button">修改</button>
+                    <button id="btnAddProduce" class="mini-button">新增报价</button>
+                    <button id="btnAfterData" class="mini-button">供后方评估数据</button>
+
+                    <div style="float: right;display: none">
+                        <label style="display: inline-block;vertical-align: middle">不足三家原因</label>
+                        <div id="cmbThree" class="mini-combobox" textField="PRO_DESC" valueField="REASON_CD"
+                             style="width:90px;height:24px;display:inline-block;vertical-align: middle"
+                             multiSelect="false" popupWidth="250" enable="false"></div>
+
+                        <span class="separator"></span>
+                        <button id="btnSaveSub" style="display: inline-block" class="mini-button">登记</button>
+                        <button id="btnDeletePro" style="display: inline-block" class="mini-button">删除</button>
+                        <button id="btnTuijian" style="display: inline-block" class="mini-button">推荐</button>
+                    </div>
+                </div>
+                <div class="mini-fit">
+                    <div id="MoneydataGrid"
+                         class="mini-datagrid"
+                         style="width:100%;height:100%;"
+                         borderStyle="border:none"
+                         idField="id"
+                         dataField="list"
+                         showFooter="true"
+                         allowResize="false"
+                         showPager="false"
+                         multiSelect="true"
+                         allowCellEdit="true"
+                         allowCellSelect="true"
+                         editNextOnEnterKey="true"
+                         allowSortColumn="false"
+                         selectOnLoad="true"
+                         allowHeaderWrap="true"
+                    >
+                        <div property="columns">
+                            <div type="checkcolumn" headerAlign="center" width="10"></div>
+                            <div name="recomYn" headerAlign="center" align="center" width="50">是否推荐</div>
+                            <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                            <div field="subcDesc" headerAlign="center" align="center" width="50" cellStyle="padding:0">
+                                供应商
+                            </div>
+                            <div field="mfgSubcDesc" headerAlign="center" align="center" width="50">制造商</div>
+                            <div field="contractSubcDesc" headerAlign="center" align="center" width="50">合同相同方
+                            </div>
+                            <div field="subcArea" headerAlign="center" align="center" width="80">产地</div>
+                            <div header="折算金额" headerAlign="center">
+                                <div property="columns">
+                                    <div field="currCd1" headerAlign="center" align="center" width="50">金额</div>
+                                    <div field="currAmt1" headerAlign="center" align="center" width="50"
+                                         cellStyle="padding:0">
+                                        币种
+                                    </div>
+                                </div>
+                            </div>
+                            <div header="最后一次报价" headerAlign="center">
+
+                                <div property="columns">
+                                    <div field="currCd1" headerAlign="center" align="center" width="50">金额</div>
+                                    <div field="currAmt1" headerAlign="center" align="center" width="50"
+                                         cellStyle="padding:0">
+                                        币种
+                                    </div>
+                                </div>
+                            </div>
+                            <div header="审价会确定金额" headerAlign="center">
+                                <div property="columns">
+                                    <div field="currCd1" headerAlign="center" align="center" width="50">金额</div>
+                                    <div field="currAmt1" headerAlign="center" align="center" width="50"
+                                         cellStyle="padding:0">
+                                        币种
+                                    </div>
+                                </div>
+                            </div>
+                            <div field="bidRemak" headerAlign="center" align="center" width="160">备注</div>
+                            <column type="checkboxcolumn"
+                                    field="married" trueValue="1" falseValue="0" width="60" headerAlign="center">是否选定
+                            </column>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="innerdiv" style="height: 300px;width: 100%;">
+            <div class="mini-panel" id="panelForSEM"
+                 showHeader="false"
+                 showToolbar="false"
+                 showFooter="false"
+                 visible="true"
+                 borderSyle="width:0;height: 0"
+                 bodyStyle="padding:0"
+                 style="width: 100%;height: 100%">
+                <div class="mini-toolbar">
+                    <div style="width: 60%;display: inline-block">
+                        <label>技术协议及其附件</label>
+                        <a id="btnDownAll" style="float: right" class="mini-button">技术协议下载</a>
+
+                    </div>
+                    <div style="float: right;display: inline-block">
+                        <div id="PAradioButtonSEM" class="mini-radiobuttonlist"
+                             style="width: 100px;display: inline-block;vertical-align: middle" valueField="id"
+                             textField="text"></div>
+
+                        <a id="btnRegisterPASEM" style="display: none" class="mini-button">登记</a>
+                        <a id="btnDeletePASEM" style="display: none" class="mini-button">清空</a>
+
+                    </div>
+                </div>
+
+                <div class="mini-fit">
+                    <div id="SEMDataGridMain"
+                         class="mini-datagrid"
+                         style="width:30%;height: 100%;box-sizing: border-box;float: left"
+                         borderStyle="border-left:none;border-top:none;border-bottom:none"
+                         idField="id"
+                         dataField="list"
+                         title="技术协议"
+                         showHeader="true"
+                         allowResize="false"
+                         showPager="false"
+                         multiSelect="true"
+                         allowCellEdit="true"
+                         allowCellSelect="true"
+                         editNextOnEnterKey="true"
+                         allowSortColumn="false">
+                        <div property="columns">
+                            <div type="indexcolumn" headerAlign="center" align="center" width="30">序号</div>
+                            <div field="SRC_PROJ_NO" headerAlign="center" align="center" width="50">工程号</div>
+                            <div field="APLY_PROJ" headerAlign="center" align="left" width="150">适用船</div>
+                            <div header="技术协议编号" headerAlign="center">
+                                <div property="columns">
+                                    <div field="POR_NO" headerAlign="center" align="center" width="50">por</div>
+                                    <div field="PO_ID" headerAlign="center" align="center" width="50">厂商编号</div>
+                                    <div field="RM_DESC" headerAlign="center" align="center" width="50">备忘号</div>
+                                    <div field="VSN_DESC" headerAlign="center" align="center" width="50"
+                                         cellStyle="padding:0">
+                                        版本号
+                                    </div>
+                                </div>
+                            </div>
+                            <div field="EQPMT_NAME" headerAlign="center" align="center" width="50">设备名称</div>
+                            <div field="PO_NAME" headerAlign="center" align="left" width="150">厂商简称</div>
+                            <div field="CHK_USER" headerAlign="center" align="center" width="50">签订人员</div>
+                            <div field="BUYR_ID" headerAlign="center" align="center" width="50">采购员</div>
+                            <div field="RMRK" headerAlign="center" align="center" width="80">备注
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="width: 30%;box-sizing: border-box;float: left">
+                        <div style="box-sizing: border-box;height: 60px">
+                            <div id="SEMDataGridFile"
+                                 class="mini-datagrid"
+                                 borderStyle="border:none"
+                                 idField="id"
+                                 style="height: 65px"
+                                 allowResize="false"
+                                 title="文件清单"
+                                 showHeader="true"
+                                 showPager="false"
+                                 multiSelect="true"
+                                 allowCellEdit="true"
+                                 allowCellSelect="true"
+                                 editNextOnEnterKey="true"
+                                 allowSortColumn="false"
+                                 selectedOnload="true"
+                            >
+                                <div property="columns">
+                                    <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                    <div field="fileName" headerAlign="center" align="center" width="80">文件</div>
+                                    <div field="upldDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center"
+                                         width="80">
+                                        上传日期
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div id="SEMDataGridSUBC"
+                                 class="mini-datagrid"
+                                 borderStyle="border:none"
+                                 style="height: 60px;"
+                                 idField="id"
+                                 title="厂商变更依据"
+                                 showHeader="true"
+                                 allowResize="false"
+                                 showPager="false"
+                                 multiSelect="true"
+                                 allowCellEdit="true"
+                                 allowCellSelect="true"
+                                 editNextOnEnterKey="true"
+                                 allowSortColumn="false"
+                            >
+                                <div property="columns">
+                                    <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                    <div field="fileName" headerAlign="center" align="center" width="80">文件</div>
+                                    <div field="upldDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center"
+                                         width="80">
+                                        上传日期
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="adataGridprogramAll"
+                         class="mini-datagrid"
+                         style="width:40%;height:100%;float: right"
+                         borderStyle="border-top:none;"
+                         idField="id"
+                         dataField="list"
+                         title="其他附件"
+                         showHeader="true"
+                         allowResize="false"
+                         showPager="false"
+                         multiSelect="true"
+                         allowCellEdit="true"
+                         allowCellSelect="true"
+                         editNextOnEnterKey="true"
+                         allowSortColumn="false">
+                        <div property="columns">
+                            <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                            <!--                            <div type="checkcolumn" headerAlign="center" width="30"></div>-->
+                            <!--                            <div field="attchment"  headerAlign="center" align="center" width="80">附件类型</div>-->
+                            <!--                            <div field="fileName"  headerAlign="center" align="center" width="80">名称</div>-->
+                            <div name="action" headerAlign="center" align="center" width="100" cellStyle="padding:0">
+                                名称
+                            </div>
+                            <div field="userName" headerAlign="center" align="center" width="80">文件种类</div>
+
+                            <div field="userName" headerAlign="center" align="center" width="80">上传人</div>
+                            <div field="rgstDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center" width="80">
+                                上传日期
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div style="width: 100%; height: 120px;display: none">
+            <div class="innerdiv" style="height: 140px; width: 49%;display: none">
+                <div class="mini-toolbar">
+                    <div style="display: inline-block;vertical-align: middle">
+                        <span>项目附件</span>
+                    </div>
+                    <div style="float:right;display: none">
+                        <div class="mini-combobox" id="programFile" textField="TYPE_DESC" valueField="TYPE_CD"
+                             style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                             multiSelect="true"
+                             popupWidth="250">
+                        </div>
+                        <button id="uploadattchment1" class="mini-button" text="上传附件" iconCls="icon-upload"
+                                headerAlign="center"
+                                align="center">
+                        </button>
+                        <button id="deleteattchment1" class="mini-button" text="删除" iconCls="icon-remove">
+                        </button>
+                    </div>
+                </div>
+                <div class="mini-fit">
+                    <div id="adataGridprogram"
+                         class="mini-datagrid"
+                         style="width:100%;height:100%; box-sizing: border-box;float: right"
+                         borderStyle="border-top:none;"
+                         idField="id"
+                         dataField="list"
+
+                         allowResize="false"
+                         showPager="false"
+                         multiSelect="true"
+                         allowCellEdit="true"
+                         allowCellSelect="true"
+                         editNextOnEnterKey="true"
+                         allowSortColumn="false">
+                        <div property="columns">
+                            <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                            <!--                            <div type="checkcolumn" headerAlign="center" width="30"></div>-->
+                            <!--                            <div field="attchment"  headerAlign="center" align="center" width="80">附件类型</div>-->
+                            <!--                            <div field="fileName"  headerAlign="center" align="center" width="80">名称</div>-->
+                            <div name="action" headerAlign="center" align="center" width="100" cellStyle="padding:0">
+                                名称
+                            </div>
+                            <div field="userName" headerAlign="center" align="center" width="80">文件种类</div>
+
+                            <div field="userName" headerAlign="center" align="center" width="80">上传人</div>
+                            <div field="rgstDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center" width="80">
+                                上传日期
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="innerdiv" style="height: 140px; width: 50%;display: none">
+                <div class="mini-toolbar">
+                    <div style="display: inline-block;vertical-align: middle">
+                        <span>供应商附件</span>
+                    </div>
+                    <div style="float:right;display: none">
+                        <div class="mini-combobox" id="subFile" textField="TYPE_DESC" valueField="TYPE_CD"
+                             style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                             multiSelect="true"
+                             popupWidth="250">
+                        </div>
+                        <button id="uploadattchment2" class="mini-button" text="上传附件" iconCls="icon-upload"
+                                headerAlign="center"
+                                align="center">
+                        </button>
+                        <button id="deleteattchment2" class="mini-button" text="删除" iconCls="icon-remove">
+                        </button>
+                    </div>
+                </div>
+                <div class="mini-fit">
+                    <div id="adataGridSub"
+                         class="mini-datagrid"
+                         style="width:100%;height:100%; box-sizing: border-box;float: right"
+                         borderStyle="border-top:none;"
+                         idField="id"
+                         dataField="list"
+                         allowResize="false"
+                         showPager="false"
+                         multiSelect="true"
+                         allowCellEdit="true"
+                         allowCellSelect="true"
+                         editNextOnEnterKey="true"
+                         allowSortColumn="false">
+                        <div property="columns">
+                            <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                            <!--                            <div type="checkcolumn" headerAlign="center" width="30"></div>-->
+                            <!--                            <div field="attchment"  headerAlign="center" align="center" width="80">附件类型</div>-->
+                            <!--                            <div field="fileName"  headerAlign="center" align="center" width="80">名称</div>-->
+                            <div name="action" headerAlign="center" align="center" width="100" cellStyle="padding:0">
+                                名称
+                            </div>
+                            <div field="userName" headerAlign="center" align="center" width="80">文件种类</div>
+
+                            <div field="userName" headerAlign="center" align="center" width="80">上传人</div>
+                            <div field="rgstDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center" width="80">
+                                上传日期
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="innerdiv" style="height: 150px;">
+            <div class="mini-toolbar">
+                <label>审价会结果</label>
+            </div>
+            <div class="mini-fit">
+                <label>审价会结果</label>
+                <div id="cmbResult" class="mini-combobox" style="margin-left: 4px; width: 200px"
+                     valueField="" textField="" showNullItem="false"
+                     multiSelect="false" allowinput="false">
+                </div>
+                <br>
+                <label>审价会记录</label>
+
+                <div id="txtResult" class="mini-textarea" style="width: 80%;height: 80px;" enable="false">
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="innerdiv" style="height: 100px;display: none">
+            <div class="mini-toolbar">
+                <label>审核意见</label>
+            </div>
+            <div class="mini-fit">
+
+                <div class="mini-datagrid" id="opinionGrid" pageSize="50"
+                     style="width:100%;height: 100%" showPager="false" showHeader="false" allowCellWrap="true"
+                     allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+                    <div property="columns">
+                        <div type="indexcolumn" headerAlign="center" align="center" width="30">序号</div>
+                        <div field="menuName" headerAlign="center" align="center" width="50">审批意见</div>
+                        <div field="opinion" headerAlign="center" align="left" width="150">意见说明</div>
+                        <div field="createUserId" headerAlign="center" align="center" width="50">审批人</div>
+                        <div field="createDate" headerAlign="center" align="center" dateFormat="yyyy-MM-dd HH:mm:ss"
+                             allowSort="true" width="80">审批时间
+                        </div>
+                        <div field="tid" visible="false"></div>
+                        <div field="processId" visible="false"></div>
+                        <div field="taskId" visible="false"></div>
+                        <div field="stepName" visible="false"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="innerdiv" style="height: 60px;display: none">
+            <div class="mini-toolbar">
+                <label>意见</label>
+            </div>
+            <div class="mini-fit">
+
+                <div id="txtOpinion" class="mini-textarea" style="width: 100%;height: 80%;">
+
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="mini-toolbar" align="center">
+            <button class="mini-button" id="btnSave">保存</button>
+            <button class="mini-button" id="btnClose" style="display:none;">提交</button>
+
+        </div>
+
+        <button class="mini-button" id="btnAgree" iconCls="icon-ok" style="display: none">同意</button>
+        <button class="mini-button" id="btnCancel" iconCls="icon-remove" style="display: none">拒绝</button>
+    </div>
+    <div title="历史记录">
+        <div class="mini-toolbar">
+            <label style="padding-left: 4px">申报人</label>
+            <div id="empDesc" class="mini-combobox" style="margin-left: 4px; width: 100px" valueField="EMP_NO"
+                 allowInput="true" valueFromSelect="true" popupWidth="300"
+                 textField="EMP_DESC">
+                <div property="columns">
+                    <div header="员工号" width="80" field="EMP_NO" headerAlign="center" align="center"></div>
+                    <div header="员工姓名" width="200" field="EMP_DESC" headerAlign="center" align="center"></div>
+                </div>
+            </div>
+            <label style="padding-left: 4px">申报时间</label>
+            <div id="date1" class="mini-datepicker" style="margin-left: 4px" value="new Date()"
+                 format="yyyy-MM-dd"></div>
+            <label>-</label>
+            <div id="date2" class="mini-datepicker" value="new Date()" format="yyyy-MM-dd"></div>
+            <label style="padding-left: 4px">项目名称</label>
+            <input id="txtProgram" class="mini-textbox" style="margin-left: 4px; width: 200px"
+                   emptyText="请输入关键词搜索">
+
+            <button id="btnSearch" style="margin-left:4px;" class="mini-button" iconCls="icon-search">查询</button>
+
+        </div>
+
+        <div id="appListGrid" class="mini-datagrid" style="width:100%;height:50%;"
+             dataField="list" idField="dwgInfoDbId" selectOnLoad="false"
+             showPager="true" sizeList="[50,100,200]" pageSize="200" showReloadButton="false"
+             multiSelect="true" allowCellSelect="true" allowCellWrap="true" showToolbar="false"
+             allowCellEdit="true" editNextOnEnterKey="true" editNextRowCell="true">
+            <div property="toolbar">
+                <div style="margin-top:3px; margin-bottom: 3px;">
+
+                </div>
+            </div>
+            <div property="columns">
+                <div type="indexcolumn" width="50" headerAlign="center">Seq</div>
+                <div type="checkcolumn" width="30"></div>
+                <div field="chkNo" headerAlign="center" align="center" width="140" cellStyle="padding:0">评审编号</div>
+                <!--                    <div field="programDesc"  headerAlign="center" align="center" width="120">采购方式/项目类别</div>-->
+                <div field="programName" headerAlign="center" align="center" width="120">项目名称</div>
+                <div field="projNo" headerAlign="center" align="center" width="250">工程号</div>
+                <div field="userName" headerAlign="center" align="center" width="60">申报人</div>
+                <div field="orgnDesc" headerAlign="center" align="center" width="120">申报科室</div>
+                <div field="rgstDt" headerAlign="center" align="center" width="120">申报时间</div>
+
+                <!--                    <div field="companyName"  headerAlign="center" align="center" width="120">合同主体</div>-->
+                <!--                    <div field="submitTime"  headerAlign="center" align="center" width="60">评审会次数</div>-->
+                <!--                    <div field="techYN"  renderer="page.onGenderRenderer1"headerAlign="center" align="center" width="90">是否技术协议</div>-->
+                <!--                    <div field="approveStatus" renderer="page.onGenderRenderer2" headerAlign="center" align="center" width="90">审核状态</div>-->
+
+                <!--                    <div field="processStatus"renderer="page.onGenderRenderer3"  headerAlign="center" align="center" width="90">项目状态</div>-->
+
+                <div field="resultStatus" renderer="page.onGenderRenderer5" headerAlign="center" align="center"
+                     width="60">评审会结果
+                </div>
+                <div name="operation" headerAlign="center" align="center" width="80">流程跟踪</div>
+
+                <!--           隐藏列-->
+            </div>
+        </div>
+        <div class="mini-tabs" activeIndex="0" style="width:100%;height:100%;">
+            <div title="附件">
+                <div style="width: 100%; height: 145px;display: inline-block">
+                    <div class="innerdiv" style="height: 140px; width: 49%;display: inline-block">
+                        <div class="mini-toolbar">
+                            <div style="display: inline-block;vertical-align: middle">
+                                <span>项目附件</span>
+                            </div>
+                        </div>
+                        <div class="mini-fit">
+                            <div id="adataGridprogramTab"
+                                 class="mini-datagrid"
+                                 style="width:100%;height:100%; box-sizing: border-box;float: right"
+                                 borderStyle="border-top:none;"
+                                 idField="id"
+                                 dataField="list"
+                                 allowResize="false"
+                                 showPager="false"
+                                 multiSelect="true"
+                                 allowCellEdit="true"
+                                 allowCellSelect="true"
+                                 editNextOnEnterKey="true"
+                                 allowSortColumn="false">
+                                <div property="columns">
+                                    <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                    <div name="action" headerAlign="center" align="center" width="100"
+                                         cellStyle="padding:0">名称
+                                    </div>
+                                    <div field="fileType" headerAlign="center" align="center" width="80">文件种类</div>
+                                    <div field="userName" headerAlign="center" align="center" width="80">上传人</div>
+                                    <div field="rgstDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center"
+                                         width="80">上传日期
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="innerdiv" style="height: 140px; width: 50%;display: inline-block">
+                        <div class="mini-toolbar">
+                            <div style="display: inline-block;vertical-align: middle">
+                                <span>供应商附件</span>
+                            </div>
+                        </div>
+                        <div class="mini-fit">
+                            <div id="adataGridSubTab"
+                                 class="mini-datagrid"
+                                 style="width:100%;height:100%; box-sizing: border-box;float: right"
+                                 borderStyle="border-top:none;"
+                                 idField="id"
+                                 dataField="list"
+                                 allowResize="false"
+                                 showPager="false"
+                                 multiSelect="true"
+                                 allowCellEdit="true"
+                                 allowCellSelect="true"
+                                 editNextOnEnterKey="true"
+                                 allowSortColumn="false">
+                                <div property="columns">
+                                    <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                                    <!--                            <div type="checkcolumn" headerAlign="center" width="30"></div>-->
+                                    <!--                            <div field="attchment"  headerAlign="center" align="center" width="80">附件类型</div>-->
+                                    <!--                            <div field="fileName"  headerAlign="center" align="center" width="80">名称</div>-->
+                                    <div name="action" headerAlign="center" align="center" width="100"
+                                         cellStyle="padding:0">名称
+                                    </div>
+                                    <div field="fileType" headerAlign="center" align="center" width="80">文件种类</div>
+
+                                    <div field="userName" headerAlign="center" align="center" width="80">上传人</div>
+                                    <div field="rgstDt" dateFormat="yyyy-MM-dd" headerAlign="center" align="center"
+                                         width="80">上传日期
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div title="明细"></div>
+        </div>
+
+    </div>
+
+
+    <!--    <button class="mini-button" id="btnClose" iconCls="icon-remove" style="display: none">关闭</button>-->
+</div>
+
+<div id="importFileWindow1" class="mini-window" title="上传附件" style="width:510px;"
+     showModal="true" allowResize="false" allowDrag="true">
+    <form id="importForm1" name="importForm1" action="" enctype="multipart/form-data" method="post">
+        <input class="mini-hidden" id="projectNo1" name="projectNo"/>
+        <span style="margin-left: 10px">文件名:</span>
+        <input id="fileSelectInput_1" name="file" class="mini-htmlfile" required="true" width="350px"
+               RequiredErrorText="请选择文件" buttonText="选择"/>
+        <a class="mini-button" iconCls="icon-ok" id="btnImportOk1">上传附件</a>
+    </form>
+</div>
+<div id="importFileWindow2" class="mini-window" title="上传附件" style="width:510px;"
+     showModal="true" allowResize="false" allowDrag="true">
+    <form id="importForm2" name="importForm2" action="" enctype="multipart/form-data" method="post">
+        <input class="mini-hidden" id="projectNo2" name="projectNo"/>
+        <span style="margin-left: 10px">文件名:</span>
+        <input id="fileSelectInput_2" name="file" class="mini-htmlfile" required="true" width="350px"
+               RequiredErrorText="请选择文件" buttonText="选择"/>
+        <a class="mini-button" iconCls="icon-ok" id="btnImportOk2">上传附件</a>
+    </form>
+</div>
+<div id="addMoneytWindow" class="mini-window" title="编辑币种" style="width:880px;height:500px;" showMaxButton="true"
+     allowResize="true">
+    <div class="mini-toolbar">
+        <label>金额1</label>
+        <div id="txtCurrCd1" class="mini-textbox"></div>
+        <label>币种1</label>
+        <div id="cmbCurrCd1" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+             style="width:150px;height:24px;display:inline-block;vertical-align: middle" multiSelect="false"
+             popupWidth="250"></div>
+        <label>金额2</label>
+        <div id="txtCurrCd2" class="mini-textbox"></div>
+        <label>币种2</label>
+        <div id="cmbCurrCd2" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+             style="width:150px;height:24px;display:inline-block;vertical-align: middle" multiSelect="false"
+             popupWidth="250"></div>
+        <button class="mini-button" id="btnaddMoney">新增</button>
+        <button class="mini-button" id="btnsaveMoney">保存</button>
+        <button class="mini-button" id="btndeldMoney">删除</button>
+    </div>
+    <div class="mini-fit">
+        <div class="mini-datagrid" id="addMoneyGrid" pageSize="50"
+             style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
+             idField="batchNo" totalField="total"
+             allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+            <div property="columns">
+                <div type="indexcolumn" headerAlign="center" align="center" width="30"></div>
+                <div field="batchNo" headerAlign="center" align="center" width="50">报价次数</div>
+                <div field="currAmt1" headerAlign="center" align="left" width="150">金额1</div>
+                <div field="currCd1" headerAlign="center" align="center" width="50">币种1</div>
+                <div field="currAmt2" headerAlign="center" align="left" width="150">金额2</div>
+                <div field="currCd2" headerAlign="center" align="center" width="50">币种2</div>
+                <div field="createDate" headerAlign="center" align="center" dateFormat="yyyy-MM-dd" allowSort="true"
+                     width="80">报价时间
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addTechWindow" class="mini-window" title="添加技术协议" style="width:880px;height:500px;" showMaxButton="true"
+     allowResize="true">
+    <div class="mini-toolbar">
+        <label>采购员</label>
+        <div id="cmbTechcaigou" class="mini-combobox" style="margin-left: 4px; width: 200px" valueField="empNo"
+             allowInput="true" valueFromSelect="true" popupWidth="300"
+             textField="empName">
+            <div property="columns">
+                <div header="员工号" width="80" field="empNo" headerAlign="center" align="center"></div>
+                <div header="员工姓名" width="200" field="empName" headerAlign="center" align="center"></div>
+            </div>
+        </div>
+        <label>接受日期</label>
+        <div id="dateTechFrom" class="mini-datepicker" style="margin-left: 4px;width: 200px" value="new Date()"
+             format="yyyy-MM-dd"></div>
+        <div id="dateTechTo" class="mini-datepicker" style="margin-left: 4px;width: 200px" value="new Date()"
+             format="yyyy-MM-dd"></div>
+
+        <label>适用船</label>
+        <div id="cmbTechShip" class="mini-combobox" style="width:200px;" textField="APLY_PROJ" popupWidth="500"
+             allowInput="true" valueFromSelect="true"
+             valueField="POR_NO"
+             multiSelect="false">
+            <div property="columns">
+                <div header="系列船" width="80" field="PRTC_PROJ" headerAlign="center" align="center"></div>
+                <div header="协议船" width="200" field="SRC_PROJ_NO" headerAlign="center" align="center"></div>
+                <div header="por" width="80" field="POR_NO" headerAlign="center" align="center"></div>
+                <div header="适用船" width="200" field="APLY_PROJ" headerAlign="center" align="center"></div>
+            </div>
+        </div>
+        <!--        <div id="TechProjNoWindow" class="mini-panel" title="header" iconCls="icon-add"-->
+        <!--             style="width:450px;height:250px;"-->
+        <!--             showToolbar="true" showCloseButton="true" showHeader="false" bodyStyle="padding:0"-->
+        <!--             borderStyle="border:0">-->
+        <!--            <div class="mini-fit">-->
+        <!--                <div id="TechProjNoGrid" class="mini-datagrid"-->
+        <!--                     style="width:100%;height:100%;"-->
+        <!--                     idField="POR_NO" dataField="list"-->
+        <!--                     showPager="true" sizeList="[50,100,200,300]" pageSize="100"-->
+        <!--                     allowCellSelect="true" multiSelect="true" selectOnLoad="true">-->
+        <!--                    <div property="columns">-->
+        <!--                        <div property="columns">-->
+        <!--                            <div header="系列船" width="80" field="PRTC_PROJ" headerAlign="center" align="center"></div>-->
+        <!--                            <div header="协议船" width="200" field="SRC_PROJ_NO" headerAlign="center" align="center"></div>-->
+        <!--                            <div header="por" width="80" field="POR_NO" headerAlign="center" align="center"></div>-->
+        <!--                            <div header="适用船" width="200" field="APLY_PROJ" headerAlign="center" align="center"></div>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+
+        <label>por</label>
+        <div id="txtTechPor" class="mini-textbox"></div>
+        <button class="mini-button" id="btnTechSearch">查询</button>
+        <button class="mini-button" id="btnTechReg">登记</button>
+    </div>
+    <div class="mini-fit">
+        <div class="mini-datagrid" id="TechGrid" pageSize="50"
+             style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
+             idField="CHK_NO"
+             allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+            <div property="columns">
+                <div type="indexcolumn" headerAlign="center" align="center" width="30">序号</div>
+                <div field="SRC_PROJ_NO" headerAlign="center" align="center" width="50">工程号</div>
+                <div field="APLY_PROJ" headerAlign="center" align="left" width="150">适用船</div>
+                <div header="技术协议编号" headerAlign="center">
+                    <div property="columns">
+                        <div field="POR_NO" headerAlign="center" align="center" width="50">por</div>
+                        <div field="PO_ID" headerAlign="center" align="center" width="50">厂商编号</div>
+                        <div field="RM_DESC" headerAlign="center" align="center" width="50">备忘号</div>
+                        <div field="VSN_DESC" headerAlign="center" align="center" width="50" cellStyle="padding:0">
+                            版本号
+                        </div>
+                    </div>
+                </div>
+                <div field="EQPMT_NAME" headerAlign="center" align="center" width="50">设备名称</div>
+                <div field="PO_NAME" headerAlign="center" align="left" width="150">厂商简称</div>
+                <div field="CHK_USER" headerAlign="center" align="center" width="50">签订人员</div>
+                <div field="BUYR_ID" headerAlign="center" align="center" width="50">采购员</div>
+                <div field="RMRK" headerAlign="center" align="center" width="80">备注
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addEqdmtWindow" class="mini-window" title="添加设备编码" style="width:880px;height:500px;" showMaxButton="true"
+     allowResize="true">
+    <div class="mini-toolbar">
+        <label>采购员</label>
+        <div id="cmbEqcaigou" class="mini-combobox" style="margin-left: 4px; width: 200px" valueField="empNo"
+             allowInput="true" valueFromSelect="true" popupWidth="300"
+             textField="empName">
+            <div property="columns">
+                <div header="员工号" width="80" field="empNo" headerAlign="center" align="center"></div>
+                <div header="员工姓名" width="200" field="empName" headerAlign="center" align="center"></div>
+            </div>
+        </div>
+        <label>适用船</label>
+        <div id="cmbEqShip" class="mini-combobox" style="width:200px;" textField="APLY_PROJ" popupWidth="500"
+             allowInput="true" valueFromSelect="true"
+             valueField="POR_NO"
+             multiSelect="false">
+            <div property="columns">
+                <div header="系列船" width="80" field="PRTC_PROJ" headerAlign="center" align="center"></div>
+                <div header="协议船" width="200" field="SRC_PROJ_NO" headerAlign="center" align="center"></div>
+                <div header="por" width="80" field="POR_NO" headerAlign="center" align="center"></div>
+                <div header="适用船" width="200" field="APLY_PROJ" headerAlign="center" align="center"></div>
+            </div>
+        </div>
+        <label>设备编码/名称</label>
+        <div id="txtEqCode" class="mini-textbox"></div>
+        <button class="mini-button" id="btnEqSearch">查询</button>
+        <button class="mini-button" id="btnEqReq">登记</button>
+
+    </div>
+    <div class="mini-fit">
+        <table cellpadding="0" cellspacing="0" style="height: 100%;width: 100%">
+            <tr>
+                <td style="width: 45%;">
+                    <div class="mini-datagrid" id="EqOutGrid" pageSize="50"
+                         style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
+                         dataField="list"
+                         allowCellSelect="true" allowMoveColumn="false">
+                        <div property="columns">
+                            <div type="indexcolumn" headerAlign="center" align="center" width="30">序号</div>
+                            <div field="DEVICE_NO" headerAlign="center" align="center" width="50">设备编码</div>
+                            <div field="DEVICE_NAME" headerAlign="center" align="left" width="150">设备名</div>
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 10%;">
+                    <button class="mini-button" id="EqChose" style="width:96%;">移入</button>
+                    <button class="mini-button" id="EqDel" style="width:96%;">移出</button>
+                </td>
+                <td style="width: 45%;">
+                    <div class="mini-datagrid" id="EqInGrid" pageSize="50"
+                         style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
+                         dataField="list"
+                         allowCellSelect="true" allowMoveColumn="false">
+                        <div property="columns">
+                            <div type="indexcolumn" headerAlign="center" align="center" width="30">序号</div>
+                            <div field="DEVICE_NO" headerAlign="center" align="center" width="50">设备编码</div>
+                            <div field="DEVICE_NAME" headerAlign="center" align="left" width="150">设备名</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+
+</body>
+</html>
