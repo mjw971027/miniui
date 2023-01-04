@@ -211,6 +211,26 @@ var page = {
 // 下载所有文件
         this.btnDownAll = mini.get("btnDownAll");
 
+        this.txtShuilv = mini.get("txtShuilv");
+
+        this.txtRemark = mini.get("txtRemark");
+// 最终审定加的界面
+        this.addMoneytWindow2 = mini.get("addMoneytWindow2");
+        this.txtCurrCd1Last = mini.get("txtCurrCd1Last");
+        this.cmbCurrCd1Last = mini.get("cmbCurrCd1Last");
+        this.txtCurrCd2Last = mini.get("txtCurrCd2Last");
+        this.cmbCurrCd2Last = mini.get("cmbCurrCd2Last");
+        this.btnaddMoneyLast = mini.get("btnaddMoneyLast");
+        this.btnsaveMoneyLast = mini.get("btnsaveMoneyLast");
+        this.addMoneyGridLast = mini.get("addMoneyGridLast");
+
+        //拟审类型
+        this.cmbMoni = mini.get("cmbMoni");
+        //拟审类型
+        this.cmbMoni1 = mini.get("cmbMoni1");
+
+        //关联编号
+        this.cmbGuanlian = mini.get("cmbGuanlian");
     },
 
     dataBind() {
@@ -291,7 +311,7 @@ var page = {
         //选择合同相对方的查询按钮
         this.btnSearchProdCd3.on('click', this.tool.myBind(this.searchHeton, page));
 
-        this.btnAddProduce.on('click', this.tool.myBind(this.addSubData, page));
+        // this.btnAddProduce.on('click', this.tool.myBind(this.addSubData, page));
         //    切换是否临时制造商
         this.radioButtonProduce.on("valuechanged", this.tool.myBind(this.clickProducer, page));
 
@@ -310,7 +330,6 @@ var page = {
 
         this.btnImportOk2.on("click", this.tool.myBind(this.importFile2, page));
 
-        this.appListGrid.on("click", this.tool.myBind(this.changeAdata, page));
 
 
         this.btnBaoJia.on("click", this.tool.myBind(this.showAddMoneyList, page));
@@ -370,6 +389,8 @@ var page = {
         this.btnClose.on("click", this.tool.myBind(this.closeWindow, page));
 
         this.btnSave.on("click", this.tool.myBind(this.saveRes, page));
+        // 点击显示附件
+        this.appListGrid.on("click", this.tool.myBind(this.changeAdata, page));
 
         this.adataGridSubTab.on("drawcell", this.tool.myBind(this.onActionRenderer1Tab, page));
         this.adataGridprogramTab.on("drawcell", this.tool.myBind(this.onActionRenderer2Tab, page));
@@ -651,6 +672,15 @@ var page = {
     },
     initAllData(data) {
 
+        var tmp = data.projNo.split(",");
+        this.projNoList = [];
+        for (var i = 0; i < tmp.length; i++) {
+            var obj;
+            obj[id] = tmp[i];
+            obj[text] = tmp[i];
+            this.projNoList.add(tmp);
+        }
+
         this.mTypeCd = data.mTypeCd;
         this.userId = data.userId;
         this.auditGuidNo = data.auditGuidNo;
@@ -676,9 +706,9 @@ var page = {
         // this.tool.dataLoadDdlb(this.subFile, page.url + "/getSubFile?mTypeCd="+data.mTypeCd);
         // this.tool.dataLoadDdlb(this.programFile, page.url + "/getProgramFile?mTypeCd="+data.mTypeCd);
         this.tool.dataLoadDw(this.MoneydataGrid, page.url + "/getSubDataByChkNo?chkNo=" + data.chkNo);
+
         // page.tool.dataLoadDdlb(this.cbbCaigou, page.url + "/getBuyEmp");
         page.tool.dataLoadDdlb(this.cmbCodeChengben, page.url + "/getCostCode2", {userNo: data.costUserId});
-        page.initDatagridAll();
         // page.initDatagrid01();
         // page.initDatagrid02();
         if (data.projNo) {
@@ -693,17 +723,21 @@ var page = {
                     //审价方式
                     //属性
 
-                    // page.cmbproperty.setValue(response.reqType);
-                    // document.getElementById("cmbproperty1").innerText=page.cmbproperty.getText();
+                    // 业务员
+                    document.getElementById("txtEmpDesc").innerText = response.EMP_DESC;
+                    // 业务部门
+                    document.getElementById("txtOrgnDesc").innerText = response.ORGN_DESC;
+                    // 船型
+                    document.getElementById("txtProjType").innerText = response.PROJ_TYPE;
+
 
                     //工程号
-                    page.cmbProjNo.setValue(response.projNo);
-                    page.cmbProjNo.setText(response.projNo);
-                    document.getElementById("cmbProjNo1").innerText = response.projNo;
+
+                    document.getElementById("cmbProjNo1").innerText = response.PROJ_NO;
 
                     //项目名称
                     // page.txtProgramName.setValue(response.programName);
-                    document.getElementById("txtProgramName1").innerText = response.programName;
+                    document.getElementById("txtProgramName1").innerText = response.PROGRAM_NAME;
 
                     //采购依据
                     // page.cmbBuy.setValue(response.sjPorNoGuidNo);
@@ -712,8 +746,7 @@ var page = {
                     // page.cmbQuote.setValue(response.purchaseGuidNo);
                     // document.getElementById("cmbQuote1").innerText=page.cmbQuote.getText()
                     //采购方式/项目类别
-                    page.cmbProType.setValue(response.programGuidNo);
-                    document.getElementById("cmbProType1").innerText = page.cmbProType.getText()
+                    document.getElementById("cmbProType1").innerText = response.PROGRAM_TYPE_DESC;
 
                     //单价审核
                     // page.radioButtondanjia.setValue(response.prYN);
@@ -721,24 +754,25 @@ var page = {
                     // page.txtBuyNum.setValue(response.programMatQty);
 
                     // 采购单位
-                    page.cmbDanwei.setValue(response.programMatUnt);
-                    document.getElementById("txtBuyNum1").innerText = response.programMatQty + page.cmbDanwei.getText()
+                    page.cmbDanwei.setValue(response.UNT);
+                    document.getElementById("txtBuyNum1").innerText = response.QTY + page.cmbDanwei.getText()
 
                     //采购材质
                     // page.txtCaizhi.setValue(response.programMatGrd);
-                    document.getElementById("txtCaizhi1").innerText = response.programMatGrd;
+                    document.getElementById("txtCaizhi1").innerText = response.GRD;
 
                     //交货日期
-                    page.JiaohuoDate.setValue(response.dlvDt);
-                    document.getElementById("JiaohuoDate1").innerText = page.JiaohuoDate.getValue().substring(0, 10);
+                    document.getElementById("JiaohuoDate1").innerText = response.DLV_DT;
 
                     //开始日期
-                    page.StartDate.setValue(response.yxStartDt);
-                    document.getElementById("StartDate1").innerText = page.StartDate.getValue().substring(0, 10);
+                    document.getElementById("StartDate1").innerText = response.YX_START_DT;
 
                     //结束日期
-                    page.EndDate.setValue(response.yxEndDt);
-                    document.getElementById("EndDate1").innerText = page.EndDate.getValue().substring(0, 10);
+                    document.getElementById("EndDate1").innerText = response.YX_END_DT;
+                    // 开工日期
+                    document.getElementById("scDate").innerText = response.SC_DT;
+                    // 下坞日期
+                    document.getElementById("flDate").innerText = response.FL_DT;
 
                     //采购员
 
@@ -747,8 +781,8 @@ var page = {
                     // document.getElementById("cbbCaigou1").innerText=page.cbbCaigou.getText()
 
                     //成本代码
-                    page.cmbCodeChengben.setValue(response.costCd);
-                    document.getElementById("cmbCodeChengben1").innerText = page.cmbCodeChengben.getText()
+                    page.cmbCodeChengben.setValue(response.COST_CD);
+                    document.getElementById("cmbCodeChengben1").innerText = response.COST_CD
 
                     //目标成本（rmb
                     // page.goalRmb.setValue(response.targetAmountRmb);
@@ -756,15 +790,15 @@ var page = {
                     // page.goalDoller.setValue(response.targetAmountUsd);
                     //项目描述
                     // page.txtProDescribe.setValue(response.programCostDesc);
-                    document.getElementById("txtProDescribe1").innerText = response.programCostDesc
+                    document.getElementById("txtProDescribe1").innerText = response.PROGRAM_COST_DESC
 
                     //超过成本描述
                     // page.txtPassCost.setValue(response.programExtraCostDesc);
-                    document.getElementById("txtPassCost1").innerText = response.programExtraCostDesc
+                    document.getElementById("txtPassCost1").innerText = response.PROGRAM_EXTRA_COST_DESC
 
 
-                    page.cmbThree.setValue(response.lackReason);
-
+                    // page.cmbThree.setValue(response.LACKREASON);
+                    document.getElementById("txtRemark").innerText = response.REMARK;
                     //    编码
                     // page.editCode.setValue(response.DeviceNo);
                     // page.editCode.setText(response.DeviceNo);
@@ -851,10 +885,19 @@ var page = {
             // this.saveBaseInfo.hide();
             // this.btnSubmit.hide();
         }
+        // 初始化附件
+        page.initDatagridAll();
+        // 初始化技术协议
         page.techInit();
-
+        // 初始化供应商选择
+        page.cmbProjnNoShow(this.projNoList);
     },
-
+    cmbProjnNoShow(data) {
+        var column = page.MoneydataGrid.getColumn("projNo");
+        page.MoneydataGrid.updateColumn(column, {
+            editor: {type: "combobox", data: data}
+        })
+    },
     changeCaigou() {
         this.tool.dataLoadDdlb(this.cmbCodeChengben, page.url + "/getCostCode", {userId: page.cbbCaigou.getSelected().buyerId});
     },
@@ -1117,6 +1160,18 @@ var page = {
     drawRecom: function (e) {
         var column = e.column;
         var record = e.record;
+
+        if (column.field == "currCdLast") {
+            if (record.currAmt == "USD") {
+                e.cellHtml = record.currCd * page.txtHuilvUS.getValue();
+            }
+            if (record.currAmt == "EU") {
+                e.cellHtml = record.currCd * page.txtHuilvEU.getValue();
+            }
+        }
+        if (column.field == "currAmtLast") {
+            e.cellHtml = "RMB";
+        }
         if (column.field == "recomYn") {
             if (record.recomYn == "Y") {
                 e.cellHtml = "☆";
@@ -1157,18 +1212,17 @@ var page = {
         page.addMoneyGrid.addRow(param, 0);
         page.editMoneyGrid();
     },
+
     editMoneyGrid() {
-        if (page.addMoneyGrid.getData().length == 0) {
+        var data = page.addMoneyGrid.getData();
+        if (data.length == 0) {
             // mini.alert("没有信息不可编辑");
             return;
         }
-        if (page.addMoneyGrid.getData()[0]._state == "added") {
+        if (data[0]._state == "added") {
             page.addMoneyGrid.cancelEdit();
             page.addMoneyGrid.beginEditRow(page.addMoneyGrid.getData()[0]);
-        } else if (page.addMoneyGrid.getData().length > 0) {
-            page.addMoneyGrid.cancelEdit();
-            page.addMoneyGrid.beginEditRow(page.addMoneyGrid.getData()[0]);
-        } else if (page.addMoneyGrid.getData().length == 0) {
+        } else if (data.length == 0) {
             page.addMoneyGrid.cancelEdit();
         }
     },
@@ -1339,12 +1393,7 @@ var page = {
         this.tool.dataLoadDdlb(this.cmbEqShip, page.url + "/getShipType");
         this.addEqdmtWindow.showAtPos("center", "middle");
     },
-    showAddMoneyList: function () {
-        this.tool.dataLoadDw(this.addMoneyGrid, page.ip + "/info/getSubDataByChkNoALL", {chkNo: data.chkNo});
-        this.addMoneyGrid.set({title: "审价编号:" + this.chkNo});
-        this.addMoneytWindow.showAtPos("center", "middle");
-        page.editMoneyGrid();
-    },
+
     showAddTechList: function () {
         this.TechGrid.set({title: "审价编号:" + this.chkNo});
         this.addTechWindow.showAtPos("center", "middle");

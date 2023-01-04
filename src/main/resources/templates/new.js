@@ -11,3 +11,21 @@ this.btnAfterData = mini.get("btnAfterData");
 this.btnDownAll = mini.get("btnDownAll");
 
 this.txtRemark = mini.get("txtRemark");
+// 最终审定加的界面
+this.addMoneytWindow2 = mini.get("addMoneytWindow2");
+this.txtCurrCd1Last = mini.get("txtCurrCd1Last");
+this.cmbCurrCd1Last = mini.get("cmbCurrCd1Last");
+this.txtCurrCd2Last = mini.get("txtCurrCd2Last");
+this.cmbCurrCd2Last = mini.get("cmbCurrCd2Last");
+this.btnaddMoneyLast = mini.get("btnaddMoneyLast");
+this.btnsaveMoneyLast = mini.get("btnsaveMoneyLast");
+this.addMoneyGridLast = mini.get("addMoneyGridLast");
+
+
+
+
+
+
+
+
+

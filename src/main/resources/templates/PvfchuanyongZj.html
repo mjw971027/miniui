@@ -451,6 +451,10 @@
                             <div type="checkcolumn" headerAlign="center" width="10"></div>
                             <div name="recomYn" headerAlign="center" align="center" width="50">是否推荐</div>
                             <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                            <div field="projNo" name="projNo" headerAlign="center" align="center" width="50"
+                                 cellStyle="padding:0">
+                                船号
+                            </div>
                             <div field="subcDesc" headerAlign="center" align="center" width="50" cellStyle="padding:0">
                                 供应商
                             </div>
@@ -460,8 +464,8 @@
                             <div field="subcArea" headerAlign="center" align="center" width="80">产地</div>
                             <div header="折算金额" headerAlign="center">
                                 <div property="columns">
-                                    <div field="currCd1" headerAlign="center" align="center" width="50">金额</div>
-                                    <div field="currAmt1" headerAlign="center" align="center" width="50"
+                                    <div field="currCdShow" headerAlign="center" align="center" width="50">金额</div>
+                                    <div field="currAmtShow" headerAlign="center" align="center" width="50"
                                          cellStyle="padding:0">
                                         币种
                                     </div>
@@ -479,16 +483,26 @@
                             </div>
                             <div header="审价会确定金额" headerAlign="center">
                                 <div property="columns">
-                                    <div field="currCd1" headerAlign="center" align="center" width="50">金额</div>
-                                    <div field="currAmt1" headerAlign="center" align="center" width="50"
+                                    <div field="currCdLast" headerAlign="center" align="center" width="50">
+                                        <input property="editor" class="mini-textbox"/>
+                                        金额
+                                    </div>
+                                    <div field="amtLast" headerAlign="center" align="center" width="50"
                                          cellStyle="padding:0">
+                                        <!--                                        todo-->
+                                        <input property="editor" class="mini-combobox" textField="CURR_DESC"
+                                               valueField="CURR_CD" url="../../info/getCoinType"
+                                               style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                                               multiSelect="false"
+                                               popupWidth="250"/>
                                         币种
                                     </div>
                                 </div>
                             </div>
                             <div field="bidRemak" headerAlign="center" align="center" width="160">备注</div>
                             <column type="checkboxcolumn"
-                                    field="married" trueValue="1" falseValue="0" width="60" headerAlign="center">是否选定
+                                    field="lastSelect" trueValue="Y" falseValue="N  x" width="60" headerAlign="center">
+                                是否选定
                             </column>
                         </div>
                     </div>
@@ -1031,17 +1045,35 @@
         <button class="mini-button" id="btndeldMoney">删除</button>
     </div>
     <div class="mini-fit">
+        <!--        todo-->
         <div class="mini-datagrid" id="addMoneyGrid" pageSize="50"
              style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
-             idField="batchNo" totalField="total"
-             allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+             idField="batchNo"
+             allowCellSelect="true" allowMoveColumn="false">
             <div property="columns">
                 <div type="indexcolumn" headerAlign="center" align="center" width="30"></div>
                 <div field="batchNo" headerAlign="center" align="center" width="50">报价次数</div>
-                <div field="currAmt1" headerAlign="center" align="left" width="150">金额1</div>
-                <div field="currCd1" headerAlign="center" align="center" width="50">币种1</div>
-                <div field="currAmt2" headerAlign="center" align="left" width="150">金额2</div>
-                <div field="currCd2" headerAlign="center" align="center" width="50">币种2</div>
+                <div field="currAmt1" headerAlign="center" align="left" width="150">金额1
+                    <input property="editor" class="mini-textbox" style="width: 100%;">
+                </div>
+                <div field="currCd1" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false" url="../../info/getCoinType"
+                           popupWidth="250"/>
+                    币种1
+                </div>
+                <div field="currAmt2" headerAlign="center" align="left" width="150">
+                    <input property="editor" class="mini-textbox" style="width: 100%;">金额2
+                </div>
+                <div field="currCd2" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           url="../../info/getCoinType"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false"
+                           popupWidth="250"/>
+                    币种2
+                </div>
                 <div field="createDate" headerAlign="center" align="center" dateFormat="yyyy-MM-dd" allowSort="true"
                      width="80">报价时间
                 </div>
@@ -1049,6 +1081,63 @@
         </div>
     </div>
 </div>
+
+<div id="addMoneytWindow2" class="mini-window" title="编辑币种" style="width:880px;height:500px;" showMaxButton="true"
+     allowResize="true">
+    <div class="mini-toolbar">
+        <label>金额1</label>
+        <div id="txtCurrCd1Last" class="mini-textbox"></div>
+        <label>币种1</label>
+        <div id="cmbCurrCd1Last" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+             style="width:150px;height:24px;display:inline-block;vertical-align: middle" multiSelect="false"
+             popupWidth="250"></div>
+        <label>金额2</label>
+        <div id="txtCurrCd2Last" class="mini-textbox"></div>
+        <label>币种2</label>
+        <div id="cmbCurrCd2Last" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+             style="width:150px;height:24px;display:inline-block;vertical-align: middle" multiSelect="false"
+             popupWidth="250"></div>
+        <button class="mini-button" id="btnaddMoneyLast">新增</button>
+        <button class="mini-button" id="btnsaveMoneyLast">保存</button>
+    </div>
+    <div class="mini-fit">
+        <!--        todo-->
+        <div class="mini-datagrid" id="addMoneyGridLast" pageSize="50"
+             style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
+             idField="batchNo"
+             allowCellSelect="true" allowMoveColumn="false">
+            <div property="columns">
+                <div type="indexcolumn" headerAlign="center" align="center" width="30"></div>
+                <div field="batchNo" headerAlign="center" align="center" width="50">报价次数</div>
+                <div field="currAmt1" headerAlign="center" align="left" width="150">金额1
+                    <input property="editor" class="mini-textbox" style="width: 100%;">
+                </div>
+                <div field="currCd1" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false" url="../../info/getCoinType"
+                           popupWidth="250"/>
+                    币种1
+                </div>
+                <div field="currAmt2" headerAlign="center" align="left" width="150">
+                    <input property="editor" class="mini-textbox" style="width: 100%;">金额2
+                </div>
+                <div field="currCd2" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           url="../../info/getCoinType"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false"
+                           popupWidth="250"/>
+                    币种2
+                </div>
+                <div field="createDate" headerAlign="center" align="center" dateFormat="yyyy-MM-dd" allowSort="true"
+                     width="80">报价时间
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="addTechWindow" class="mini-window" title="添加技术协议" style="width:880px;height:500px;" showMaxButton="true"
      allowResize="true">
     <div class="mini-toolbar">

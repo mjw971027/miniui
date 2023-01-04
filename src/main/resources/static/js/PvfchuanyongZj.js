@@ -214,6 +214,15 @@ var page = {
         this.txtShuilv = mini.get("txtShuilv");
 
         this.txtRemark = mini.get("txtRemark");
+// 最终审定加的界面
+        this.addMoneytWindow2 = mini.get("addMoneytWindow2");
+        this.txtCurrCd1Last = mini.get("txtCurrCd1Last");
+        this.cmbCurrCd1Last = mini.get("cmbCurrCd1Last");
+        this.txtCurrCd2Last = mini.get("txtCurrCd2Last");
+        this.cmbCurrCd2Last = mini.get("cmbCurrCd2Last");
+        this.btnaddMoneyLast = mini.get("btnaddMoneyLast");
+        this.btnsaveMoneyLast = mini.get("btnsaveMoneyLast");
+        this.addMoneyGridLast = mini.get("addMoneyGridLast");
 
 
     },
@@ -315,7 +324,6 @@ var page = {
 
         this.btnImportOk2.on("click", this.tool.myBind(this.importFile2, page));
 
-        this.appListGrid.on("click", this.tool.myBind(this.changeAdata, page));
 
 
         this.btnBaoJia.on("click", this.tool.myBind(this.showAddMoneyList, page));
@@ -375,6 +383,8 @@ var page = {
         this.btnClose.on("click", this.tool.myBind(this.closeWindow, page));
 
         this.btnSave.on("click", this.tool.myBind(this.saveRes, page));
+        // 点击显示附件
+        this.appListGrid.on("click", this.tool.myBind(this.changeAdata, page));
 
         this.adataGridSubTab.on("drawcell", this.tool.myBind(this.onActionRenderer1Tab, page));
         this.adataGridprogramTab.on("drawcell", this.tool.myBind(this.onActionRenderer2Tab, page));
@@ -656,6 +666,15 @@ var page = {
     },
     initAllData(data) {
 
+        var tmp = data.projNo.split(",");
+        this.projNoList = [];
+        for (var i = 0; i < tmp.length; i++) {
+            var obj;
+            obj[id] = tmp[i];
+            obj[text] = tmp[i];
+            this.projNoList.add(tmp);
+        }
+
         this.mTypeCd = data.mTypeCd;
         this.userId = data.userId;
         this.auditGuidNo = data.auditGuidNo;
@@ -663,6 +682,7 @@ var page = {
         this.chkNo = data.chkNo;
         this.cmbproperty.setValue(data.reqType);
         this.cmbVerifMtTypeCd.setValue(data.mTypeCd);
+
 
         this.tool.dataLoadDdlb(this.empDesc, page.url + "/getEmpNo", {
             typeCd: data.mTypeCd
@@ -676,14 +696,26 @@ var page = {
         // this.cmbCompany.setValue(data.companyNo);
         // document.getElementById("cmbCompany1").innerText=this.cmbCompany.getText();
         this.cbbVerfiType.setValue(data.auditGuidNo);
+
+        $.ajax({
+            url: page.ip + "/Assess/getHuiLv"
+            , data: {chkNo: data.chkNo}
+            , type: "get"
+            , async: false
+            , success: function (data) {
+                // todo
+                document.getElementById("txtHuilvUS").innerText = data.USD;
+                document.getElementById("txtHuilvEU").innerText = data.EUR;
+            }
+        });
         document.getElementById("cbbVerfiType1").innerText = this.cbbVerfiType.getText();
         // this.tool.dataLoadDdlb(this.cmbThree, page.url + "/getThreeReason?mTypeCd="+data.mTypeCd);
         // this.tool.dataLoadDdlb(this.subFile, page.url + "/getSubFile?mTypeCd="+data.mTypeCd);
         // this.tool.dataLoadDdlb(this.programFile, page.url + "/getProgramFile?mTypeCd="+data.mTypeCd);
         this.tool.dataLoadDw(this.MoneydataGrid, page.url + "/getSubDataByChkNo?chkNo=" + data.chkNo);
+
         // page.tool.dataLoadDdlb(this.cbbCaigou, page.url + "/getBuyEmp");
         page.tool.dataLoadDdlb(this.cmbCodeChengben, page.url + "/getCostCode2", {userNo: data.costUserId});
-        page.initDatagridAll();
         // page.initDatagrid01();
         // page.initDatagrid02();
         if (data.projNo) {
@@ -860,10 +892,19 @@ var page = {
             // this.saveBaseInfo.hide();
             // this.btnSubmit.hide();
         }
+        // 初始化附件
+        page.initDatagridAll();
+        // 初始化技术协议
         page.techInit();
-
+        // 初始化供应商选择
+        page.cmbProjnNoShow(this.projNoList);
     },
-
+    cmbProjnNoShow(data) {
+        var column = page.MoneydataGrid.getColumn("projNo");
+        page.MoneydataGrid.updateColumn(column, {
+            editor: {type: "combobox", data: data}
+        })
+    },
     changeCaigou() {
         this.tool.dataLoadDdlb(this.cmbCodeChengben, page.url + "/getCostCode", {userId: page.cbbCaigou.getSelected().buyerId});
     },
@@ -1126,6 +1167,18 @@ var page = {
     drawRecom: function (e) {
         var column = e.column;
         var record = e.record;
+
+        if (column.field == "currCdShow") {
+            if (record.currAmt == "USD") {
+                e.cellHtml = record.currCd * page.txtHuilvUS.getValue();
+            }
+            if (record.currAmt == "EUR") {
+                e.cellHtml = record.currCd * page.txtHuilvEU.getValue();
+            }
+        }
+        if (column.field == "currAmtShow") {
+            e.cellHtml = "RMB";
+        }
         if (column.field == "recomYn") {
             if (record.recomYn == "Y") {
                 e.cellHtml = "☆";
@@ -1166,18 +1219,17 @@ var page = {
         page.addMoneyGrid.addRow(param, 0);
         page.editMoneyGrid();
     },
+
     editMoneyGrid() {
-        if (page.addMoneyGrid.getData().length == 0) {
+        var data = page.addMoneyGrid.getData();
+        if (data.length == 0) {
             // mini.alert("没有信息不可编辑");
             return;
         }
-        if (page.addMoneyGrid.getData()[0]._state == "added") {
+        if (data[0]._state == "added") {
             page.addMoneyGrid.cancelEdit();
             page.addMoneyGrid.beginEditRow(page.addMoneyGrid.getData()[0]);
-        } else if (page.addMoneyGrid.getData().length > 0) {
-            page.addMoneyGrid.cancelEdit();
-            page.addMoneyGrid.beginEditRow(page.addMoneyGrid.getData()[0]);
-        } else if (page.addMoneyGrid.getData().length == 0) {
+        } else if (data.length == 0) {
             page.addMoneyGrid.cancelEdit();
         }
     },

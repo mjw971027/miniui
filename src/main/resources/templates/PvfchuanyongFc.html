@@ -27,7 +27,7 @@
 <body>
 <div class="mini-tabs" activeIndex="0" style="width:100%;height:100%;">
     <div title="项目信息">
-        <div class="innerdiv" style="height: 200px;">
+        <div class="innerdiv" style="height: 215px;">
             <div class="mini-fit">
                 <div class="mini-toolbar">
                     <label>项目信息</label>
@@ -38,25 +38,37 @@
                             <label class="tableTdTitle">业务员</label>
                         </td>
                         <td colspan="2">
-                            2
+                            <div id="txtEmpDesc"></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
                             <label class="tableTdTitle">业务科室</label>
                         </td>
                         <td style="width: 100px;">
-                            4
+                            <div id="txtOrgnDesc"></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle">开工日期</label>
+                            <label class="tableTdTitle">开始日期</label>
                         </td>
                         <td style="width: 100px;">
-                            6
+
+                            <div id="StartDate" class="mini-datepicker" style="width: 95%;" value="new Date()"
+                                 visible="false"
+                                 format="yyyy-MM-dd">
+                            </div>
+                            <div id="StartDate1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle">下坞日期</label>
+                            <label class="tableTdTitle">结束日期</label>
                         </td>
                         <td style="width: 100px;">
-                            8
+                            <div id="EndDate" class="mini-datepicker" style="width: 95%;" value="new Date()"
+                                 visible="false"
+                                 format="yyyy-MM-dd">
+                            </div>
+                            <div id="EndDate1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                     </tr>
                     <tr>
@@ -70,7 +82,7 @@
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle"> 审查方式</label>
+                            <label class="tableTdTitle"> 项目类别</label>
                         </td>
                         <td style="width: 100px;">
                             <div id="cbbVerfiType" class="mini-combobox" style=" width: 95%;"
@@ -82,37 +94,43 @@
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle">开始日期</label>
+                            <label class="tableTdTitle">报价方式</label>
                         </td>
                         <td>
-                            <div id="StartDate" class="mini-datepicker" style="width: 95%;" value="new Date()"
+                            <div id="cmbQuote" class="mini-combobox" style="width:95%;" textField="PURCHASE_DESC"
                                  visible="false"
-                                 format="yyyy-MM-dd">
+                                 valueField="GUID_NO"
+                                 multiSelect="false">
                             </div>
-                            <div id="StartDate1"
+                            <div id="cmbQuote1"
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle"> 结束日期</label>
+                            <label class="tableTdTitle"> 拟审类型</label>
                         </td>
                         <td style="width: 100px;">
 
-                            <div id="EndDate" class="mini-datepicker" style="width: 95%;" value="new Date()"
+                            <div id="cmbMoni" class="mini-combobox" style="width: 100px" textField="VERI_TYPE"
                                  visible="false"
-                                 format="yyyy-MM-dd">
+                                 valueField="DB_ID" multiSelect="false" popupWidth="300" allowinput="false"
+                                 showNullItem="true">
+                                <div property="columns">
+                                    <div header="拟审类型" width="200" field="VERI_TYPE" headerAlign="center"
+                                         align="center"></div>
+                                </div>
                             </div>
-                            <div id="EndDate1"
+                            <div id="cmbMoni1"
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
-
                         </td>
                     </tr>
                     <tr>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle">合同船号</label>
+                            <label class="tableTdTitle">工程号</label>
                         </td>
                         <td style="width: 150px;">
                             <div class="mini-buttonedit" name="cmbProjNo" id="cmbProjNo" showClose="true"
-                                 allowInput="false" visible="false"
+                                 allowInput="false"
+                                 visible="false"
                                  style="width: 99%;">
                                 <div property="columns">
                                     <div header="工程号" width="25%" field="code" headerAlign="center"
@@ -125,10 +143,19 @@
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td class="tableTdTitle" style="width: 50px;">
-                            <label class="tableTdTitle"> 船型</label>
+                            <label class="tableTdTitle"> 数量单位</label>
                         </td>
                         <td colspan="2">
-                            3
+                            <div id="txtBuyNum" class="mini-textbox" style="width:95%;" visible="false"
+                                 multiSelect="false">
+                            </div>
+                            <div id="cmbDanwei" class="mini-combobox" style="width:95%;" textField="UNT_DESC"
+                                 visible="false"
+                                 valueField="STD_UNT"
+                                 multiSelect="false">
+                            </div>
+                            <div id="txtBuyNum1"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td colspan="2">
                             （有无技术协议）
@@ -143,7 +170,7 @@
                 <table class="infoTable" style="width: 100%;">
                     <tr>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle">交货日期</label>
+                            <label class="tableTdTitle">技术要求</label>
                         </td>
                         <td style="width: 100px;">
                             <div id="JiaohuoDate" class="mini-datepicker" style="width: 95%;;" visible="false"
@@ -154,7 +181,7 @@
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle">采购方式</label>
+                            <label class="tableTdTitle">历史均价</label>
                         </td>
                         <td colspan="4">
                             <div id="cmbProType" class="mini-combobox" style="width: 95%" textField="PROGRAM_DESC"
@@ -175,34 +202,26 @@
                             <label class="tableTdTitle"> 业务员报审说明</label>
                         </td>
                         <td rowspan="4" style="width: auto;">
-                            8
+                            <div id="txtRemark"></div>
                         </td>
                     </tr>
                     <tr>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle"> 数量（单位）</label>
+                            <label class="tableTdTitle"> 关联审查编号</label>
                         </td>
                         <td style="width: 100px;">
-                            <div id="txtBuyNum" class="mini-textbox" style="width:95%;" visible="false"
-                                 multiSelect="false">
-                            </div>
-                            <div id="cmbDanwei" class="mini-combobox" style="width:95%;" textField="UNT_DESC"
-                                 visible="false"
+                            <div id="cmbGuanlian" class="mini-combobox" style="width:200px;" textField="UNT_DESC"
                                  valueField="STD_UNT"
                                  multiSelect="false">
                             </div>
-                            <div id="txtBuyNum1"
+                            <div id="cmbGuanlian1"
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td class="tableTdTitle" style="width: 100px;">
-                            <label class="tableTdTitle"> 材质（规格）</label>
+                            <label class="tableTdTitle"> 近期单价</label>
                         </td>
                         <td colspan="4">
-                            <div id="txtCaizhi" class="mini-textbox" style="width:95%;" visible="false"
-                                 multiSelect="false">
-                            </div>
-                            <div id="txtCaizhi1"
-                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
+
                         </td>
 
                     </tr>
@@ -242,7 +261,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="tableTdTitle" style="width: 100px;height: 40px;">
+                        <td class="tableTdTitle" style="width: 100px;">
                             <label class="tableTdTitle"> 超目标成本说明</label>
                         </td>
                         <td colspan="6">
@@ -267,8 +286,13 @@
                         <label>供应商</label>
                         <label style="padding-left: 100px;">当前1美元兑换人民币汇率</label>
                         <div id="txtHuilvUS" class="mini-textbox" style="width: 80px" enabled="false"></div>
-                        <label style="padding-left: 100px;">当前1欧元兑换人民币汇率</label>
+                        <label style="padding-left: 60px;">当前1欧元兑换人民币汇率</label>
                         <div id="txtHuilvEU" class="mini-textbox" style="width: 80px" enabled="false"></div>
+                        <label style="padding-left: 50px;">税率</label>
+                        <div id="txtShuilv" value=13 class="mini-textbox" style="width: 80px" vtype="range:0,100"
+                             required="true"></div>
+                        <label style="padding-right: 30px;">%</label>
+
                         <div id="radioButtonProduce2" class="mini-radiobuttonlist"
                              style="width: 100px;display: inline-block;vertical-align: middle;display: none"
                              valueField="id"
@@ -445,6 +469,10 @@
                             <div type="checkcolumn" headerAlign="center" width="10"></div>
                             <div name="recomYn" headerAlign="center" align="center" width="50">是否推荐</div>
                             <div type="indexcolumn" headerAlign="center" width="30">序号</div>
+                            <div field="projNo" name="projNo" headerAlign="center" align="center" width="50"
+                                 cellStyle="padding:0">
+                                船号
+                            </div>
                             <div field="subcDesc" headerAlign="center" align="center" width="50" cellStyle="padding:0">
                                 供应商
                             </div>
@@ -454,8 +482,8 @@
                             <div field="subcArea" headerAlign="center" align="center" width="80">产地</div>
                             <div header="折算金额" headerAlign="center">
                                 <div property="columns">
-                                    <div field="currCd1" headerAlign="center" align="center" width="50">金额</div>
-                                    <div field="currAmt1" headerAlign="center" align="center" width="50"
+                                    <div field="currCdLast" headerAlign="center" align="center" width="50">金额</div>
+                                    <div field="currAmtLast" headerAlign="center" align="center" width="50"
                                          cellStyle="padding:0">
                                         币种
                                     </div>
@@ -473,16 +501,25 @@
                             </div>
                             <div header="审价会确定金额" headerAlign="center">
                                 <div property="columns">
-                                    <div field="currCd1" headerAlign="center" align="center" width="50">金额</div>
-                                    <div field="currAmt1" headerAlign="center" align="center" width="50"
+                                    <div field="currCd" headerAlign="center" align="center" width="50">
+                                        <input property="editor" class="mini-textbox"/>
+                                        金额
+                                    </div>
+                                    <div field="currAmt" headerAlign="center" align="center" width="50"
                                          cellStyle="padding:0">
+                                        <!--                                        todo-->
+                                        <input property="editor" class="mini-combobox" textField="CURR_DESC"
+                                               valueField="CURR_CD" url="../../info/getCoinType"
+                                               style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                                               multiSelect="false"
+                                               popupWidth="250"/>
                                         币种
                                     </div>
                                 </div>
                             </div>
                             <div field="bidRemak" headerAlign="center" align="center" width="160">备注</div>
                             <column type="checkboxcolumn"
-                                    field="married" trueValue="1" falseValue="0" width="60" headerAlign="center">是否选定
+                                    field="choosenYN" trueValue="1" falseValue="0" width="60" headerAlign="center">是否选定
                             </column>
                         </div>
                     </div>
@@ -1025,17 +1062,35 @@
         <button class="mini-button" id="btndeldMoney">删除</button>
     </div>
     <div class="mini-fit">
+        <!--        todo-->
         <div class="mini-datagrid" id="addMoneyGrid" pageSize="50"
              style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
-             idField="batchNo" totalField="total"
-             allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+             idField="batchNo"
+             allowCellSelect="true" allowMoveColumn="false">
             <div property="columns">
                 <div type="indexcolumn" headerAlign="center" align="center" width="30"></div>
                 <div field="batchNo" headerAlign="center" align="center" width="50">报价次数</div>
-                <div field="currAmt1" headerAlign="center" align="left" width="150">金额1</div>
-                <div field="currCd1" headerAlign="center" align="center" width="50">币种1</div>
-                <div field="currAmt2" headerAlign="center" align="left" width="150">金额2</div>
-                <div field="currCd2" headerAlign="center" align="center" width="50">币种2</div>
+                <div field="currAmt1" headerAlign="center" align="left" width="150">金额1
+                    <input property="editor" class="mini-textbox" style="width: 100%;">
+                </div>
+                <div field="currCd1" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false" url="../../info/getCoinType"
+                           popupWidth="250"/>
+                    币种1
+                </div>
+                <div field="currAmt2" headerAlign="center" align="left" width="150">
+                    <input property="editor" class="mini-textbox" style="width: 100%;">金额2
+                </div>
+                <div field="currCd2" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           url="../../info/getCoinType"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false"
+                           popupWidth="250"/>
+                    币种2
+                </div>
                 <div field="createDate" headerAlign="center" align="center" dateFormat="yyyy-MM-dd" allowSort="true"
                      width="80">报价时间
                 </div>
@@ -1043,6 +1098,63 @@
         </div>
     </div>
 </div>
+
+<div id="addMoneytWindow2" class="mini-window" title="编辑币种" style="width:880px;height:500px;" showMaxButton="true"
+     allowResize="true">
+    <div class="mini-toolbar">
+        <label>金额1</label>
+        <div id="txtCurrCd1Last" class="mini-textbox"></div>
+        <label>币种1</label>
+        <div id="cmbCurrCd1Last" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+             style="width:150px;height:24px;display:inline-block;vertical-align: middle" multiSelect="false"
+             popupWidth="250"></div>
+        <label>金额2</label>
+        <div id="txtCurrCd2Last" class="mini-textbox"></div>
+        <label>币种2</label>
+        <div id="cmbCurrCd2Last" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+             style="width:150px;height:24px;display:inline-block;vertical-align: middle" multiSelect="false"
+             popupWidth="250"></div>
+        <button class="mini-button" id="btnaddMoneyLast">新增</button>
+        <button class="mini-button" id="btnsaveMoneyLast">保存</button>
+    </div>
+    <div class="mini-fit">
+        <!--        todo-->
+        <div class="mini-datagrid" id="addMoneyGridLast" pageSize="50"
+             style="width:100%;height: 100%" showPager="true" showHeader="true" allowCellWrap="true"
+             idField="batchNo"
+             allowCellSelect="true" allowMoveColumn="false">
+            <div property="columns">
+                <div type="indexcolumn" headerAlign="center" align="center" width="30"></div>
+                <div field="batchNo" headerAlign="center" align="center" width="50">报价次数</div>
+                <div field="currAmt1" headerAlign="center" align="left" width="150">金额1
+                    <input property="editor" class="mini-textbox" style="width: 100%;">
+                </div>
+                <div field="currCd1" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false" url="../../info/getCoinType"
+                           popupWidth="250"/>
+                    币种1
+                </div>
+                <div field="currAmt2" headerAlign="center" align="left" width="150">
+                    <input property="editor" class="mini-textbox" style="width: 100%;">金额2
+                </div>
+                <div field="currCd2" headerAlign="center" align="center" width="50">
+                    <input property="editor" class="mini-combobox" textField="CURR_DESC" valueField="CURR_CD"
+                           url="../../info/getCoinType"
+                           style="width:150px;height:24px;display:inline-block;vertical-align: middle"
+                           multiSelect="false"
+                           popupWidth="250"/>
+                    币种2
+                </div>
+                <div field="createDate" headerAlign="center" align="center" dateFormat="yyyy-MM-dd" allowSort="true"
+                     width="80">报价时间
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="addTechWindow" class="mini-window" title="添加技术协议" style="width:880px;height:500px;" showMaxButton="true"
      allowResize="true">
     <div class="mini-toolbar">
@@ -1197,6 +1309,47 @@
 
 </div>
 
+<div id="afterDataWindow" class="mini-window" title="添加设备编码" style="width:880px;height:500px;"
+     showMaxButton="true"
+     allowResize="true">
+    <div class="mini-datagrid" id="summaryGrid" pageSize="50"
+         title="汇总"
+         style="width:100%;height: 100%" showPager="false" showHeader="true" allowCellWrap="true"
+         idField="batchNo" totalField="total"
+         allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+        <div property="columns">
+            <div field="batchNo" headerAlign="center" align="center" width="50">供应商</div>
+            <div field="currAmt1" headerAlign="center" align="center" width="150">意见总数</div>
+            <div field="currCd1" headerAlign="center" align="center" width="50">O类</div>
+            <div field="currAmt2" headerAlign="center" align="center" width="150">A类</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">B类</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">关闭率</div>
+
+        </div>
+    </div>
+    <div class="mini-datagrid" id="mingXiGrid" pageSize="50"
+         style="width:100%;height: 100%" showPager="false" showHeader="true" allowCellWrap="true"
+         idField="batchNo" totalField="total" title="明细"
+         allowCellSelect="true" sortMode="client" allowMoveColumn="false">
+        <div property="columns">
+            <div type="indexcolumn" headerAlign="center" align="center" width="30"></div>
+            <div field="batchNo" headerAlign="center" align="center" width="50">供货方</div>
+            <div field="currAmt1" headerAlign="center" align="left" width="50">工程号</div>
+            <div field="currCd1" headerAlign="center" align="center" width="50">物资描述</div>
+            <div field="currAmt2" headerAlign="center" align="left" width="50">合同编号</div>
+            <div field="currCd2" headerAlign="center" align="center" width="350">意见描述</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">严重程度</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">整改要求</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">提出部门</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">提出日期</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">意见状态</div>
+            <div field="currCd2" headerAlign="center" align="center" width="50">关闭日期</div>
+
+        </div>
+    </div>
+
+
+</div>
 
 </body>
 </html>
