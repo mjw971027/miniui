@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" id="fileInput">
+<!--写一个动态翻书页效果-->
+</body>
+<script type="text/javascript">
+    const A = [
+        {key1: 'value1', key3: 'value2'},
+        {key1: 'value3', key3: 'value4'}
+    ];
+
+    // 将 key1 更改为 key2，将 key3 更改为 key4
+    A.forEach(item => {
+        item.key2 = item.key1;
+        delete item.key1;
+        item.key4 = item.key3;
+        delete item.key3;
+    });
+
+    console.log(A); // 输出修改后的集合数组
+
+    const collectionA = [
+        {key1: "必须存在1", value: 1},
+        {key1: "必须存在2", value: 2},
+        {key1: "不存在1", value: 3},
+        {key1: "不存在2", value: 4}
+    ];
+
+    const collectionB = [
+        {key2: "不是必须", value: 5},
+        {key2: "必须存在1", value: 6},
+        {key2: "必须存在2", value: 74},
+        {key2: "必须存在1", value: 733},
+
+        {key2: "必须存在2", value: 7},
+        {key2: "不存在1", value: 8}
+    ];
+
+    const hasAllMusts = collectionA
+        .filter(el => el.key1.includes("必须")) // 筛选必须存在的元素
+        .every(el => collectionB.some(item => item.key2 === el.key1)); // 判断每个元素是否在集合B中存在
+
+    console.log(hasAllMusts); // true
+
+
+</script>
+</html>

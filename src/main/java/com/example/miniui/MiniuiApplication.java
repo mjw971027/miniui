@@ -2,13 +2,17 @@ package com.example.miniui;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 @EnableCaching
-@SpringBootApplication
+
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+
+
 public class MiniuiApplication extends WebMvcConfigurationSupport {
 
     public static void main(String[] args) {

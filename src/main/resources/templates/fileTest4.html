@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 引入 jQuery 库和 jQuery Form 插件 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+<style type="text/css">
+    #myForm input[type="file"] {
+        border: none;
+        border-radius: 3px;
+        background-color: #f2f2f2;
+        padding: 10px;
+        font-size: 10px;
+        box-shadow: none;
+        transition: background-color 0.3s ease;
+    }
+
+    #myForm input[type="file"]:focus {
+        outline: none;
+        background-color: #e6e6e6;
+    }
+
+    #myForm input[type="file"]::file-selector-button {
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+    #myForm input[type="file"]::file-selector-button:hover {
+        background-color: #3e8e41;
+    }
+
+    #myForm button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 10px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    #uploadBtn {
+        background-color: #008CBA;
+    }
+
+    #submitBtn {
+        background-color: #f44336;
+    }
+
+    #uploadBtn:hover {
+        background-color: #00557f;
+    }
+
+    #submitBtn:hover {
+        background-color: #b82f0d;
+    }
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+<form id="myForm">
+    <input id="fileInput" type="file" name="file" multiple>
+    <button type="button" style="display: none" onclick="uploadFiles()">上传文件</button>
+    <button type="button" style="display: none" onclick="submitFiles()">提交文件</button>
+</form>
+
+<div id="fileList"></div>
+
+</body>
+<script type="text/javascript">
+    // 用于保存上传的文件列表
+    var uploadedFiles = [];
+
+    var test = document.getElementById("fileInput");
+    test.addEventListener('change', function (event) {
+        var files = event.target.files;
+        console.log(files);
+        for (var i = 0; i < files.length; i++) {
+            files[i].isPro = "1";
+            // 将选择的文件添加到 uploadedFiles 数组中
+            uploadedFiles.push(files[i]);
+            // 显示文件信息
+            var fileInfo = '<p>文件名：' + files[i].name + '，大小：' + files[i].size + ' 字节</p>';
+            $('#fileList').append(fileInfo);
+        }
+        console.log(files);
+        console.log(uploadedFiles);
+    })
+    // 监听文件选择事件
+    // $('#fileInput').on('change', function(event) {
+    //   var files = event.target.files;
+    //   console.log(files);
+    //   for (var i = 0; i < files.length; i++) {
+    //       files[i].isPro="1";
+    //     // 将选择的文件添加到 uploadedFiles 数组中
+    //     uploadedFiles.push(files[i]);
+    //     // 显示文件信息
+    //     var fileInfo = '<p>文件名：' + files[i].name + '，大小：' + files[i].size + ' 字节</p>';
+    //     $('#fileList').append(fileInfo);
+    //   }
+    //   console.log(files);
+    //   console.log(uploadedFiles);
+    // });
+
+    // 上传文件函数
+    function uploadFiles() {
+        var formData = new FormData();
+        var formData2 = new formData();
+        for (var i = 0; i < uploadedFiles.length; i++) {
+            formData.append('file', uploadedFiles[i]);
+        }
+        for (var i = 0; i < uploadedFiles1.length; i++) {
+            formData2.append('file', uploadedFiles2[i]);
+        }
+        // 发送 AJAX 请求上传文件
+        $.ajax({
+            url: '/upload',
+            type: 'POST',
+            data: {
+                files1: formData,
+                files2: formData2,
+
+            },
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log('上传成功');
+            },
+            error: function (xhr, status, error) {
+                console.error('上传失败：', error);
+            }
+        });
+    }
+
+    // 提交文件函数
+    function submitFiles() {
+        // 将 uploadedFiles 数组清空
+        uploadedFiles = [];
+
+        // 清空文件列表
+        $('#fileList').empty();
+    }
+
+</script>
+</html>

@@ -12,238 +12,51 @@ var page = {
         this.tool = new PageTool();
         this.ip = this.tool.getSiteIp();
         this.url = this.ip + "/info"
-        this.mtypecd;
-        this.userId;
-        this.chkNo;
-        //审价会类别
         this.cmbVerifMtTypeCd = mini.get("cmbVerifMtTypeCd");
-        //公司主体
-        this.cmbCompany = mini.get("cmbCompany");
-        //审价方式
-        this.cbbVerfiType = mini.get("cbbVerfiType");
-        //属性
-        this.cmbproperty = mini.get("cmbproperty");
-        //工程号
-        this.cmbProjNo = mini.get("cmbProjNo");
-        //项目名称
-        this.txtProgramName = mini.get("txtProgramName");
-        //采购依据
-        // this.cmbBuy = mini.get("cmbBuy");
-        //报价方
-        // this.cmbQuote = mini.get("cmbQuote");
-        //采购方式/项目类别
+        this.date1 = mini.get("date1");
+        this.date2 = mini.get("date2");
         this.cmbProType = mini.get("cmbProType");
-        //单价审核
-        // this.radioButtondanjia = mini.get("radioButtondanjia");
-        //采购数量
-        this.txtBuyNum = mini.get("txtBuyNum");
-        // 采购单位
-        this.cmbDanwei = mini.get("cmbDanwei");
-        //采购材质
-        this.txtCaizhi = mini.get("txtCaizhi");
-        //交货日期
-        this.JiaohuoDate = mini.get("JiaohuoDate");
-        //开始日期
-        this.StartDate = mini.get("StartDate");
-        //结束日期
-        this.EndDate = mini.get("EndDate");
-        //采购员
-        // this.cbbCaigou = mini.get("cbbCaigou");
-        //成本代码
-        this.cmbCodeChengben = mini.get("cmbCodeChengben");
-        //目标成本（rmb
-        this.goalRmb = mini.get("goalRmb");
-        //目标成本（美元
-        this.goalDoller = mini.get("goalDoller");
-        //项目描述
-        this.txtProDescribe = mini.get("txtProDescribe");
-        //超过成本描述
-        this.txtPassCost = mini.get("txtPassCost");
-        //三家原因
-        this.cmbThree = mini.get("cmbThree");
-        //弹出协议船选择
-        // this.TechProjNoGrid=mini.get("TechProjNoGrid");
-        // this.TechProjNoWindow=mini.get("TechProjNoWindow");
-
-
-        this.radioButtonProduce2 = mini.get("radioButtonProduce2");
-        this.txtSupport2 = mini.get("txtSupport2");
-        this.txtSupport = mini.get("txtSupport");
-        this.subcGrid = mini.get("subcGrid");
-        this.subcWindow = mini.get("subcWindow");
-        this.txtSubcCd = mini.get("txtSubcCd");
-        this.txtSubcDesc = mini.get("txtSubcDesc");
-        this.btnSearchSubc = mini.get("btnSearchSubc");
-
-        this.labdaili = mini.get("labdaili");
-        this.radioButtonProduce = mini.get("radioButtonProduce");
-        this.txtProduce2 = mini.get("txtProduce2");
-        this.txtProduce = mini.get("txtProduce");
-        this.prodGrid = mini.get("prodGrid");
-        this.gridPanel2 = mini.get("gridPanel2");
-        this.txtProdCd = mini.get("txtProdCd");
-        this.txtProdDesc = mini.get("txtProdDesc");
-        this.btnSearchProdCd = mini.get("btnSearchProdCd");
-
-        this.txtProduce3 = mini.get("txtProduce3");
-        this.txtHeton = mini.get("txtHeton");
-        this.prodGrid3 = mini.get("prodGrid3");
-        this.gridPanel3 = mini.get("gridPanel3");
-        this.txtProdCd3 = mini.get("txtProdCd3");
-        this.txtProdDesc3 = mini.get("txtProdDesc3");
-        this.btnSearchProdCd3 = mini.get("btnSearchProdCd3");
-
-        //
-        this.btnAddProduce = mini.get("btnAddProduce");
-        this.btnSaveSub = mini.get("btnSaveSub");
-        this.btnDeletePro = mini.get("btnDeletePro");
-        this.btnBaoJia = mini.get("btnBaoJia");
-        this.btnTuijian = mini.get("btnTuijian");
-        this.MoneydataGrid = mini.get("MoneydataGrid");
-        this.programFile = mini.get("programFile");
-        this.uploadattchment1 = mini.get("uploadattchment1");
-        this.deleteattchment1 = mini.get("deleteattchment1");
-        this.subFile = mini.get("subFile");
-        this.uploadattchment2 = mini.get("uploadattchment2");
-        this.deleteattchment2 = mini.get("deleteattchment2");
-        this.adataGridSub = mini.get("adataGridSub");
-        this.adataGridprogram = mini.get("adataGridprogram");
-
-
-        this.importFileWindow1 = mini.get("importFileWindow1");
-        this.importForm1 = mini.get("importForm1");
-        this.projectNo1 = mini.get("projectNo1");
-        this.fileSelectInput_1 = mini.get("fileSelectInput_1");
-        this.btnImportOk1 = mini.get("btnImportOk1");
-        this.importFileWindow2 = mini.get("importFileWindow2");
-        this.importForm2 = mini.get("importForm2");
-        this.projectNo2 = mini.get("projectNo2");
-        this.fileSelectInput_2 = mini.get("fileSelectInput_2");
-        this.btnImportOk2 = mini.get("btnImportOk2");
-        //处理金额的弹出框
-        this.addMoneytWindow = mini.get("addMoneytWindow");
-        this.btnaddMoney = mini.get("btnaddMoney");
-        this.btnsaveMoney = mini.get("btnsaveMoney");
-        this.btndeldMoney = mini.get("btndeldMoney");
-        this.addMoneyGrid = mini.get("addMoneyGrid");
-
-        this.txtCurrCd1 = mini.get("txtCurrCd1");
-        this.cmbCurrCd1 = mini.get("cmbCurrCd1");
-        this.txtCurrCd2 = mini.get("txtCurrCd2");
-        this.cmbCurrCd2 = mini.get("cmbCurrCd2");
-
-        this.txtProRemark = mini.get("txtProRemark");
-
+        this.txtCaseNo = mini.get("txtCaseNo");
+        this.txtProgram = mini.get("txtProgram");
+        this.btnSearch = mini.get("btnSearch");
+        this.btnAdd = mini.get("btnAdd");
         this.btnSave = mini.get("btnSave");
-
-        this.editCode = mini.get("editCode");
-
-        //     //技术协议相关
+        this.btnHis = mini.get("btnHis");
+        this.appListGrid = mini.get("appListGrid");
+        this.btnAddSubcByW = mini.get("btnAddSubcByW");
+        this.MoneydataGrid = mini.get("MoneydataGrid");
+        this.cmbResult = mini.get("cmbResult");
+        this.txtResult = mini.get("txtResult");
+        this.txtRemark = mini.get("txtRemark");
         this.panelForSEM = mini.get("panelForSEM");
+        this.btnDownAll = mini.get("btnDownAll");
+        this.PAradioButtonSEM = mini.get("PAradioButtonSEM");
+        this.btnRegisterPASEM = mini.get("btnRegisterPASEM");
+        this.btnDeletePASEM = mini.get("btnDeletePASEM");
         this.SEMDataGridMain = mini.get("SEMDataGridMain");
         this.SEMDataGridFile = mini.get("SEMDataGridFile");
         this.SEMDataGridSUBC = mini.get("SEMDataGridSUBC");
+        this.adataGridprogramAll = mini.get("adataGridprogramAll");
 
-        this.addTechWindow = mini.get("addTechWindow");
-        this.cmbTechcaigou = mini.get("cmbTechcaigou");
-        this.dateTechFrom = mini.get("dateTechFrom");
-        this.dateTechTo = mini.get("dateTechTo");
-        this.cmbTechShip = mini.get("cmbTechShip");
-        this.txtTechPor = mini.get("txtTechPor");
-        this.btnTechSearch = mini.get("btnTechSearch");
-        this.btnTechReg = mini.get("btnTechReg");
-        this.TechGrid = mini.get("TechGrid");
-        //     //    设备编码窗口相关
-        this.addEqdmtWindow = mini.get("addEqdmtWindow");
-        this.cmbEqcaigou = mini.get("cmbEqcaigou");
-        this.cmbEqShip = mini.get("cmbEqShip");
-        this.txtEqCode = mini.get("txtEqCode");
-        this.btnEqSearch = mini.get("btnEqSearch");
-        this.btnEqReq = mini.get("btnEqReq");
-        this.EqOutGrid = mini.get("EqOutGrid");
-        this.EqChose = mini.get("EqChose");
-        this.EqDel = mini.get("EqDel");
-        this.EqInGrid = mini.get("EqInGrid");
-
-        this.btnRegisterPASEM = mini.get("btnRegisterPASEM");
-        this.btnDeletePASEM = mini.get("btnDeletePASEM");
-
-
-        this.txtProRemark = mini.get("txtProRemark");
-
-
-        this.btnAgree = mini.get("btnAgree");
-        this.btnCancel = mini.get("btnCancel");
-        this.btnClose = mini.get("btnClose");
-
-        this.opinionGrid = mini.get("opinionGrid");
-
-        this.cmbResult = mini.get("cmbResult");
-        this.txtResult = mini.get("txtResult");
-        // 申报人
-        this.empDesc = mini.get("empDesc");
-        // 申报时间起
-        this.date1 = mini.get("date1");
-        // 申报时间止
-        this.date2 = mini.get("date2");
-        // 评审编号/项目名称
-        this.txtProgram = mini.get("txtProgram");
-        this.btnSearch = mini.get("btnSearch");
-        //    grid
-        this.appListGrid = mini.get("appListGrid");
-        this.adataGridSubTab = mini.get("adataGridSubTab");
-        this.adataGridprogramTab = mini.get("adataGridprogramTab");
         this.resultStatus = [{id: "01", text: '未提交'}, {id: "02", text: '通过'}, {
             id: "03",
             text: '未通过'
         }, {id: "04", text: '有条件通过'}
             , {id: "05", text: '备案'}, {id: "06", text: '待船东确认'}];
 
-        // 美元欧元的汇率
-        this.txtHuilvUS = mini.get("txtHuilvUS");
 
-        this.txtHuilvEU = mini.get("txtHuilvEU");
-// 其他附件
-        this.adataGridprogramAll = mini.get("adataGridprogramAll");
-// 供后方评估数据
-        this.btnAfterData = mini.get("btnAfterData");
-
-// 下载所有文件
-        this.btnDownAll = mini.get("btnDownAll");
-
-        this.txtShuilv = mini.get("txtShuilv");
-
-        this.txtRemark = mini.get("txtRemark");
-// 最终审定加的界面
-        this.addMoneytWindow2 = mini.get("addMoneytWindow2");
-        this.txtCurrCd1Last = mini.get("txtCurrCd1Last");
-        this.cmbCurrCd1Last = mini.get("cmbCurrCd1Last");
-        this.txtCurrCd2Last = mini.get("txtCurrCd2Last");
-        this.cmbCurrCd2Last = mini.get("cmbCurrCd2Last");
-        this.btnaddMoneyLast = mini.get("btnaddMoneyLast");
-        this.btnsaveMoneyLast = mini.get("btnsaveMoneyLast");
-        this.addMoneyGridLast = mini.get("addMoneyGridLast");
-
-        //拟审类型
-        this.cmbMoni = mini.get("cmbMoni");
-        //拟审类型
-        this.cmbMoni1 = mini.get("cmbMoni1");
-
-        //关联编号
-        this.cmbGuanlian = mini.get("cmbGuanlian");
     },
 
     dataBind() {
-        this.btnSearch.on('click', this.tool.myBind(this.searchData, page));
+        this.tool.dataLoadDdlb(this.cmbVerifMtTypeCd, page.ip + "/common/searchMType2");
 
 
         // this.radioButtondanjia.loadData([{id: "N", text: "否"}, {id: "Y", text: "是"}]);
         // this.radioButtondanjia.setValue("N");
-
-        this.radioButtonProduce2.loadData([{id: "0", text: "合格"}, {id: "1", text: "临时"}]);
-        this.radioButtonProduce2.setValue("0");
-        this.radioButtonProduce.loadData([{id: "0", text: "合格"}, {id: "1", text: "临时"}]);
-        this.radioButtonProduce.setValue("0");
+        // this.radioButtonProduce2.loadData([{id: "0", text: "合格"}, {id: "1", text: "临时"}]);
+        // this.radioButtonProduce2.setValue("0");
+        // this.radioButtonProduce.loadData([{id: "0", text: "合格"}, {id: "1", text: "临时"}]);
+        // this.radioButtonProduce.setValue("0");
         // var s1=requestParams;
         // var pid = requestParams.pid;
         // this.pid=pid;
@@ -269,78 +82,67 @@ var page = {
         // });
         // this.tool.dataLoadDdlb(this.cmbProjNo, page.url + "/getProNo");
         // this.tool.dataLoadDdlb(this.cbbCaigou, page.url + "/getBuyEmp");
-        // this.tool.dataLoadDdlb(this.cmbVerifMtTypeCd, page.ip + "/common/searchMType2");
         //单位
-
-        this.tool.dataLoadDdlb(this.cmbDanwei, page.url + "/queryAllUnit");
-
-
+        // this.tool.dataLoadDdlb(this.cmbDanwei, page.url + "/queryAllUnit");
         // this.tool.dataLoadDw(this.subcGrid, page.url + "/getSubcData");
         // this.tool.dataLoadDw(this.prodGrid, page.url + "/getSubcData");
-        // this.tool.dataLoadDw(this.prodGrid3, page.url + "/getSubcData");
-
+        // this.tool.dataLoadDw(this.prodGrid3, page.url + "/getSubcData")
         // this.tool.dataLoadDw(this.cmbCurrCd1, page.url + "/getCoinType",{currCd:""});
         //
         // this.tool.dataLoadDw(this.cmbCurrCd2, page.url + "/getCoinType",{currCd:""});
         // this.tool.dataLoadDdlb(this.cmbCompany, page.url + "/getCompany");
         //供应商，项目附件
         // this.tool.dataLoadDw(this.programFile, page.url + "/getProgramFile");
-
         // this.tool.dataLoadDw(this.subFile, page.url + "/getSubFile");
-
         // this.tool.dataLoadDdlb(this.cmbTechcaigou, page.url + "/getBuyEmp");
         // this.tool.dataLoadDdlb(this.cmbTechShip, page.url + "/getShipType");
-
         // this.tool.dataLoadDw(this.opinionGrid, page.ip + "/audit/getAllOpinionByChkNo", {chkNo: tmp.chkNo});
-
-
         // page.initAllData(tmp);
-        page.editMoneyGrid();
+        // page.editMoneyGrid();
     },
     eventBind() {
-        page.cmbProjNo.on("buttonclick", this.tool.myBind(this.openProjNoWin, page));
+        // page.cmbProjNo.on("buttonclick", this.tool.myBind(this.openProjNoWin, page));
 
-        page.cmbProjNo.on("closeclick", this.tool.myBind(this.tool.clearCmb, page));
+        // page.cmbProjNo.on("closeclick", this.tool.myBind(this.tool.clearCmb, page));
 
-        // this.cmbVerifMtTypeCd.on('valuechanged', this.tool.myBind(this.changeMtCd, page));
+        this.cmbVerifMtTypeCd.on('valuechanged', this.tool.myBind(this.changeMtCd, page));
         //选择供应商的查询按钮
-        this.btnSearchSubc.on('click', this.tool.myBind(this.searchSubc, page));
+        // this.btnSearchSubc.on('click', this.tool.myBind(this.searchSubc, page));
 
         //选择制造商的查询按钮
-        this.btnSearchProdCd.on('click', this.tool.myBind(this.searchProCd, page));
+        // this.btnSearchProdCd.on('click', this.tool.myBind(this.searchProCd, page));
         //选择合同相对方的查询按钮
-        this.btnSearchProdCd3.on('click', this.tool.myBind(this.searchHeton, page));
+        // this.btnSearchProdCd3.on('click', this.tool.myBind(this.searchHeton, page));
 
         // this.btnAddProduce.on('click', this.tool.myBind(this.addSubData, page));
         //    切换是否临时制造商
-        this.radioButtonProduce.on("valuechanged", this.tool.myBind(this.clickProducer, page));
+        // this.radioButtonProduce.on("valuechanged", this.tool.myBind(this.clickProducer, page));
 
         //    保存已经新增或修改的制造商
-        this.btnSaveSub.on('click', this.tool.myBind(this.saveSubData, page));
+        // this.btnSaveSub.on('click', this.tool.myBind(this.saveSubData, page));
 
         this.MoneydataGrid.on("drawcell", this.tool.myBind(this.drawRecom, page));
 
-        this.cmbCodeChengben.on("valuechanged", this.tool.myBind(this.setGoalCost, page));
+        // this.cmbCodeChengben.on("valuechanged", this.tool.myBind(this.setGoalCost, page));
 
-        this.uploadattchment1.on("click", this.tool.myBind(this.uploadFile1, page));
+        // this.uploadattchment1.on("click", this.tool.myBind(this.uploadFile1, page));
 
-        this.uploadattchment2.on("click", this.tool.myBind(this.uploadFile2, page));
+        // this.uploadattchment2.on("click", this.tool.myBind(this.uploadFile2, page));
 
-        this.btnImportOk1.on("click", this.tool.myBind(this.importFile1, page));
+        // this.btnImportOk1.on("click", this.tool.myBind(this.importFile1, page));
 
-        this.btnImportOk2.on("click", this.tool.myBind(this.importFile2, page));
+        // this.btnImportOk2.on("click", this.tool.myBind(this.importFile2, page));
 
 
-
-        this.btnBaoJia.on("click", this.tool.myBind(this.showAddMoneyList, page));
+        // this.btnBaoJia.on("click", this.tool.myBind(this.showAddMoneyList, page));
 
         // this.btnBaoJia.on("click", this.tool.myBind(this.RecomSub, page));
 
-        this.btnaddMoney.on("click", this.tool.myBind(this.addMoneyData, page));
+        // this.btnaddMoney.on("click", this.tool.myBind(this.addMoneyData, page));
 
-        this.btnsaveMoney.on("click", this.tool.myBind(this.saveMoney, page));
+        // this.btnsaveMoney.on("click", this.tool.myBind(this.saveMoney, page));
 
-        this.btndeldMoney.on("click", this.tool.myBind(this.delMoney, page));
+        // this.btndeldMoney.on("click", this.tool.myBind(this.delMoney, page));
         //打开设备编码页面
         // this.editCode.on("buttonclick", this.tool.myBind(this.showEqWindow, page));
 
@@ -358,13 +160,13 @@ var page = {
         this.SEMDataGridSUBC.on("drawcell", this.tool.myBind(this.drawSEMSUBCCell, page));
         //技术协议相关
         //    设备编码窗口相关
-        this.btnEqSearch.on("click", this.tool.myBind(this.searchEqData, page));
+        // this.btnEqSearch.on("click", this.tool.myBind(this.searchEqData, page));
 
-        this.btnTechSearch.on("click", this.tool.myBind(this.searchTechData, page));
+        // this.btnTechSearch.on("click", this.tool.myBind(this.searchTechData, page));
         // /弹开tech界面
         this.btnRegisterPASEM.on("click", this.tool.myBind(this.showAddTechList, page));
         //登记tech
-        this.btnTechReg.on("click", this.tool.myBind(this.RegTechList, page));
+        // this.btnTechReg.on("click", this.tool.myBind(this.RegTechList, page));
 
         //将SEM附件名称变为链接
         this.SEMDataGridFile.on("drawcell", this.tool.myBind(this.drawSEMFileCell, page));
@@ -374,40 +176,61 @@ var page = {
         // this.cbbCaigou.on('valuechanged', this.tool.myBind(this.changeCaigou, page));
 
 
-        this.adataGridSub.on("drawcell", this.tool.myBind(this.onActionRenderer1, page));
-        this.adataGridprogram.on("drawcell", this.tool.myBind(this.onActionRenderer2, page));
+        // this.adataGridSub.on("drawcell", this.tool.myBind(this.onActionRenderer1, page));
+        // this.adataGridprogram.on("drawcell", this.tool.myBind(this.onActionRenderer2, page));
 
 
-        this.btnEqReq.on("click", this.tool.myBind(this.saveEqdata, page));
+        // this.btnEqReq.on("click", this.tool.myBind(this.saveEqdata, page));
 
-        this.EqChose.on("click", this.tool.myBind(this.choseEq, page));
-        this.EqDel.on("click", this.tool.myBind(this.delEq, page));
+        // this.EqChose.on("click", this.tool.myBind(this.choseEq, page));
+        // this.EqDel.on("click", this.tool.myBind(this.delEq, page));
 
 
-        this.btnAgree.on("click", this.tool.myBind(this.commitAgree, page));
-        this.btnCancel.on("click", this.tool.myBind(this.commitCancel, page));
-        this.btnClose.on("click", this.tool.myBind(this.closeWindow, page));
+        // this.btnAgree.on("click", this.tool.myBind(this.commitAgree, page));
+        // this.btnCancel.on("click", this.tool.myBind(this.commitCancel, page));
+        // this.btnClose.on("click", this.tool.myBind(this.closeWindow, page));
 
         this.btnSave.on("click", this.tool.myBind(this.saveRes, page));
         // 点击显示附件
         this.appListGrid.on("click", this.tool.myBind(this.changeAdata, page));
 
-        this.adataGridSubTab.on("drawcell", this.tool.myBind(this.onActionRenderer1Tab, page));
-        this.adataGridprogramTab.on("drawcell", this.tool.myBind(this.onActionRenderer2Tab, page));
+        // this.adataGridSubTab.on("drawcell", this.tool.myBind(this.onActionRenderer1Tab, page));
+        // this.adataGridprogramTab.on("drawcell", this.tool.myBind(this.onActionRenderer2Tab, page));
         this.adataGridprogramAll.on("drawcell", this.tool.myBind(this.onActionRendererAll, page));
 
-        this.btnAfterData.on("click", this.tool.myBind(this.downloadAll, page));
+        // this.btnAfterData.on("click", this.tool.myBind(this.downloadAll, page));
+        this.btnSearch.on('click', this.tool.myBind(this.searchData, page));
 
 
     },
     changeAdata() {
+        this.tool.dataLoadDdlb(this.cmbResult, page.ip + "/Assess/getAppStatus", {type: "E"});
+
         var chkNoTab = page.appListGrid.getSelected().chkNo;
-        this.initDatagrid01Tab(chkNoTab);
-        this.initDatagrid02Tab(chkNoTab);
+        page.initDatagrid01Tab(chkNoTab);
+        page.initDatagrid02Tab(chkNoTab);
+        page.showRes(chkNo);
+    },
+    // 显示结果
+    showRes(chkNo) {
+        this.mTypeCd = page.cmbVerifMtTypeCd.getValue();
+        var param = {
+            chkNo: chkNo
+        }
+        $.ajax({
+            url: page.ip + "/info/getMtChkInfo"
+            , data: {chkNo: chkNo, mTypeCd: page.mTypeCd}
+            , type: "post"
+            , success: function (data) {
+                if (data.flag == 1) {
+                    page.cmbResult.setValue(RESULT_STATUS);
+                    page.txtResult.setValue(RESULT_REMARK);
+
+                }
+            }
+        });
     },
     searchData: function () {
-
-
         var dateFrom = this.tool.myGetDate(this.date1.getValue(), 'yyyyMMdd');
         var dateTo = this.tool.myGetDate(this.date2.getValue(), 'yyyyMMdd');
         if (dateFrom && dateTo) {
@@ -419,8 +242,10 @@ var page = {
         var param = {
             rgstDtFr: dateFrom,
             rgstDtTo: dateTo,
-            mtypecd: page.mTypeCd,
-            programName: this.txtProgram.getValue()
+            mtypecd: page.cmbVerifMtTypeCd.getValue(),
+            programName: page.txtProgram.getValue(),
+            chkNo: page.txtCaseNo.getValue(),
+            programGuidNo: page.cmbProType.getValue()
         }
 
         this.tool.dataLoadDw(this.appListGrid, page.url + "/getData", param);
@@ -463,6 +288,7 @@ var page = {
             , success: function (data) {
                 if (data.flag == 1) {
                     mini.alert("保存成功");
+
                     page.closeWindow();
                 } else {
                     mini.alert("保存失败");
@@ -688,10 +514,11 @@ var page = {
         this.cmbproperty.setValue(data.reqType);
         this.cmbVerifMtTypeCd.setValue(data.mTypeCd);
 
+
         this.tool.dataLoadDdlb(this.empDesc, page.url + "/getEmpNo", {
             typeCd: data.mTypeCd
         });
-        this.tool.dataLoadDdlb(this.cmbResult, page.ip + "/Assess/getAppStatus", {type: "G"});
+        this.tool.dataLoadDdlb(this.cmbResult, page.ip + "/Assess/getAppStatus", {type: "E"});
 
         // this.tool.dataLoadDdlb(this.cmbBuy, page.url + "/getBuyBasis",{mTypeCd:page.mTypeCd});
         this.tool.dataLoadDdlb(this.cmbProType, page.url + "/getBuyForma", {mTypeCd: page.mTypeCd});
@@ -702,6 +529,18 @@ var page = {
         // this.cmbCompany.setValue(data.companyNo);
         // document.getElementById("cmbCompany1").innerText=this.cmbCompany.getText();
         this.cbbVerfiType.setValue(data.auditGuidNo);
+
+        $.ajax({
+            url: page.ip + "/Assess/getHuiLv"
+            , data: {chkNo: data.chkNo}
+            , type: "get"
+            , async: false
+            , success: function (data) {
+                // todo
+                document.getElementById("txtHuilvUS").innerText = data.USD;
+                document.getElementById("txtHuilvEU").innerText = data.EUR;
+            }
+        });
         document.getElementById("cbbVerfiType1").innerText = this.cbbVerfiType.getText();
         // this.tool.dataLoadDdlb(this.cmbThree, page.url + "/getThreeReason?mTypeCd="+data.mTypeCd);
         // this.tool.dataLoadDdlb(this.subFile, page.url + "/getSubFile?mTypeCd="+data.mTypeCd);
@@ -710,10 +549,10 @@ var page = {
 
         // page.tool.dataLoadDdlb(this.cbbCaigou, page.url + "/getBuyEmp");
         page.tool.dataLoadDdlb(this.cmbCodeChengben, page.url + "/getCostCode2", {userNo: data.costUserId});
-
+        // page.initDatagrid01();
+        // page.initDatagrid02();
         if (data.projNo) {
             $.ajax({
-                // todo
                 url: page.ip + "/info/getBaseInfo2"
                 , data: {chkNo: page.chkNo, projNo: data.projNo}
                 , type: "get"
@@ -745,23 +584,15 @@ var page = {
                     // document.getElementById("cmbBuy1").innerText=page.cmbBuy.getText();
                     //报价方式
                     // page.cmbQuote.setValue(response.purchaseGuidNo);
-                    document.getElementById("cmbQuote1").innerText = response.PURCHASE_DESC;
+                    // document.getElementById("cmbQuote1").innerText=page.cmbQuote.getText()
                     //采购方式/项目类别
                     document.getElementById("cmbProType1").innerText = response.PROGRAM_TYPE_DESC;
-                    // 关联审查编号
-                    document.getElementById("cmbGuanlian1").innerText = response.LINK_CHK_NO_DESC
-                    // 近期价格
-                    document.getElementById("nearAmt").innerText = response.NEAR_AMT
 
-                    // 历史均价
-                    document.getElementById("historyAmt").innerText = response.HISTORY_AMT
                     //单价审核
                     // page.radioButtondanjia.setValue(response.prYN);
                     //采购数量
                     // page.txtBuyNum.setValue(response.programMatQty);
-                    // 拟审类型
 
-                    document.getElementById("cmbMoni1").innerText = response.QUASI_TRIAL_DESC;
                     // 采购单位
                     page.cmbDanwei.setValue(response.UNT);
                     document.getElementById("txtBuyNum1").innerText = response.QTY + page.cmbDanwei.getText()
@@ -771,7 +602,7 @@ var page = {
                     document.getElementById("txtCaizhi1").innerText = response.GRD;
 
                     //交货日期
-                    // document.getElementById("JiaohuoDate1").innerText = response.DLV_DT;
+                    document.getElementById("JiaohuoDate1").innerText = response.DLV_DT;
 
                     //开始日期
                     document.getElementById("StartDate1").innerText = response.YX_START_DT;
@@ -779,14 +610,11 @@ var page = {
                     //结束日期
                     document.getElementById("EndDate1").innerText = response.YX_END_DT;
                     // 开工日期
-                    // document.getElementById("scDate").innerText = response.SC_DT;
+                    document.getElementById("scDate").innerText = response.SC_DT;
                     // 下坞日期
-                    // document.getElementById("flDate").innerText = response.FL_DT;
+                    document.getElementById("flDate").innerText = response.FL_DT;
 
                     //采购员
-
-                    // 项目类别
-                    document.getElementById("cbbVerfiType1").innerText = response.PROGRAM_TYPE_DESC;
 
 
                     // page.cbbCaigou.setValue(response.costUserId);
@@ -897,13 +725,10 @@ var page = {
             // this.saveBaseInfo.hide();
             // this.btnSubmit.hide();
         }
-
         // 初始化附件
-        page.initDatagrid01();
-        page.initDatagrid02();
-        // page.initDatagridAll();
+        page.initDatagridAll();
         // 初始化技术协议
-        // page.techInit();
+        page.techInit();
         // 初始化供应商选择
         page.cmbProjnNoShow(this.projNoList);
     },
@@ -937,7 +762,7 @@ var page = {
     },
     changeMtCd() {
         // this.tool.dataLoadDdlb(this.cmbQuote, page.url + "/getProjTypeByMType", {mTypeCd: this.cmbVerifMtTypeCd.getValue()});
-        // this.tool.dataLoadDdlb(this.cmbProType, page.url + "/getPurchaseWayByMType", {mTypeCd: this.cmbVerifMtTypeCd.getValue()});
+        this.tool.dataLoadDdlb(this.cmbProType, page.ip + "/info/getBuyForma", {mTypeCd: this.cmbVerifMtTypeCd.getValue()});
     },
     /**
      * 查询供应商
@@ -1176,15 +1001,15 @@ var page = {
         var column = e.column;
         var record = e.record;
 
-        if (column.field == "currCdLast") {
+        if (column.field == "currCdShow") {
             if (record.currAmt == "USD") {
                 e.cellHtml = record.currCd * page.txtHuilvUS.getValue();
             }
-            if (record.currAmt == "EU") {
+            if (record.currAmt == "EUR") {
                 e.cellHtml = record.currCd * page.txtHuilvEU.getValue();
             }
         }
-        if (column.field == "currAmtLast") {
+        if (column.field == "currAmtShow") {
             e.cellHtml = "RMB";
         }
         if (column.field == "recomYn") {

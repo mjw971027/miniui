@@ -687,6 +687,8 @@ var page = {
         this.tool.dataLoadDdlb(this.empDesc, page.url + "/getEmpNo", {
             typeCd: data.mTypeCd
         });
+        this.tool.dataLoadDdlb(this.cmbResult, page.ip + "/Assess/getAppStatus", {type: "E"});
+
         // this.tool.dataLoadDdlb(this.cmbBuy, page.url + "/getBuyBasis",{mTypeCd:page.mTypeCd});
         this.tool.dataLoadDdlb(this.cmbProType, page.url + "/getBuyForma", {mTypeCd: page.mTypeCd});
         this.tool.dataLoadDdlb(this.cbbVerfiType, page.url + "/getCheckForma", {mTypeCd: page.mTypeCd});

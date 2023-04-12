@@ -12,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,4 +113,30 @@ public class Usercontroller {
         map = userserviceimpl.savelist(users);
         return map;
     }
+
+    @RequestMapping("/download")
+    public void downloadFile(HttpServletResponse response) {
+        try {
+            InputStream inputStream = this.getClass().getResourceAsStream("/data/五小成果.docx");
+            //强制下载不打开
+            response.setContentType("application/force-download");
+            OutputStream out = response.getOutputStream();
+            //使用URLEncoder来防止文件名乱码或者读取错误
+            response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("wuxiao.docx", "UTF-8"));
+            int b = 0;
+            byte[] buffer = new byte[1000000];
+            while (b != -1) {
+                b = inputStream.read(buffer);
+                if (b != -1) {
+                    out.write(buffer, 0, b);
+                }
+            }
+            inputStream.close();
+            out.close();
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- 引入 jQuery 库和 jQuery Form 插件 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
+
+<!-- 初始化表单元素 -->
+<form id="myForm" action="submit.php" method="post">
+    <input type="file" name="myFile[]" multiple>
+    <button type="button" id="uploadBtn">上传</button>
+</form>
+
+<!-- 使用 JavaScript 暂存多个文件 -->
+<script>
+    var files = []; // 用于存储多个文件
+
+    $(document).ready(function () {
+        // 监听文件选择事件
+        $('input[type=file]').change(function () {
+            $.each(this.files, function (i, file) {
+
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    files.push({
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        data: event.target.result
+                    });
+                };
+                var index = files.length;
+                var fileName = file.name;
+                var trHtml = '<tr id="file' + index + '">';
+                trHtml += '<td>' + index + '</td>';
+                trHtml += '<td>' + fileName + '</td>';
+                trHtml += '</tr>';
+                $('#myForm').append(trHtml);
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // 监听上传按钮点击事件
+        $('#uploadBtn').click(function () {
+
+            $('#myForm').append('<input type="hidden" name="files" value="' + JSON.stringify(files) + '">');
+            console.log($('#myForm').data());
+            console.log(files);
+
+            $('#myForm').ajaxSubmit({
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

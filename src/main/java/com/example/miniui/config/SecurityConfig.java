@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -33,8 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private AccessDeniedHandler myAuthenticationAccessDeniedHandler;
 
     @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/download/**");
+    }
+
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         // TODO Auto-generated method stub
+
         //super.configure(http);
         http//登录部分
                 .formLogin().loginPage("/loginPage").loginProcessingUrl("/form")
@@ -45,10 +59,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();//Cross-site request forgery 这个功能防止跨站攻击，没有配置，关闭
         http//权限设置
                 .authorizeRequests()
-                .antMatchers("/static/**", "/errorPage", "/timeOut", "/logOutPage").permitAll()//不需要登录就可以访问
+                .antMatchers("/static/**", "/errorPage", "/timeOut", "/logOutPage", "/data/**").permitAll()//不需要登录就可以访问
 //                .antMatchers("/druid**", "/swagger-ui.html").hasRole("ADMIN")//需要权限才能访问的网页
                 .antMatchers("/druid**", "/swagger-ui.html").hasAuthority("vip1")//需要权限才能访问的网页
-                .anyRequest().authenticated() //其他接口需要登录后才能访问
+                .anyRequest().permitAll() //其他接口需要登录后才能访问
                 .and();
         http//登出部分
                 .logout()
@@ -62,6 +76,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedHandler(myAuthenticationAccessDeniedHandler)
                 .and();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.setAllowCredentials(true);
+
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(source);
     }
 
     @Override

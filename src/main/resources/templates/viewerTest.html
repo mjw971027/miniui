@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="../static/js/viewer.js" type="text/javascript"></script>
+<link href="../static/js/viewer.css" rel="stylesheet">
+<script src="../static/js/common.js" type="text/javascript"></script>
+<script src="../static/js/base64.js" type="text/javascript"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="viewer" style="height: 100%;width: 100%;"></div>
+<button onclick="test()">test</button>
+
+
+</body>
+<script>
+
+    this.tool = new PageTool();
+    this.ip = this.tool.getSiteIp();
+
+    function test() {
+
+
+        var originUrl = 'http://localhost:8080/download'; //要预览文件的访问地址
+        var previewUrl = originUrl + '?&fullfilename=wuxiao.docx'
+        window.open('http://127.0.0.1:8012/onlinePreview?url=' + encodeURIComponent(Base64.encode(previewUrl)));
+    }
+
+    // 创建 Viewer.js 实例
+    var wordViewer = new Viewer(document.getElementById('viewer'), {
+        url: '../data/五小成果.docx',
+        title: 'Word Document',
+        navbar: false, // 隐藏导航栏
+        toolbar: true, // 显示工具栏
+        toolbarButtonSize: 'medium' // 工具栏按钮大小
+    });
+
+    // 原理： 利用canvas.toDataURL的API转化成base64
+
+    function base64Encode(url) {
+        return new Promise((resolve, reject) => {
+            let image = new Image();
+            image.onload = function () {
+                let canvas = document.createElement('canvas');
+                canvas.width = this.naturalWidth;
+                canvas.height = this.naturalHeight;
+                // 将图片插入画布并开始绘制
+                canvas.getContext('2d').drawImage(image, 0, 0);
+                // result
+                let result = canvas.toDataURL('image/png')
+                resolve(result);
+            };
+            // CORS 策略，会存在跨域问题https://stackoverflow.com/questions/20424279/canvas-todataurl-securityerror
+            image.setAttribute("crossOrigin", 'Anonymous');
+            image.src = url;
+            // 图片加载失败的错误处理
+            image.onerror = () => {
+                reject(new Error('图片流异常'));
+            };
+        })
+    }
+</script>
+</html>

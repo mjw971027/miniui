@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>船用申请（技术协议</title>
+    <title>非船用</title>
     <script src="../static/boot.js" type="text/javascript"></script>
     <script src="../static/jquery.min.js" type="text/javascript"></script>
     <script src="../static/js/common.js" type="text/javascript"></script>
@@ -184,18 +184,8 @@
                             <label class="tableTdTitle">历史均价</label>
                         </td>
                         <td colspan="4">
-                            <div id="cmbProType" class="mini-combobox" style="width: 95%" textField="PROGRAM_DESC"
-                                 visible="false"
-                                 valueField="GUID_NO" multiSelect="false" popupWidth="300" allowinput="false"
-                                 showNullItem="true">
-                                <div property="columns">
-                                    <div header="类别编码" width="80" field="GUID_NO" headerAlign="center"
-                                         align="center"></div>
-                                    <div header="描述" width="200" field="PROGRAM_DESC" headerAlign="center"
-                                         align="center"></div>
-                                </div>
-                            </div>
-                            <div id="cmbProType1"
+
+                            <div id="historyAmt"
                                  style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
                         <td class="tableTdTitle" rowspan="4" style="width: 90px;" align="center">
@@ -211,6 +201,7 @@
                         </td>
                         <td style="width: 100px;">
                             <div id="cmbGuanlian" class="mini-combobox" style="width:200px;" textField="UNT_DESC"
+                                 visible="false"
                                  valueField="STD_UNT"
                                  multiSelect="false">
                             </div>
@@ -221,7 +212,8 @@
                             <label class="tableTdTitle"> 近期单价</label>
                         </td>
                         <td colspan="4">
-
+                            <div id="nearAmt"
+                                 style="padding-left: 5px;font-weight: bold;font-family:'Microsoft Yahei';font-size: 13px "></div>
                         </td>
 
                     </tr>
@@ -530,7 +522,7 @@
 
         </div>
 
-        <div class="innerdiv" style="height: 300px;width: 100%;">
+        <div class="innerdiv" style="height: 300px;width: 100%; display: none">
             <div class="mini-panel" id="panelForSEM"
                  showHeader="false"
                  showToolbar="false"
@@ -691,8 +683,8 @@
             </div>
 
         </div>
-        <div style="width: 100%; height: 120px;display: none">
-            <div class="innerdiv" style="height: 140px; width: 49%;display: none">
+        <div style="width: 100%; height: 142px;">
+            <div class="innerdiv" style="height: 140px; width: 40%;float: left">
                 <div class="mini-toolbar">
                     <div style="display: inline-block;vertical-align: middle">
                         <span>项目附件</span>
@@ -746,7 +738,7 @@
                 </div>
 
             </div>
-            <div class="innerdiv" style="height: 140px; width: 50%;display: none">
+            <div class="innerdiv" style="height: 140px; width: 60%;float: right">
                 <div class="mini-toolbar">
                     <div style="display: inline-block;vertical-align: middle">
                         <span>供应商附件</span>
@@ -809,7 +801,7 @@
             <div class="mini-fit">
                 <label>审价会结果</label>
                 <div id="cmbResult" class="mini-combobox" style="margin-left: 4px; width: 200px"
-                     valueField="" textField="" showNullItem="false"
+                     valueField="SUTS_CD" textField="STUS_DESC" showNullItem="false"
                      multiSelect="false" allowinput="false">
                 </div>
                 <br>
