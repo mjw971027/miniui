@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>MenuButton</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link href="../demo.css" rel="stylesheet" type="text/css"/>
+
+
+    <script src="../../scripts/boot.js" type="text/javascript"></script>
+
+
+</head>
+<body>
+<h1>SplitButton 菜单按钮</h1>
+<p class="tip"></p>
+
+<mini-splitbutton _plain="true" iconCls="icon-new" onclick="onItemClick" text="新建"
+                  config="{
+            menu: [
+                {iconCls:'icon-new', text: '新建空白项目', onclick: onItemClick},
+                {iconCls:'icon-gantt-app-add',text: '从项目模板新建', onclick: onItemClick}
+                ] 
+        }"
+></mini-splitbutton>
+
+<script type="text/javascript">
+    function onItemClick(e) {
+        var text = this.getText();
+        alert(text);
+    }
+</script>
+
+<!--    <div class="description">
+        <h3>Description</h3>
+        <p>MiniUI MenuButton能设置menu属性，显示下拉菜单。</p>
+    </div>-->
+</body>
+</html>

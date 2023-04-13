@@ -67,6 +67,14 @@ public class Test {
 
 
 //一个函数用于判断两个Map是否存在相同key和value,如果相同返回true，否则返回false
+public static boolean checkMap(Map<String, String> map1, Map<String, String> map2) {
+    for (Map.Entry<String, String> entry : map1.entrySet()) {
+        if (map2.containsKey(entry.getKey()) && map2.containsValue(entry.getValue())) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
     // 写一个函数用于判断map的value是否为null，如果是的就将该value写为”“
