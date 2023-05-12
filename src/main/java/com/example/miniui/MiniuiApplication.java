@@ -24,5 +24,4 @@ public class MiniuiApplication extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
         super.addResourceHandlers(registry);
     }
-
 }
