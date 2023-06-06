@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasws.web.mf.dao.PmlPlan.PmlPlanStrategyDao">
+    <resultMap id="BaseResultMap" type="com.chinasws.web.mf.entity.PmlPlan.PmlPlanStrategyEntity">
+        <id column="DB_ID" jdbcType="VARCHAR" property="dbId"/>
+        <result column="PML_PLAN_TYPE" jdbcType="VARCHAR" property="pmlPlanType"/>
+        <result column="PROJ_NO" jdbcType="VARCHAR" property="projNo"/>
+        <result column="SUB_NETWORK" jdbcType="VARCHAR" property="subNetwork"/>
+        <result column="PML_TYPE" jdbcType="VARCHAR" property="pmlType"/>
+        <result column="BLOCK_YN" jdbcType="VARCHAR" property="blockYn"/>
+        <result column="SECTION_YN" jdbcType="VARCHAR" property="sectionYn"/>
+        <result column="SUB_ZONE_YN" jdbcType="VARCHAR" property="subZoneYn"/>
+        <result column="STAGE_TYPE" jdbcType="VARCHAR" property="stageType"/>
+        <result column="BLK_STAGE_CD" jdbcType="VARCHAR" property="blkStageCd"/>
+        <result column="ST_OR_FN" jdbcType="VARCHAR" property="stOrFn"/>
+        <result column="MAX_DT_YN" jdbcType="VARCHAR" property="maxDtYn"/>
+        <result column="MIN_DT_YN" jdbcType="VARCHAR" property="minDtYn"/>
+        <result column="LEAD_TIME" jdbcType="DECIMAL" property="leadTime"/>
+        <result column="USE_YN" jdbcType="VARCHAR" property="useYn"/>
+        <result column="RGST_USER_ID" jdbcType="VARCHAR" property="rgstUserId"/>
+        <result column="RGST_DT" jdbcType="DATE" property="rgstDt"/>
+        <result column="MNT_USER_ID" jdbcType="VARCHAR" property="mntUserId"/>
+        <result column="MNT_DT" jdbcType="DATE" property="mntDt"/>
+        <result column="MAIN_FLAG" jdbcType="VARCHAR" property="mainFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        DB_ID
+        , PML_PLAN_TYPE, PROJ_NO, SUB_NETWORK, PML_TYPE, BLOCK_YN, SECTION_YN, SUB_ZONE_YN,
+    STAGE_TYPE, BLK_STAGE_CD, ST_OR_FN, MAX_DT_YN, MIN_DT_YN, LEAD_TIME, USE_YN, RGST_USER_ID, 
+    RGST_DT, MNT_USER_ID, MNT_DT, MAIN_FLAG
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from DS.T_PML_PLAN_STRATEGY
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from DS.T_PML_PLAN_STRATEGY
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanStrategyEntity">
+        insert into DS.T_PML_PLAN_STRATEGY (DB_ID, PML_PLAN_TYPE, PROJ_NO,
+                                            SUB_NETWORK, PML_TYPE, BLOCK_YN,
+                                            SECTION_YN, SUB_ZONE_YN, STAGE_TYPE,
+                                            BLK_STAGE_CD, ST_OR_FN, MAX_DT_YN,
+                                            MIN_DT_YN, LEAD_TIME, USE_YN,
+                                            RGST_USER_ID, RGST_DT, MNT_USER_ID,
+                                            MNT_DT, MAIN_FLAG)
+        values (#{dbId,jdbcType=VARCHAR}, #{pmlPlanType,jdbcType=VARCHAR}, #{projNo,jdbcType=VARCHAR},
+                #{subNetwork,jdbcType=VARCHAR}, #{pmlType,jdbcType=VARCHAR}, #{blockYn,jdbcType=VARCHAR},
+                #{sectionYn,jdbcType=VARCHAR}, #{subZoneYn,jdbcType=VARCHAR}, #{stageType,jdbcType=VARCHAR},
+                #{blkStageCd,jdbcType=VARCHAR}, #{stOrFn,jdbcType=VARCHAR}, #{maxDtYn,jdbcType=VARCHAR},
+                #{minDtYn,jdbcType=VARCHAR}, #{leadTime,jdbcType=DECIMAL}, #{useYn,jdbcType=VARCHAR},
+                #{rgstUserId,jdbcType=VARCHAR}, #{rgstDt,jdbcType=DATE}, #{mntUserId,jdbcType=VARCHAR},
+                #{mntDt,jdbcType=DATE}, #{mainFlag,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanStrategyEntity">
+        insert into DS.T_PML_PLAN_STRATEGY
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                DB_ID,
+            </if>
+            <if test="pmlPlanType != null">
+                PML_PLAN_TYPE,
+            </if>
+            <if test="projNo != null">
+                PROJ_NO,
+            </if>
+            <if test="subNetwork != null">
+                SUB_NETWORK,
+            </if>
+            <if test="pmlType != null">
+                PML_TYPE,
+            </if>
+            <if test="blockYn != null">
+                BLOCK_YN,
+            </if>
+            <if test="sectionYn != null">
+                SECTION_YN,
+            </if>
+            <if test="subZoneYn != null">
+                SUB_ZONE_YN,
+            </if>
+            <if test="stageType != null">
+                STAGE_TYPE,
+            </if>
+            <if test="blkStageCd != null">
+                BLK_STAGE_CD,
+            </if>
+            <if test="stOrFn != null">
+                ST_OR_FN,
+            </if>
+            <if test="maxDtYn != null">
+                MAX_DT_YN,
+            </if>
+            <if test="minDtYn != null">
+                MIN_DT_YN,
+            </if>
+            <if test="leadTime != null">
+                LEAD_TIME,
+            </if>
+            <if test="useYn != null">
+                USE_YN,
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID,
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT,
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID,
+            </if>
+            <if test="mntDt != null">
+                MNT_DT,
+            </if>
+            <if test="mainFlag != null">
+                MAIN_FLAG,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                #{dbId,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlPlanType != null">
+                #{pmlPlanType,jdbcType=VARCHAR},
+            </if>
+            <if test="projNo != null">
+                #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="subNetwork != null">
+                #{subNetwork,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlType != null">
+                #{pmlType,jdbcType=VARCHAR},
+            </if>
+            <if test="blockYn != null">
+                #{blockYn,jdbcType=VARCHAR},
+            </if>
+            <if test="sectionYn != null">
+                #{sectionYn,jdbcType=VARCHAR},
+            </if>
+            <if test="subZoneYn != null">
+                #{subZoneYn,jdbcType=VARCHAR},
+            </if>
+            <if test="stageType != null">
+                #{stageType,jdbcType=VARCHAR},
+            </if>
+            <if test="blkStageCd != null">
+                #{blkStageCd,jdbcType=VARCHAR},
+            </if>
+            <if test="stOrFn != null">
+                #{stOrFn,jdbcType=VARCHAR},
+            </if>
+            <if test="maxDtYn != null">
+                #{maxDtYn,jdbcType=VARCHAR},
+            </if>
+            <if test="minDtYn != null">
+                #{minDtYn,jdbcType=VARCHAR},
+            </if>
+            <if test="leadTime != null">
+                #{leadTime,jdbcType=DECIMAL},
+            </if>
+            <if test="useYn != null">
+                #{useYn,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstUserId != null">
+                #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                #{mntDt,jdbcType=DATE},
+            </if>
+            <if test="mainFlag != null">
+                #{mainFlag,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanStrategyEntity">
+        update DS.T_PML_PLAN_STRATEGY
+        <set>
+            <if test="pmlPlanType != null">
+                PML_PLAN_TYPE = #{pmlPlanType,jdbcType=VARCHAR},
+            </if>
+            <if test="projNo != null">
+                PROJ_NO = #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="subNetwork != null">
+                SUB_NETWORK = #{subNetwork,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlType != null">
+                PML_TYPE = #{pmlType,jdbcType=VARCHAR},
+            </if>
+            <if test="blockYn != null">
+                BLOCK_YN = #{blockYn,jdbcType=VARCHAR},
+            </if>
+            <if test="sectionYn != null">
+                SECTION_YN = #{sectionYn,jdbcType=VARCHAR},
+            </if>
+            <if test="subZoneYn != null">
+                SUB_ZONE_YN = #{subZoneYn,jdbcType=VARCHAR},
+            </if>
+            <if test="stageType != null">
+                STAGE_TYPE = #{stageType,jdbcType=VARCHAR},
+            </if>
+            <if test="blkStageCd != null">
+                BLK_STAGE_CD = #{blkStageCd,jdbcType=VARCHAR},
+            </if>
+            <if test="stOrFn != null">
+                ST_OR_FN = #{stOrFn,jdbcType=VARCHAR},
+            </if>
+            <if test="maxDtYn != null">
+                MAX_DT_YN = #{maxDtYn,jdbcType=VARCHAR},
+            </if>
+            <if test="minDtYn != null">
+                MIN_DT_YN = #{minDtYn,jdbcType=VARCHAR},
+            </if>
+            <if test="leadTime != null">
+                LEAD_TIME = #{leadTime,jdbcType=DECIMAL},
+            </if>
+            <if test="useYn != null">
+                USE_YN = #{useYn,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID = #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT = #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID = #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                MNT_DT = #{mntDt,jdbcType=DATE},
+            </if>
+            <if test="mainFlag != null">
+                MAIN_FLAG = #{mainFlag,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanStrategyEntity">
+        update DS.T_PML_PLAN_STRATEGY
+        set PML_PLAN_TYPE = #{pmlPlanType,jdbcType=VARCHAR},
+            PROJ_NO       = #{projNo,jdbcType=VARCHAR},
+            SUB_NETWORK   = #{subNetwork,jdbcType=VARCHAR},
+            PML_TYPE      = #{pmlType,jdbcType=VARCHAR},
+            BLOCK_YN      = #{blockYn,jdbcType=VARCHAR},
+            SECTION_YN    = #{sectionYn,jdbcType=VARCHAR},
+            SUB_ZONE_YN   = #{subZoneYn,jdbcType=VARCHAR},
+            STAGE_TYPE    = #{stageType,jdbcType=VARCHAR},
+            BLK_STAGE_CD  = #{blkStageCd,jdbcType=VARCHAR},
+            ST_OR_FN      = #{stOrFn,jdbcType=VARCHAR},
+            MAX_DT_YN     = #{maxDtYn,jdbcType=VARCHAR},
+            MIN_DT_YN     = #{minDtYn,jdbcType=VARCHAR},
+            LEAD_TIME     = #{leadTime,jdbcType=DECIMAL},
+            USE_YN        = #{useYn,jdbcType=VARCHAR},
+            RGST_USER_ID  = #{rgstUserId,jdbcType=VARCHAR},
+            RGST_DT       = #{rgstDt,jdbcType=DATE},
+            MNT_USER_ID   = #{mntUserId,jdbcType=VARCHAR},
+            MNT_DT        = #{mntDt,jdbcType=DATE},
+            MAIN_FLAG     = #{mainFlag,jdbcType=VARCHAR}
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+
+    <!--自定义-->
+    <select id="getDataByUniqueKey" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM DS.T_PML_PLAN_STRATEGY
+        WHERE PML_PLAN_TYPE = #{pmlPlanType,jdbcType=VARCHAR}
+        AND PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        AND SUB_NETWORK = #{subNetwork,jdbcType=VARCHAR}
+        AND PML_TYPE = #{pmlType,jdbcType=VARCHAR}
+        AND MAIN_FLAG = #{mainFlag,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getIsUseDataByUniqueKey" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM DS.T_PML_PLAN_STRATEGY
+        WHERE PML_PLAN_TYPE = #{pmlPlanType,jdbcType=VARCHAR}
+        AND PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        AND SUB_NETWORK = #{subNetwork,jdbcType=VARCHAR}
+        AND PML_TYPE = #{pmlType,jdbcType=VARCHAR}
+        AND MAIN_FLAG = #{mainFlag,jdbcType=VARCHAR}
+        AND USE_YN = 'Y'
+    </select>
+
+    <update id="savePmlPlanStrategyData">
+        MERGE INTO DS.T_PML_PLAN_STRATEGY T_PPS
+        USING (SELECT #{pmlPlanType,jdbcType=VARCHAR} PML_PLAN_TYPE
+        ,#{projNo,jdbcType=VARCHAR} PROJ_NO
+        ,#{subNetwork,jdbcType=VARCHAR} SUB_NETWORK
+        ,#{pmlType,jdbcType=VARCHAR} PML_TYPE
+        ,#{blockYn,jdbcType=VARCHAR} BLOCK_YN
+        ,#{sectionYn,jdbcType=VARCHAR} SECTION_YN
+        ,#{subZoneYn,jdbcType=VARCHAR} SUB_ZONE_YN
+        ,#{stageType,jdbcType=VARCHAR} STAGE_TYPE
+        ,#{blkStageCd,jdbcType=VARCHAR} BLK_STAGE_CD
+        ,#{stOrFn,jdbcType=VARCHAR} ST_OR_FN
+        ,#{maxDtYn,jdbcType=VARCHAR} MAX_DT_YN
+        ,#{minDtYn,jdbcType=VARCHAR} MIN_DT_YN
+        ,#{leadTime,jdbcType=DECIMAL} LEAD_TIME
+        ,#{useYn,jdbcType=VARCHAR} USE_YN
+        ,#{userId,jdbcType=VARCHAR} USER_ID
+        ,#{dbId,jdbcType=VARCHAR} DB_ID
+        ,#{mainFlag,jdbcType=VARCHAR} MAIN_FLAG
+        FROM DUAL
+        ) IMP_PPS
+        ON (
+        <if test="dbId != null and dbId != ''">
+            T_PPS.DB_ID = IMP_PPS.DB_ID
+        </if>
+        <if test="dbId == null or dbId == ''">
+            T_PPS.PML_PLAN_TYPE = IMP_PPS.PML_PLAN_TYPE
+            AND T_PPS.PROJ_NO = IMP_PPS.PROJ_NO
+            AND T_PPS.SUB_NETWORK = IMP_PPS.SUB_NETWORK
+            AND T_PPS.PML_TYPE = IMP_PPS.PML_TYPE
+            AND T_PPS.MAIN_FLAG = IMP_PPS.MAIN_FLAG
+        </if>
+
+        )
+        WHEN MATCHED THEN
+        UPDATE SET
+        T_PPS.BLOCK_YN = IMP_PPS.BLOCK_YN
+        ,T_PPS.SECTION_YN = IMP_PPS.SECTION_YN
+        ,T_PPS.SUB_ZONE_YN = IMP_PPS.SUB_ZONE_YN
+        ,T_PPS.STAGE_TYPE = IMP_PPS.STAGE_TYPE
+        ,T_PPS.BLK_STAGE_CD = IMP_PPS.BLK_STAGE_CD
+        ,T_PPS.ST_OR_FN = IMP_PPS.ST_OR_FN
+        ,T_PPS.MAX_DT_YN = IMP_PPS.MAX_DT_YN
+        ,T_PPS.MIN_DT_YN = IMP_PPS.MIN_DT_YN
+        ,T_PPS.LEAD_TIME = IMP_PPS.LEAD_TIME
+        ,T_PPS.USE_YN = IMP_PPS.USE_YN
+        ,T_PPS.MNT_USER_ID = IMP_PPS.USER_ID
+        ,T_PPS.MNT_DT = SYSDATE
+        <if test="dbId != null and dbId != ''">
+            ,T_PPS.SUB_NETWORK = IMP_PPS.SUB_NETWORK
+            ,T_PPS.PML_TYPE = IMP_PPS.PML_TYPE
+            ,T_PPS.MAIN_FLAG = IMP_PPS.MAIN_FLAG
+        </if>
+        WHEN NOT MATCHED THEN
+        INSERT (
+        T_PPS.PML_PLAN_TYPE
+        ,T_PPS.PROJ_NO
+        ,T_PPS.SUB_NETWORK
+        ,T_PPS.PML_TYPE
+        ,T_PPS.BLOCK_YN
+        ,T_PPS.SECTION_YN
+        ,T_PPS.SUB_ZONE_YN
+        ,T_PPS.STAGE_TYPE
+        ,T_PPS.BLK_STAGE_CD
+        ,T_PPS.ST_OR_FN
+        ,T_PPS.MAX_DT_YN
+        ,T_PPS.MIN_DT_YN
+        ,T_PPS.LEAD_TIME
+        ,T_PPS.USE_YN
+        ,T_PPS.RGST_USER_ID
+        ,T_PPS.MAIN_FLAG
+        ) VALUES (
+        IMP_PPS.PML_PLAN_TYPE
+        ,IMP_PPS.PROJ_NO
+        ,IMP_PPS.SUB_NETWORK
+        ,IMP_PPS.PML_TYPE
+        ,IMP_PPS.BLOCK_YN
+        ,IMP_PPS.SECTION_YN
+        ,IMP_PPS.SUB_ZONE_YN
+        ,IMP_PPS.STAGE_TYPE
+        ,IMP_PPS.BLK_STAGE_CD
+        ,IMP_PPS.ST_OR_FN
+        ,IMP_PPS.MAX_DT_YN
+        ,IMP_PPS.MIN_DT_YN
+        ,IMP_PPS.LEAD_TIME
+        ,IMP_PPS.USE_YN
+        ,IMP_PPS.USER_ID
+        ,IMP_PPS.MAIN_FLAG
+        )
+    </update>
+
+    <delete id="deletePmlPlanStrategyData">
+        DELETE
+        DS.T_PML_PLAN_STRATEGY
+         WHERE PML_PLAN_TYPE  =
+        #{pmlPlanType,jdbcType=VARCHAR}
+        AND
+        PROJ_NO
+        =
+        #{projNo,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="copyPmlPlanStrategyData">
+        INSERT INTO DS.T_PML_PLAN_STRATEGY ( PML_PLAN_TYPE
+                                           , PROJ_NO
+                                           , SUB_NETWORK
+                                           , PML_TYPE
+                                           , BLOCK_YN
+                                           , SECTION_YN
+                                           , SUB_ZONE_YN
+                                           , STAGE_TYPE
+                                           , BLK_STAGE_CD
+                                           , ST_OR_FN
+                                           , MAX_DT_YN
+                                           , MIN_DT_YN
+                                           , LEAD_TIME
+                                           , USE_YN
+                                           , RGST_USER_ID)
+        SELECT PML_PLAN_TYPE
+             , #{projNo,jdbcType=VARCHAR}
+             , SUB_NETWORK
+             , PML_TYPE
+             , BLOCK_YN
+             , SECTION_YN
+             , SUB_ZONE_YN
+             , STAGE_TYPE
+             , BLK_STAGE_CD
+             , ST_OR_FN
+             , MAX_DT_YN
+             , MIN_DT_YN
+             , LEAD_TIME
+             , USE_YN
+             , #{userId,jdbcType=VARCHAR}
+        FROM DS.T_PML_PLAN_STRATEGY
+        WHERE PML_PLAN_TYPE = #{pmlPlanType,jdbcType=VARCHAR}
+          AND PROJ_NO = #{projNoFrom,jdbcType=VARCHAR}
+    </insert>
+</mapper>

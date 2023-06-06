@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasws.web.mf.dao.PmlPlan.ProjPmlPlanVerDao">
+    <resultMap id="BaseResultMap" type="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanVerEntity">
+        <id column="DB_ID" jdbcType="VARCHAR" property="dbId"/>
+        <result column="INFO_ID" jdbcType="VARCHAR" property="infoId"/>
+        <result column="PROJ_NO" jdbcType="VARCHAR" property="projNo"/>
+        <result column="VER_NO" jdbcType="VARCHAR" property="verNo"/>
+        <result column="VER_DESC" jdbcType="VARCHAR" property="verDesc"/>
+        <result column="RELEASE_DT" jdbcType="DATE" property="releaseDt"/>
+        <result column="RELEASE_USER_ID" jdbcType="VARCHAR" property="releaseUserId"/>
+        <result column="RGST_USER_ID" jdbcType="VARCHAR" property="rgstUserId"/>
+        <result column="RGST_DT" jdbcType="DATE" property="rgstDt"/>
+        <result column="MNT_USER_ID" jdbcType="VARCHAR" property="mntUserId"/>
+        <result column="MNT_DT" jdbcType="DATE" property="mntDt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        DB_ID
+        , INFO_ID, PROJ_NO, VER_NO, VER_DESC, RELEASE_DT, RELEASE_USER_ID, RGST_USER_ID,
+    RGST_DT, MNT_USER_ID, MNT_DT
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from DS.T_PROJ_PML_PLAN_VER
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from DS.T_PROJ_PML_PLAN_VER
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanVerEntity">
+        insert into DS.T_PROJ_PML_PLAN_VER (DB_ID, INFO_ID, PROJ_NO,
+                                            VER_NO, VER_DESC, RELEASE_DT,
+                                            RELEASE_USER_ID, RGST_USER_ID, RGST_DT,
+                                            MNT_USER_ID, MNT_DT)
+        values (#{dbId,jdbcType=VARCHAR}, #{infoId,jdbcType=VARCHAR}, #{projNo,jdbcType=VARCHAR},
+                #{verNo,jdbcType=VARCHAR}, #{verDesc,jdbcType=VARCHAR}, #{releaseDt,jdbcType=DATE},
+                #{releaseUserId,jdbcType=VARCHAR}, #{rgstUserId,jdbcType=VARCHAR}, #{rgstDt,jdbcType=DATE},
+                #{mntUserId,jdbcType=VARCHAR}, #{mntDt,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanVerEntity">
+        insert into DS.T_PROJ_PML_PLAN_VER
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                DB_ID,
+            </if>
+            <if test="infoId != null">
+                INFO_ID,
+            </if>
+            <if test="projNo != null">
+                PROJ_NO,
+            </if>
+            <if test="verNo != null">
+                VER_NO,
+            </if>
+            <if test="verDesc != null">
+                VER_DESC,
+            </if>
+            <if test="releaseDt != null">
+                RELEASE_DT,
+            </if>
+            <if test="releaseUserId != null">
+                RELEASE_USER_ID,
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID,
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT,
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID,
+            </if>
+            <if test="mntDt != null">
+                MNT_DT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                #{dbId,jdbcType=VARCHAR},
+            </if>
+            <if test="infoId != null">
+                #{infoId,jdbcType=VARCHAR},
+            </if>
+            <if test="projNo != null">
+                #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="verNo != null">
+                #{verNo,jdbcType=VARCHAR},
+            </if>
+            <if test="verDesc != null">
+                #{verDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="releaseDt != null">
+                #{releaseDt,jdbcType=DATE},
+            </if>
+            <if test="releaseUserId != null">
+                #{releaseUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstUserId != null">
+                #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                #{mntDt,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanVerEntity">
+        update DS.T_PROJ_PML_PLAN_VER
+        <set>
+            <if test="infoId != null">
+                INFO_ID = #{infoId,jdbcType=VARCHAR},
+            </if>
+            <if test="projNo != null">
+                PROJ_NO = #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="verNo != null">
+                VER_NO = #{verNo,jdbcType=VARCHAR},
+            </if>
+            <if test="verDesc != null">
+                VER_DESC = #{verDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="releaseDt != null">
+                RELEASE_DT = #{releaseDt,jdbcType=DATE},
+            </if>
+            <if test="releaseUserId != null">
+                RELEASE_USER_ID = #{releaseUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID = #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT = #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID = #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                MNT_DT = #{mntDt,jdbcType=DATE},
+            </if>
+        </set>
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanVerEntity">
+        update DS.T_PROJ_PML_PLAN_VER
+        set INFO_ID         = #{infoId,jdbcType=VARCHAR},
+            PROJ_NO         = #{projNo,jdbcType=VARCHAR},
+            VER_NO          = #{verNo,jdbcType=VARCHAR},
+            VER_DESC        = #{verDesc,jdbcType=VARCHAR},
+            RELEASE_DT      = #{releaseDt,jdbcType=DATE},
+            RELEASE_USER_ID = #{releaseUserId,jdbcType=VARCHAR},
+            RGST_USER_ID    = #{rgstUserId,jdbcType=VARCHAR},
+            RGST_DT         = #{rgstDt,jdbcType=DATE},
+            MNT_USER_ID     = #{mntUserId,jdbcType=VARCHAR},
+            MNT_DT          = #{mntDt,jdbcType=DATE}
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+
+    <!--自定义-->
+    <select id="getVerNoListByProjNo" resultType="java.util.HashMap">
+        SELECT VER.DB_ID                                      VER_ID
+             , VER.VER_NO                                     VER_NO
+             , VER.VER_DESC                                   VER_DESC
+             , TO_CHAR(VER.RELEASE_DT, 'YYYY-MM-DD')          RELEASE_DT
+             , CP.GET_USERNAME_BY_USERID(VER.RELEASE_USER_ID) RELEASE_USER
+        FROM DS.T_PROJ_PML_PLAN_INFO INFO
+           , DS.T_PROJ_PML_PLAN_VER VER
+        WHERE INFO.DB_ID = VER.INFO_ID
+          AND INFO.PROJ_NO = #{projNo, jdbcType=VARCHAR}
+        ORDER BY VER.VER_NO
+    </select>
+
+    <update id="updateReleaseByDbId">
+        UPDATE DS.T_PROJ_PML_PLAN_VER
+        SET RELEASE_DT      = SYSDATE
+          , RELEASE_USER_ID = #{userId,jdbcType=VARCHAR}
+          , MNT_USER_ID     = #{userId,jdbcType=VARCHAR}
+          , MNT_DT          = SYSDATE
+        WHERE DB_ID = #{verId,jdbcType=VARCHAR}
+    </update>
+</mapper>

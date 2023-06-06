@@ -48,12 +48,11 @@ public class pdftest1 {
         document.add(new Paragraph(" "));
         document.add(new Paragraph(" "));
 
-        PdfPTable pdfPTable=getTable();
+        PdfPTable pdfPTable = getTable();
+        PdfPTable test = new PdfPTable(pdfPTable);
+
         document.add(pdfPTable);
-        document.add(pdfPTable);
-        document.add(pdfPTable);
-        document.add(pdfPTable);
-        document.add(pdfPTable);
+
         document.close();
     }
 
@@ -70,8 +69,8 @@ public class pdftest1 {
         pdfPTable.addCell(getCell("公司主体",1));
         pdfPTable.addCell(getCell("swscss",5));
         pdfPTable.addCell(getCell("公司主体",1));
-        pdfPTable.addCell(getCell("swscss",5));
-        pdfPTable.addCell(getCell("公司主体",1));
+        pdfPTable.addCell(getCell("swscss", 5));
+        pdfPTable.addCell(getCell(" ☑", 1));
         pdfPTable.addCell(getCell1("1.优(90～100分);良(70~90分);中(50~70分);差（50分以下）。\n" +
                 "2.主要技术参数：对产品的性能、技术参数进行定义，满足规范要求。\n" +
                 "3.供货范围：供货范围适宜，评分优或良；系统各项目责任不清晰，供货范围过小，评分中或差；系统集成打包，可选供应商极少，成本难以下降，供货范围过大，评分中或差。\n" +
@@ -79,13 +78,13 @@ public class pdftest1 {
                 "5.主要业绩：已在公司提供超\n" +
                 "6.打包拆包采购：分析综合咸本，对供应商的打包拆包方案进行论证。通过打包拆包模式节约成本，评分优；对公司推进打包拆包采购不配合供应商，评分差。\n" +
                 "7.图纸证书及设备资料：设备资料在评标时提供，评分优，并额外进行加分\n" +
-                "8.使用标准及质量体系：质量体系、质量规范等满足国际公约等。",5));
+                "8.使用标准及质量体系：质量体系、质量规范等满足国际公约等。", 5));
 
         return pdfPTable;
     }
 
     public PdfPCell getCell(String name,int n) throws DocumentException, IOException {
-        BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+        BaseFont bfChinese = BaseFont.createFont("C:/Windows/Fonts/seguisym.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
         Font fontChinese = new Font(bfChinese, 12, Font.NORMAL);
         PdfPCell pdfPCell=new PdfPCell();
         pdfPCell.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -97,7 +96,7 @@ public class pdftest1 {
     }
 
     public PdfPCell getCell1(String name,int n) throws DocumentException, IOException {
-        BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+        BaseFont bfChinese = BaseFont.createFont("C:/Windows/Fonts/seguisym.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
         Font fontChinese = new Font(bfChinese, 12, Font.NORMAL);
         PdfPCell pdfPCell=new PdfPCell();
         pdfPCell.disableBorderSide(3);

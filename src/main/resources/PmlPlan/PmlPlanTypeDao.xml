@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasws.web.mf.dao.PmlPlan.PmlPlanTypeDao">
+    <resultMap id="BaseResultMap" type="com.chinasws.web.mf.entity.PmlPlan.PmlPlanTypeEntity">
+        <id column="DB_ID" jdbcType="VARCHAR" property="dbId"/>
+        <result column="TYPE_CD" jdbcType="VARCHAR" property="typeCd"/>
+        <result column="TYPE_DESC" jdbcType="VARCHAR" property="typeDesc"/>
+        <result column="ORDER_SEQ" jdbcType="DECIMAL" property="orderSeq"/>
+        <result column="PML_PLAN_CREATION_USE" jdbcType="VARCHAR" property="pmlPlanCreationUse"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        DB_ID
+        , TYPE_CD, TYPE_DESC, ORDER_SEQ, PML_PLAN_CREATION_USE
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from DS.T_BASIC_PML_PLAN_TYPE
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from DS.T_BASIC_PML_PLAN_TYPE
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanTypeEntity">
+        insert into DS.T_BASIC_PML_PLAN_TYPE (DB_ID, TYPE_CD, TYPE_DESC,
+                                              ORDER_SEQ, PML_PLAN_CREATION_USE)
+        values (#{dbId,jdbcType=VARCHAR}, #{typeCd,jdbcType=VARCHAR}, #{typeDesc,jdbcType=VARCHAR},
+                #{orderSeq,jdbcType=DECIMAL}, #{pmlPlanCreationUse,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanTypeEntity">
+        insert into DS.T_BASIC_PML_PLAN_TYPE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                DB_ID,
+            </if>
+            <if test="typeCd != null">
+                TYPE_CD,
+            </if>
+            <if test="typeDesc != null">
+                TYPE_DESC,
+            </if>
+            <if test="orderSeq != null">
+                ORDER_SEQ,
+            </if>
+            <if test="pmlPlanCreationUse != null">
+                PML_PLAN_CREATION_USE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                #{dbId,jdbcType=VARCHAR},
+            </if>
+            <if test="typeCd != null">
+                #{typeCd,jdbcType=VARCHAR},
+            </if>
+            <if test="typeDesc != null">
+                #{typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="orderSeq != null">
+                #{orderSeq,jdbcType=DECIMAL},
+            </if>
+            <if test="pmlPlanCreationUse != null">
+                #{pmlPlanCreationUse,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanTypeEntity">
+        update DS.T_BASIC_PML_PLAN_TYPE
+        <set>
+            <if test="typeCd != null">
+                TYPE_CD = #{typeCd,jdbcType=VARCHAR},
+            </if>
+            <if test="typeDesc != null">
+                TYPE_DESC = #{typeDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="orderSeq != null">
+                ORDER_SEQ = #{orderSeq,jdbcType=DECIMAL},
+            </if>
+            <if test="pmlPlanCreationUse != null">
+                PML_PLAN_CREATION_USE = #{pmlPlanCreationUse,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlPlanTypeEntity">
+        update DS.T_BASIC_PML_PLAN_TYPE
+        set TYPE_CD               = #{typeCd,jdbcType=VARCHAR},
+            TYPE_DESC             = #{typeDesc,jdbcType=VARCHAR},
+            ORDER_SEQ             = #{orderSeq,jdbcType=DECIMAL},
+            PML_PLAN_CREATION_USE = #{pmlPlanCreationUse,jdbcType=VARCHAR}
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+
+    <!--自定义-->
+    <select id="getPmlPlanType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM DS.T_BASIC_PML_PLAN_TYPE
+        ORDER BY ORDER_SEQ
+    </select>
+
+    <select id="getCreationUsePmlPlanType" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM DS.T_BASIC_PML_PLAN_TYPE
+        WHERE PML_PLAN_CREATION_USE = 'Y'
+        ORDER BY ORDER_SEQ
+    </select>
+</mapper>

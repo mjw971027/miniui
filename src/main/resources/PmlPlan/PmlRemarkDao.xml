@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasws.web.mf.dao.PmlPlan.PmlRemarkDao">
+    <resultMap id="BaseResultMap" type="com.chinasws.web.mf.entity.PmlPlan.PmlRemarkEntity">
+        <id column="DB_ID" jdbcType="VARCHAR" property="dbId"/>
+        <result column="PROJ_NO" jdbcType="VARCHAR" property="projNo"/>
+        <result column="PML_NO" jdbcType="VARCHAR" property="pmlNo"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="RGST_USER_ID" jdbcType="VARCHAR" property="rgstUserId"/>
+        <result column="RGST_DT" jdbcType="DATE" property="rgstDt"/>
+        <result column="MNT_USER_ID" jdbcType="VARCHAR" property="mntUserId"/>
+        <result column="MNT_DT" jdbcType="DATE" property="mntDt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        DB_ID
+        , PROJ_NO, PML_NO, REMARK, RGST_USER_ID, RGST_DT, MNT_USER_ID, MNT_DT
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from DS.T_PML_REMARK
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from DS.T_PML_REMARK
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlRemarkEntity">
+        insert into DS.T_PML_REMARK (DB_ID, PROJ_NO, PML_NO,
+                                     REMARK, RGST_USER_ID, RGST_DT,
+                                     MNT_USER_ID, MNT_DT)
+        values (#{dbId,jdbcType=VARCHAR}, #{projNo,jdbcType=VARCHAR}, #{pmlNo,jdbcType=VARCHAR},
+                #{remark,jdbcType=VARCHAR}, #{rgstUserId,jdbcType=VARCHAR}, #{rgstDt,jdbcType=DATE},
+                #{mntUserId,jdbcType=VARCHAR}, #{mntDt,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlRemarkEntity">
+        insert into DS.T_PML_REMARK
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                DB_ID,
+            </if>
+            <if test="projNo != null">
+                PROJ_NO,
+            </if>
+            <if test="pmlNo != null">
+                PML_NO,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID,
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT,
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID,
+            </if>
+            <if test="mntDt != null">
+                MNT_DT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                #{dbId,jdbcType=VARCHAR},
+            </if>
+            <if test="projNo != null">
+                #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlNo != null">
+                #{pmlNo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstUserId != null">
+                #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                #{mntDt,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlRemarkEntity">
+        update DS.T_PML_REMARK
+        <set>
+            <if test="projNo != null">
+                PROJ_NO = #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlNo != null">
+                PML_NO = #{pmlNo,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID = #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT = #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID = #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                MNT_DT = #{mntDt,jdbcType=DATE},
+            </if>
+        </set>
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlRemarkEntity">
+        update DS.T_PML_REMARK
+        set PROJ_NO      = #{projNo,jdbcType=VARCHAR},
+            PML_NO       = #{pmlNo,jdbcType=VARCHAR},
+            REMARK       = #{remark,jdbcType=VARCHAR},
+            RGST_USER_ID = #{rgstUserId,jdbcType=VARCHAR},
+            RGST_DT      = #{rgstDt,jdbcType=DATE},
+            MNT_USER_ID  = #{mntUserId,jdbcType=VARCHAR},
+            MNT_DT       = #{mntDt,jdbcType=DATE}
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+
+    <!--region自定义-->
+    <update id="savePmlRemark">
+        MERGE INTO DS.T_PML_REMARK T_PR
+            USING (SELECT #{projNo,jdbcType=VARCHAR} PROJ_NO
+                        , #{pmlNo,jdbcType=VARCHAR}  PML_NO
+                        , #{remark,jdbcType=VARCHAR} REMARK
+                   FROM DUAL) TMP
+            ON (
+                        T_PR.PROJ_NO = TMP.PROJ_NO
+                    AND T_PR.PML_NO = TMP.PML_NO
+                )
+            WHEN MATCHED THEN
+                UPDATE SET
+                    T_PR.REMARK = TMP.REMARK
+                    ,T_PR.MNT_USER_ID = #{userId,jdbcType=VARCHAR}
+                    ,T_PR.MNT_DT = SYSDATE
+            WHEN NOT MATCHED THEN
+                INSERT (
+                        T_PR.PROJ_NO, T_PR.PML_NO, T_PR.REMARK, T_PR.RGST_USER_ID
+                    ) VALUES ( TMP.PROJ_NO
+                             , TMP.PML_NO
+                             , TMP.REMARK
+                             , #{userId,jdbcType=VARCHAR})
+    </update>
+
+    <delete id="delPmlRemark">
+        DELETE
+        DS.T_PML_REMARK
+     WHERE PROJ_NO =
+        #{projNo,jdbcType=VARCHAR}
+        AND
+        PML_NO
+        =
+        #{pmlNo,jdbcType=VARCHAR}
+    </delete>
+    <!--endregion-->
+</mapper>

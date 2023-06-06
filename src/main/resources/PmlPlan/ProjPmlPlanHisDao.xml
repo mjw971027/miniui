@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasws.web.mf.dao.PmlPlan.ProjPmlPlanHisDao">
+    <resultMap id="BaseResultMap" type="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanHisEntity">
+        <id column="DB_ID" jdbcType="VARCHAR" property="dbId"/>
+        <result column="IUD_FLAG" jdbcType="VARCHAR" property="iudFlag"/>
+        <result column="SYORI_USER_ID" jdbcType="VARCHAR" property="syoriUserId"/>
+        <result column="SYORI_DATE" jdbcType="DATE" property="syoriDate"/>
+        <result column="PROJ_NO" jdbcType="VARCHAR" property="projNo"/>
+        <result column="VER_NO" jdbcType="VARCHAR" property="verNo"/>
+        <result column="PML_NO" jdbcType="VARCHAR" property="pmlNo"/>
+        <result column="BENCHMARK_DT_P" jdbcType="DATE" property="benchmarkDtP"/>
+        <result column="PML_INST_STAGE" jdbcType="VARCHAR" property="pmlInstStage"/>
+        <result column="BASE_LINE_DT_P" jdbcType="DATE" property="baseLineDtP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        DB_ID
+        , IUD_FLAG, SYORI_USER_ID, SYORI_DATE, PROJ_NO, VER_NO, PML_NO, BENCHMARK_DT_P,
+    PML_INST_STAGE, BASE_LINE_DT_P
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from DS.T_PROJ_PML_PLAN_HIS
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from DS.T_PROJ_PML_PLAN_HIS
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanHisEntity">
+        insert into DS.T_PROJ_PML_PLAN_HIS (DB_ID, IUD_FLAG, SYORI_USER_ID,
+                                            SYORI_DATE, PROJ_NO, VER_NO,
+                                            PML_NO, BENCHMARK_DT_P, PML_INST_STAGE,
+                                            BASE_LINE_DT_P)
+        values (#{dbId,jdbcType=VARCHAR}, #{iudFlag,jdbcType=VARCHAR}, #{syoriUserId,jdbcType=VARCHAR},
+                #{syoriDate,jdbcType=DATE}, #{projNo,jdbcType=VARCHAR}, #{verNo,jdbcType=VARCHAR},
+                #{pmlNo,jdbcType=VARCHAR}, #{benchmarkDtP,jdbcType=DATE}, #{pmlInstStage,jdbcType=VARCHAR},
+                #{baseLineDtP,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanHisEntity">
+        insert into DS.T_PROJ_PML_PLAN_HIS
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                DB_ID,
+            </if>
+            <if test="iudFlag != null">
+                IUD_FLAG,
+            </if>
+            <if test="syoriUserId != null">
+                SYORI_USER_ID,
+            </if>
+            <if test="syoriDate != null">
+                SYORI_DATE,
+            </if>
+            <if test="projNo != null">
+                PROJ_NO,
+            </if>
+            <if test="verNo != null">
+                VER_NO,
+            </if>
+            <if test="pmlNo != null">
+                PML_NO,
+            </if>
+            <if test="benchmarkDtP != null">
+                BENCHMARK_DT_P,
+            </if>
+            <if test="pmlInstStage != null">
+                PML_INST_STAGE,
+            </if>
+            <if test="baseLineDtP != null">
+                BASE_LINE_DT_P,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                #{dbId,jdbcType=VARCHAR},
+            </if>
+            <if test="iudFlag != null">
+                #{iudFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="syoriUserId != null">
+                #{syoriUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="syoriDate != null">
+                #{syoriDate,jdbcType=DATE},
+            </if>
+            <if test="projNo != null">
+                #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="verNo != null">
+                #{verNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlNo != null">
+                #{pmlNo,jdbcType=VARCHAR},
+            </if>
+            <if test="benchmarkDtP != null">
+                #{benchmarkDtP,jdbcType=DATE},
+            </if>
+            <if test="pmlInstStage != null">
+                #{pmlInstStage,jdbcType=VARCHAR},
+            </if>
+            <if test="baseLineDtP != null">
+                #{baseLineDtP,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanHisEntity">
+        update DS.T_PROJ_PML_PLAN_HIS
+        <set>
+            <if test="iudFlag != null">
+                IUD_FLAG = #{iudFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="syoriUserId != null">
+                SYORI_USER_ID = #{syoriUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="syoriDate != null">
+                SYORI_DATE = #{syoriDate,jdbcType=DATE},
+            </if>
+            <if test="projNo != null">
+                PROJ_NO = #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="verNo != null">
+                VER_NO = #{verNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlNo != null">
+                PML_NO = #{pmlNo,jdbcType=VARCHAR},
+            </if>
+            <if test="benchmarkDtP != null">
+                BENCHMARK_DT_P = #{benchmarkDtP,jdbcType=DATE},
+            </if>
+            <if test="pmlInstStage != null">
+                PML_INST_STAGE = #{pmlInstStage,jdbcType=VARCHAR},
+            </if>
+            <if test="baseLineDtP != null">
+                BASE_LINE_DT_P = #{baseLineDtP,jdbcType=DATE},
+            </if>
+        </set>
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.chinasws.web.mf.entity.PmlPlan.ProjPmlPlanHisEntity">
+        update DS.T_PROJ_PML_PLAN_HIS
+        set IUD_FLAG       = #{iudFlag,jdbcType=VARCHAR},
+            SYORI_USER_ID  = #{syoriUserId,jdbcType=VARCHAR},
+            SYORI_DATE     = #{syoriDate,jdbcType=DATE},
+            PROJ_NO        = #{projNo,jdbcType=VARCHAR},
+            VER_NO         = #{verNo,jdbcType=VARCHAR},
+            PML_NO         = #{pmlNo,jdbcType=VARCHAR},
+            BENCHMARK_DT_P = #{benchmarkDtP,jdbcType=DATE},
+            PML_INST_STAGE = #{pmlInstStage,jdbcType=VARCHAR},
+            BASE_LINE_DT_P = #{baseLineDtP,jdbcType=DATE}
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+
+    <!--自定义-->
+    <insert id="addHisByVerId">
+        INSERT INTO DS.T_PROJ_PML_PLAN_HIS( IUD_FLAG
+                                          , SYORI_USER_ID
+                                          , PROJ_NO
+                                          , VER_NO
+                                          , PML_NO
+                                          , BENCHMARK_DT_P
+                                          , PML_INST_STAGE
+                                          , BASE_LINE_DT_P)
+        SELECT 'I'
+             , #{userId, jdbcType=VARCHAR}
+             , DTL.PROJ_NO
+             , DTL.VER_NO
+             , DTL.PML_NO
+             , DTL.BENCHMARK_DT_P
+             , DTL.PML_INST_STAGE
+             , DTL.BASE_LINE_DT_P
+        FROM DS.T_PROJ_PML_PLAN_DETAIL DTL
+        WHERE DTL.VER_ID = #{verId, jdbcType=VARCHAR}
+    </insert>
+
+    <insert id="addHisByDtlId">
+        INSERT INTO DS.T_PROJ_PML_PLAN_HIS( IUD_FLAG
+                                          , SYORI_USER_ID
+                                          , PROJ_NO
+                                          , VER_NO
+                                          , PML_NO
+                                          , BENCHMARK_DT_P
+                                          , PML_INST_STAGE
+                                          , BASE_LINE_DT_P
+                                          , PML_RSV_DT_P)
+        SELECT #{iudFlag, jdbcType=VARCHAR}
+             , #{userId, jdbcType=VARCHAR}
+             , DTL.PROJ_NO
+             , DTL.VER_NO
+             , DTL.PML_NO
+             , DTL.BENCHMARK_DT_P
+             , DTL.PML_INST_STAGE
+             , DTL.BASE_LINE_DT_P
+             , DTL.PML_RSV_DT_P
+        FROM DS.T_PROJ_PML_PLAN_DETAIL DTL
+        WHERE DTL.DB_ID = #{dtlId, jdbcType=VARCHAR}
+    </insert>
+
+    <insert id="addHisByDelNotInPmlData">
+        INSERT INTO DS.T_PROJ_PML_PLAN_HIS( IUD_FLAG
+                                          , SYORI_USER_ID
+                                          , PROJ_NO
+                                          , VER_NO
+                                          , PML_NO
+                                          , BENCHMARK_DT_P
+                                          , PML_INST_STAGE
+                                          , BASE_LINE_DT_P
+                                          , PML_RSV_DT_P)
+        SELECT 'RD'
+             , #{userId, jdbcType=VARCHAR}
+             , DTL.PROJ_NO
+             , DTL.VER_NO
+             , DTL.PML_NO
+             , DTL.BENCHMARK_DT_P
+             , DTL.PML_INST_STAGE
+             , DTL.BASE_LINE_DT_P
+             , DTL.PML_RSV_DT_P
+        FROM DS.T_PROJ_PML_PLAN_DETAIL DTL
+        WHERE DTL.VER_ID = #{verId,jdbcType=VARCHAR}
+          AND NOT EXISTS (SELECT 'X'
+                          FROM DS.T_PML_LIST PML
+                          WHERE PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+                            AND PML.PML_DIV = 'Inst.'
+                            AND DTL.PML_NO = PML.PML_NO)
+    </insert>
+
+    <insert id="addHisByDelNoPlanDtData">
+        INSERT INTO DS.T_PROJ_PML_PLAN_HIS( IUD_FLAG
+                                          , SYORI_USER_ID
+                                          , PROJ_NO
+                                          , VER_NO
+                                          , PML_NO
+                                          , BENCHMARK_DT_P
+                                          , PML_INST_STAGE
+                                          , BASE_LINE_DT_P
+                                          , PML_RSV_DT_P)
+        SELECT 'RD'
+             , #{userId, jdbcType=VARCHAR}
+             , DTL.PROJ_NO
+             , DTL.VER_NO
+             , DTL.PML_NO
+             , DTL.BENCHMARK_DT_P
+             , DTL.PML_INST_STAGE
+             , DTL.BASE_LINE_DT_P
+             , DTL.PML_RSV_DT_P
+        FROM DS.T_PROJ_PML_PLAN_DETAIL DTL
+        WHERE DTL.VER_ID = #{verId,jdbcType=VARCHAR}
+          AND DTL.BENCHMARK_DT_P IS NULL
+          AND DTL.BASE_LINE_DT_P IS NULL
+          AND DTL.PML_RSV_DT_P IS NULL
+    </insert>
+</mapper>

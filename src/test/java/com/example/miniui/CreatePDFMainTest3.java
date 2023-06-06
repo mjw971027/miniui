@@ -108,6 +108,7 @@ public class CreatePDFMainTest3 {
         cell6.setMinimumHeight(35);
 //格子纵跨1个格子
         cell6.setRowspan(1);
+        cell6.disableBorderSide(15);
 //格子内容左右居中
         cell6.setHorizontalAlignment(Element.ALIGN_CENTER);
 //格子内容上下居中
@@ -131,6 +132,7 @@ public class CreatePDFMainTest3 {
         PdfPCell cell8 = new PdfPCell(new Phrase("内嵌表格抬头三", iTextPDFUtil.getColorFont()));
 //格子横跨2个格子
         cell8.setColspan(3);
+        cell8.disableBorderSide(15);
 //格子高度35px
         cell8.setMinimumHeight(35);
 //格子纵跨1个格子
@@ -143,19 +145,49 @@ public class CreatePDFMainTest3 {
         goodTable2.addCell(cell8);
 
 
-
         PdfPCell cell33 = new PdfPCell(goodTable2);
 
         cell33.setColspan(4);
+        cell33.disableBorderSide(1);
 
-        cell33.setBorderWidth(1);//设置表格的边框宽度为1
-
-        cell33.setPadding(7);//设置表格与上一个表格的填充为10
 
         goodTable.addCell(cell33);
         document.add(goodTable);
+        // 创建底部表格
+        PdfPTable table = new PdfPTable(1);
+        table.setWidthPercentage(100);
+
+        // 创建底部单元格
+        PdfPCell cellX = new PdfPCell();
+        cellX.setBorder(PdfPCell.NO_BORDER);
+        cellX.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cellX.setVerticalAlignment(Element.ALIGN_BOTTOM);
+
+        // 添加底部内容
+        Paragraph footer = new Paragraph("底部内容", new Font(Font.FontFamily.HELVETICA, 10, Font.NORMAL));
+        cell.addElement(footer);
+        table.addCell(cell);
+//        请在在这个pdf的底部加上三行文字 作
+        document.add(table);
+
         //第五步，关闭文档
         document.close();
+    }
+
+    public static PdfPCell getCell(String string, int HorizontalAlignment, int VerticalAlignment, int colspan, int rowspan, int height) {
+        Font font = new Font();
+//        创建单元格 字体和文字对齐方式
+        Paragraph paragraph = new Paragraph(string, font);
+        PdfPCell cell = new PdfPCell(new Phrase(string, font));
+//        水平对其方式
+        cell.setHorizontalAlignment(HorizontalAlignment);
+//        垂直对其方式
+        cell.setVerticalAlignment(VerticalAlignment);
+        cell.setColspan(colspan);
+        cell.setRowspan(rowspan);
+//        设置高度
+        cell.setCalculatedHeight(height);
+        return cell;
     }
 
 }

@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasws.web.mf.dao.PmlPlan.PmlMatNeedPlanDao">
+    <resultMap id="BaseResultMap" type="com.chinasws.web.mf.entity.PmlPlan.PmlMatNeedPlanEntity">
+        <id column="DB_ID" jdbcType="VARCHAR" property="dbId"/>
+        <result column="PROJ_NO" jdbcType="VARCHAR" property="projNo"/>
+        <result column="PML_ID" jdbcType="VARCHAR" property="pmlId"/>
+        <result column="PML_NO" jdbcType="VARCHAR" property="pmlNo"/>
+        <result column="PML_MAT_NEED_DT_P" jdbcType="DATE" property="pmlMatNeedDtP"/>
+        <result column="RGST_USER_ID" jdbcType="VARCHAR" property="rgstUserId"/>
+        <result column="RGST_DT" jdbcType="DATE" property="rgstDt"/>
+        <result column="MNT_USER_ID" jdbcType="VARCHAR" property="mntUserId"/>
+        <result column="MNT_DT" jdbcType="DATE" property="mntDt"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        DB_ID
+        , PROJ_NO, PML_ID, PML_NO, PML_MAT_NEED_DT_P, RGST_USER_ID, RGST_DT, MNT_USER_ID,
+    MNT_DT
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from DS.T_PML_MAT_NEED_PLAN
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from DS.T_PML_MAT_NEED_PLAN
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlMatNeedPlanEntity">
+        insert into DS.T_PML_MAT_NEED_PLAN (DB_ID, PROJ_NO, PML_ID,
+                                            PML_NO, PML_MAT_NEED_DT_P, RGST_USER_ID,
+                                            RGST_DT, MNT_USER_ID, MNT_DT)
+        values (#{dbId,jdbcType=VARCHAR}, #{projNo,jdbcType=VARCHAR}, #{pmlId,jdbcType=VARCHAR},
+                #{pmlNo,jdbcType=VARCHAR}, #{pmlMatNeedDtP,jdbcType=DATE}, #{rgstUserId,jdbcType=VARCHAR},
+                #{rgstDt,jdbcType=DATE}, #{mntUserId,jdbcType=VARCHAR}, #{mntDt,jdbcType=DATE})
+    </insert>
+    <insert id="insertSelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlMatNeedPlanEntity">
+        insert into DS.T_PML_MAT_NEED_PLAN
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                DB_ID,
+            </if>
+            <if test="projNo != null">
+                PROJ_NO,
+            </if>
+            <if test="pmlId != null">
+                PML_ID,
+            </if>
+            <if test="pmlNo != null">
+                PML_NO,
+            </if>
+            <if test="pmlMatNeedDtP != null">
+                PML_MAT_NEED_DT_P,
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID,
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT,
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID,
+            </if>
+            <if test="mntDt != null">
+                MNT_DT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dbId != null">
+                #{dbId,jdbcType=VARCHAR},
+            </if>
+            <if test="projNo != null">
+                #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlId != null">
+                #{pmlId,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlNo != null">
+                #{pmlNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlMatNeedDtP != null">
+                #{pmlMatNeedDtP,jdbcType=DATE},
+            </if>
+            <if test="rgstUserId != null">
+                #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                #{mntDt,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlMatNeedPlanEntity">
+        update DS.T_PML_MAT_NEED_PLAN
+        <set>
+            <if test="projNo != null">
+                PROJ_NO = #{projNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlId != null">
+                PML_ID = #{pmlId,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlNo != null">
+                PML_NO = #{pmlNo,jdbcType=VARCHAR},
+            </if>
+            <if test="pmlMatNeedDtP != null">
+                PML_MAT_NEED_DT_P = #{pmlMatNeedDtP,jdbcType=DATE},
+            </if>
+            <if test="rgstUserId != null">
+                RGST_USER_ID = #{rgstUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="rgstDt != null">
+                RGST_DT = #{rgstDt,jdbcType=DATE},
+            </if>
+            <if test="mntUserId != null">
+                MNT_USER_ID = #{mntUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="mntDt != null">
+                MNT_DT = #{mntDt,jdbcType=DATE},
+            </if>
+        </set>
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.chinasws.web.mf.entity.PmlPlan.PmlMatNeedPlanEntity">
+        update DS.T_PML_MAT_NEED_PLAN
+        set PROJ_NO           = #{projNo,jdbcType=VARCHAR},
+            PML_ID            = #{pmlId,jdbcType=VARCHAR},
+            PML_NO            = #{pmlNo,jdbcType=VARCHAR},
+            PML_MAT_NEED_DT_P = #{pmlMatNeedDtP,jdbcType=DATE},
+            RGST_USER_ID      = #{rgstUserId,jdbcType=VARCHAR},
+            RGST_DT           = #{rgstDt,jdbcType=DATE},
+            MNT_USER_ID       = #{mntUserId,jdbcType=VARCHAR},
+            MNT_DT            = #{mntDt,jdbcType=DATE}
+        where DB_ID = #{dbId,jdbcType=VARCHAR}
+    </update>
+
+    <!--自定义-->
+    <update id="setPmlPlanDate">
+        MERGE INTO DS.T_PML_MAT_NEED_PLAN DTL
+            USING (SELECT #{pmlId,jdbcType=VARCHAR}     PML_ID
+                        , #{projNo,jdbcType=VARCHAR}    PROJ_NO
+                        , #{pmlNo,jdbcType=VARCHAR}     PML_NO
+                        , #{pmlPlanDt,jdbcType=VARCHAR} PLAN_DT
+                        , #{leadTime,jdbcType=DECIMAL}  LEAD_TIME
+                        , #{userId,jdbcType=VARCHAR}    USER_ID
+                   FROM DUAL) T_PP
+            ON (
+                        DTL.PROJ_NO = T_PP.PROJ_NO
+                    AND DTL.PML_NO = T_PP.PML_NO
+                )
+            WHEN MATCHED THEN
+                UPDATE
+                    SET DTL.PML_MAT_NEED_DT_P =
+                                TO_DATE(T_PP.PLAN_DT, 'YYYYMMDD') + NUMTODSINTERVAL(T_PP.LEAD_TIME, 'DAY')
+                        ,MNT_USER_ID = T_PP.USER_ID
+                        ,MNT_DT = SYSDATE
+            WHEN NOT MATCHED THEN
+                INSERT (
+                        DTL.PML_ID, DTL.PROJ_NO, DTL.PML_NO, DTL.PML_MAT_NEED_DT_P, DTL.RGST_USER_ID
+                    ) VALUES ( T_PP.PML_ID
+                             , T_PP.PROJ_NO
+                             , T_PP.PML_NO
+                             , TO_DATE(T_PP.PLAN_DT, 'YYYYMMDD') + NUMTODSINTERVAL(T_PP.LEAD_TIME, 'DAY')
+                             , T_PP.USER_ID)
+    </update>
+</mapper>

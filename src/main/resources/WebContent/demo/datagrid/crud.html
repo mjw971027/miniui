@@ -53,7 +53,15 @@
 
     var grid = mini.get("datagrid1");
     grid.load();
+    grid.on("cellendedit", function (e) {
+        console.log(e);
+        var record = e.record, field = e.field, value = e.value;
+        if (record.loginname > record.age) {
+            mini.alert("error");
+        }
 
+
+    });
     ///////////////////////////////////////////////////////
     var Genders = [{id: 1, text: '男'}, {id: 2, text: '女'}];
 

@@ -1,0 +1,1993 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasws.web.mf.dao.PmlPlan.PmlPlanDao">
+    <select id="getPmlPlanCreationData" resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanCreationDto">
+        SELECT SEL_DATA.DTL_ID dtlId
+        ,SEL_DATA.PML_ID pmlId
+        ,SEL_DATA.PROJ_NO projNo
+        ,SEL_DATA.PML_NO pmlNo
+        ,SEL_DATA.PML_DESC pmlDesc
+        ,SEL_DATA.BENCHMARK_DT_P benchmarkDtP
+        ,SEL_DATA.BASE_LINE_DT_P baseLineDtP
+        ,SEL_DATA.PML_RSV_DT_P pmlRsvDtP
+        ,DS.GET_INST_PML_FIRST_CNFM_DATE(SEL_DATA.PROJ_NO, SEL_DATA.PML_NO) cnfmDt
+        ,SEL_DATA.IS_RELEASE isRelease
+        ,SEL_DATA.SUB_NETWORK subNetWork
+        ,SEL_DATA.BLOCK block
+        ,SEL_DATA.SECTION section
+        ,SEL_DATA.SUB_ZONE subZone
+        ,SEL_DATA.ZONE zone
+        ,(SELECT TB.DESC_ENG FROM BA.T_COMPANY TB WHERE TB.CODE = DWG_INFO.COMPANY_CD) compDesc
+        ,(SELECT ORGN_DESC FROM CP.ORGANIZATION WHERE ORGN_CD = DWG_INFO.DEPT_CD) deptDesc
+        ,(SELECT ORGN_DESC FROM CP.ORGANIZATION WHERE ORGN_CD = DWG_INFO.ORGN_CD) officeDesc
+        ,DS.GET_PART_DIV_DESC(DWG_INFO.PART_DIV_ID, DWG_INFO.DWG_STAGE) partDivDesc
+        ,PML_REG.REG_SOURCE regSource
+        ,DS.GET_PML_CONFIRM_DATE(SEL_DATA.PROJ_NO, SEL_DATA.PML_NO, SEL_DATA.PML_DIV) lastCnfmDt
+        ,SEL_DATA.PML_DIV pmlDiv
+        FROM (SELECT TD.DTL_ID DTL_ID
+        ,TD.PROJ_NO PROJ_NO
+        ,TD.PML_ID PML_ID
+        ,TD.PML_NO PML_NO
+        ,PML.PML_DESC PML_DESC
+        ,TD.BENCHMARK_DT_P BENCHMARK_DT_P
+        ,TD.BASE_LINE_DT_P BASE_LINE_DT_P
+        ,TD.PML_RSV_DT_P PML_RSV_DT_P
+        ,TD.IS_RELEASE IS_RELEASE
+        ,PML.DWG_NO DWG_NO
+        ,PML.SUB_NETWORK SUB_NETWORK
+        ,PML.BLOCK BLOCK
+        ,PML.SECTION SECTION
+        ,PML.SUB_ZONE SUB_ZONE
+        ,PML.ZONE ZONE
+        ,1 ORDER_BY
+        ,PML.PML_DIV PML_DIV
+        FROM (<include refid="getPmlPlanData"/>) TD
+        ,DS.T_PML_LIST PML
+        WHERE TD.PML_NO = PML.PML_NO
+        AND TD.PROJ_NO = PML.PROJ_NO
+        AND PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlDiv != null and pmlDiv != ''">
+            AND PML.PML_DIV = #{pmlDiv,jdbcType=VARCHAR}
+        </if>
+        <if test="pmlDiv == null or pmlDiv == ''">
+            AND PML.PML_DIV IN ('Inst.', 'Raw')
+        </if>
+        <if test="benchMarkIsEmpty == 'Y'.toString()">
+            AND TD.BENCHMARK_DT_P IS NULL
+        </if>
+        <if test="baseLineIsEmpty == 'Y'.toString()">
+            AND TD.BASE_LINE_DT_P IS NULL
+        </if>
+        <if test="pmlRsvIsEmpty == 'Y'.toString()">
+            AND TD.PML_RSV_DT_P IS NULL
+        </if>
+        <if test="dateType != null and dateType != ''">
+            AND TO_CHAR(TD.${dateType}_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom,jdbcType=VARCHAR} AND
+            #{dateTo,jdbcType=VARCHAR}
+        </if>
+        <if test="dateType == null or dateType == ''">
+            UNION ALL
+            SELECT NULL DTL_ID
+            ,PML.PROJ_NO PROJ_NO
+            ,PML.ID PML_ID
+            ,PML.PML_NO PML_NO
+            ,PML.PML_DESC PML_DESC
+            ,NULL BENCHMARK_DT_P
+            ,NULL BASE_LINE_DT_P
+            ,NULL PML_RSV_DT_P
+            ,'N' IS_RELEASE
+            ,PML.DWG_NO DWG_NO
+            ,PML.SUB_NETWORK SUB_NETWORK
+            ,PML.BLOCK BLOCK
+            ,PML.SECTION SECTION
+            ,PML.SUB_ZONE SUB_ZONE
+            ,PML.ZONE ZONE
+            ,2 ORDER_BY
+            ,PML.PML_DIV PML_DIV
+            FROM DS.T_PML_LIST PML
+            WHERE PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+            <if test="pmlDiv != null and pmlDiv != ''">
+                AND PML.PML_DIV = #{pmlDiv,jdbcType=VARCHAR}
+            </if>
+            <if test="pmlDiv == null or pmlDiv == ''">
+                AND PML.PML_DIV IN ('Inst.', 'Raw')
+            </if>
+            AND NOT EXISTS (
+            SELECT 'X'
+            FROM (<include refid="getPmlPlanData"/>) TD
+            WHERE TD.PML_NO = PML.PML_NO
+            AND TD.PROJ_NO = PML.PROJ_NO
+            )
+        </if>
+        ) SEL_DATA
+        ,DS.T_PD_DWG_INFO_SWS DWG_INFO
+        ,(<include refid="getPmlRegData"/>) PML_REG
+        WHERE SEL_DATA.PROJ_NO = DWG_INFO.PROJ_NO(+)
+        AND SEL_DATA.DWG_NO = DWG_INFO.DWG_NO(+)
+        AND SEL_DATA.PROJ_NO = PML_REG.PROJ_NO(+)
+        AND SEL_DATA.PML_NO = PML_REG.INST_PML_NO(+)
+        ORDER BY SEL_DATA.ORDER_BY
+        ,SEL_DATA.PML_NO
+    </select>
+
+    <sql id="getPmlRegData">
+        SELECT PROJ_NO
+             , INST_PML_NO
+             , LISTAGG(REG_SOURCE, ',') WITHIN GROUP (ORDER BY PROJ_NO, INST_PML_NO) REG_SOURCE
+        FROM (SELECT DISTINCT
+            T2.PROJ_NO PROJ_NO
+                , T2.PML_NO INST_PML_NO
+                , T2.REG_SOURCE REG_SOURCE
+            FROM DS.T_INST_PML_LINE_LATEST T2
+            WHERE T2.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+            AND ((REG_SOURCE != 'W')
+            OR (REG_SOURCE = 'W'
+            AND (MOD != 'D')
+            OR (MOD = 'D'
+            AND NVL((SELECT SUM (A.RSV_QTY)
+            FROM MA.T_MF_RESERVE A
+                , DS.T_INST_PML_LINE_LATEST B
+            WHERE A.PML_LINE_GUID = B.DB_ID
+            AND B.PROJ_NO = T2.PROJ_NO
+            AND B.PML_NO = T2.PML_NO
+            AND B.PML_LINE_NO = T2.PML_LINE_NO
+            ), 0) > 0)
+            )
+            )
+            UNION ALL
+            SELECT DISTINCT
+            T3.PROJ_NO PROJ_NO
+                , T3.PML_NO INST_PML_NO
+                , T3.SOURCE_DIV REG_SOURCE
+            FROM DS.T_PIPE_SUPPORT_PART_LATEST T3
+            WHERE T3.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+            AND ((T3.SOURCE_DIV != 'W')
+            OR (T3.SOURCE_DIV = 'W'
+            AND (T3.MOD != 'D')
+            OR (T3.MOD = 'D'
+            AND NVL((SELECT SUM (A.RSV_QTY)
+            FROM MA.T_MF_RESERVE A
+            WHERE A.PML_LINE_GUID = T3.DB_ID
+            ), 0) > 0)
+            )
+            )
+            )
+        GROUP BY PROJ_NO
+                , INST_PML_NO
+    </sql>
+
+    <sql id="getPmlPlanData">
+        SELECT T_INFO.DB_ID             INFO_ID
+             , T_INFO.PROJ_NO           PROJ_NO
+             , T_MAX_VER.DTL_ID         DTL_ID
+             , T_MAX_VER.PML_ID         PML_ID
+             , T_MAX_VER.PML_NO         PML_NO
+             , T_MAX_VER.BENCHMARK_DT_P BENCHMARK_DT_P
+             , T_MAX_VER.BASE_LINE_DT_P BASE_LINE_DT_P
+             , T_MAX_VER.PML_RSV_DT_P   PML_RSV_DT_P
+             , T_MAX_VER.IS_RELEASE     IS_RELEASE
+        FROM DS.T_PROJ_PML_PLAN_INFO T_INFO
+           , (SELECT DTL.DB_ID                                   DTL_ID
+                   , INFO.DB_ID                                  INFO_ID
+                   , DTL.PML_ID                                  PML_ID
+                   , DTL.PML_NO                                  PML_NO
+                   , DTL.BENCHMARK_DT_P                          BENCHMARK_DT_P
+                   , DTL.BASE_LINE_DT_P                          BASE_LINE_DT_P
+                   , DTL.PML_RSV_DT_P                            PML_RSV_DT_P
+                   , DECODE(VER.RELEASE_USER_ID, NULL, 'N', 'Y') IS_RELEASE
+              FROM DS.T_PROJ_PML_PLAN_INFO INFO
+                 , DS.T_PROJ_PML_PLAN_VER VER
+                 , DS.T_PROJ_PML_PLAN_DETAIL DTL
+              WHERE INFO.DB_ID = VER.INFO_ID
+                AND INFO.MAX_VER_NO = VER.VER_NO
+                AND VER.DB_ID = DTL.VER_ID
+                AND INFO.PROJ_NO = #{projNo,jdbcType=VARCHAR}) T_MAX_VER
+        WHERE T_INFO.DB_ID = T_MAX_VER.INFO_ID(+)
+          AND T_INFO.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+    </sql>
+
+    <select id="getPmlPlanCreationDataByVerId" resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanCreationDto">
+        SELECT DTL.DB_ID dtlId
+        ,DTL.PML_ID pmlId
+        ,DTL.PROJ_NO projNo
+        ,DTL.PML_NO pmlNo
+        ,PML.PML_DESC pmlDesc
+        ,DTL.PML_RSV_DT_P pmlRsvDtP
+        ,DTL.BENCHMARK_DT_P benchmarkDtP
+        ,DTL.BASE_LINE_DT_P baseLineDtP
+        ,DS.GET_INST_PML_FIRST_CNFM_DATE(DTL.PROJ_NO, DTL.PML_NO) cnfmDt
+        ,'Y' isRelease
+        ,PML.SUB_NETWORK subNetWork
+        ,PML.BLOCK block
+        ,PML.SECTION section
+        ,PML.SUB_ZONE subZone
+        ,PML.ZONE zone
+        ,(SELECT TB.DESC_ENG FROM BA.T_COMPANY TB WHERE TB.CODE = DWG_INFO.COMPANY_CD) compDesc
+        ,(SELECT ORGN_DESC FROM CP.ORGANIZATION WHERE ORGN_CD = DWG_INFO.DEPT_CD) deptDesc
+        ,(SELECT ORGN_DESC FROM CP.ORGANIZATION WHERE ORGN_CD = DWG_INFO.ORGN_CD) officeDesc
+        ,DS.GET_PART_DIV_DESC(DWG_INFO.PART_DIV_ID, DWG_INFO.DWG_STAGE) partDivDesc
+        ,PML_REG.REG_SOURCE regSource
+        ,DS.GET_PML_LAST_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, PML.PML_DIV) lastCnfmDt
+        ,PML.PML_DIV pmlDiv
+        FROM DS.T_PROJ_PML_PLAN_DETAIL DTL
+        ,DS.T_PML_LIST PML
+        ,DS.T_PD_DWG_INFO_SWS DWG_INFO
+        ,(<include refid="getPmlRegData"/>) PML_REG
+        WHERE DTL.PML_NO = PML.PML_NO
+        AND DTL.PROJ_NO = PML.PROJ_NO
+        AND PML.PROJ_NO = DWG_INFO.PROJ_NO(+)
+        AND PML.DWG_NO = DWG_INFO.DWG_NO(+)
+        AND PML.PROJ_NO = PML_REG.PROJ_NO(+)
+        AND PML.PML_NO = PML_REG.INST_PML_NO(+)
+        AND PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        AND DTL.VER_ID = #{verId, jdbcType=VARCHAR}
+        <if test="pmlDiv != null and pmlDiv != ''">
+            AND PML.PML_DIV = #{pmlDiv,jdbcType=VARCHAR}
+        </if>
+        <if test="pmlDiv == null or pmlDiv == ''">
+            AND PML.PML_DIV IN ('Inst.', 'Raw')
+        </if>
+
+        <if test="benchMarkIsEmpty == 'Y'.toString()">
+            AND DTL.BENCHMARK_DT_P IS NULL
+        </if>
+        <if test="baseLineIsEmpty == 'Y'.toString()">
+            AND DTL.BASE_LINE_DT_P IS NULL
+        </if>
+        <if test="pmlRsvIsEmpty == 'Y'.toString()">
+            AND DTL.PML_RSV_DT_P IS NULL
+        </if>
+        <if test="dateType != null and dateType != ''">
+            <if test="dateType == '1'.toString()">
+                AND TO_CHAR(DTL.BENCHMARK_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom,jdbcType=VARCHAR} AND
+                #{dateTo,jdbcType=VARCHAR}
+            </if>
+            <if test="dateType == '2'.toString()">
+                AND TO_CHAR(DTL.BASE_LINE_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom,jdbcType=VARCHAR} AND
+                #{dateTo,jdbcType=VARCHAR}
+            </if>
+        </if>
+        ORDER BY DTL.PML_NO
+    </select>
+
+    <select id="getPmlDataByProjNo" resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanCreationDto">
+        SELECT NULL dtlId
+        ,PML.PROJ_NO projNO
+        ,PML.ID pmlId
+        ,PML.PML_NO pmlNo
+        ,PML.PML_DESC pmlDesc
+        ,NULL benchmarkDtP
+        ,NULL pmlRsvDtP
+        ,NULL baseLineDtP
+        ,DS.GET_INST_PML_FIRST_CNFM_DATE(PML.PROJ_NO, PML.PML_NO) cnfmDt
+        ,'N' isRelease
+        ,PML.SUB_NETWORK subNetWork
+        ,PML.BLOCK block
+        ,PML.SECTION section
+        ,PML.SUB_ZONE subZone
+        ,PML.ZONE zone
+        ,(SELECT TB.DESC_ENG FROM BA.T_COMPANY TB WHERE TB.CODE = DWG_INFO.COMPANY_CD) compDesc
+        ,(SELECT ORGN_DESC FROM CP.ORGANIZATION WHERE ORGN_CD = DWG_INFO.DEPT_CD) deptDesc
+        ,(SELECT ORGN_DESC FROM CP.ORGANIZATION WHERE ORGN_CD = DWG_INFO.ORGN_CD) officeDesc
+        ,DS.GET_PART_DIV_DESC(DWG_INFO.PART_DIV_ID, DWG_INFO.DWG_STAGE) partDivDesc
+        ,PML_REG.REG_SOURCE regSource
+        ,DS.GET_PML_LAST_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, PML.PML_DIV) lastCnfmDt
+        ,PML.PML_DIV pmlDiv
+        FROM DS.T_PML_LIST PML
+        ,DS.T_PD_DWG_INFO_SWS DWG_INFO
+        ,(<include refid="getPmlRegData"/>) PML_REG
+        WHERE PML.PROJ_NO = DWG_INFO.PROJ_NO(+)
+        AND PML.DWG_NO = DWG_INFO.DWG_NO(+)
+        AND PML.PROJ_NO = PML_REG.PROJ_NO(+)
+        AND PML.PML_NO = PML_REG.INST_PML_NO(+)
+        AND PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlDiv != null and pmlDiv != ''">
+            AND PML.PML_DIV = #{pmlDiv,jdbcType=VARCHAR}
+        </if>
+        <if test="pmlDiv == null or pmlDiv == ''">
+            AND PML.PML_DIV IN ('Inst.', 'Raw')
+        </if>
+    </select>
+
+    <select id="getPmlPlanDataByPmlNo"
+            parameterType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanTermDto"
+            resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanDto">
+        SELECT PML.PROJ_NO projNo
+        ,PML.PML_NO pmlNo
+        ,PML.PML_DESC pmlDesc
+        ,PML_STATUS.IS_NEED_RETURN isNeedReturn
+        ,PML.SUB_NETWORK subNetWork
+        ,PML.BLOCK block
+        ,PML.SECTION section
+        ,PML.SUB_ZONE subZone
+        ,PML.ZONE zone
+        ,PML_STATUS.REQ_GUID reqGuid
+        ,PML_STATUS.PML_NEED_DT pmlNeedDt
+        ,PML_STATUS.RSV_STATUS rsvStatus
+        ,DECODE(PML_STATUS.RSV_STATUS, '0', '未预约', '1', '预约中', '2', '预约完') rsvStatusDesc
+        ,PML_STATUS.MIN_RSV_DT minRsvDt
+        ,DECODE(PML_STATUS.RSV_STATUS, '2', PML_STATUS.MAX_RSV_DT, NULL) maxRsvDt
+        ,DECODE(PML_STATUS.RSV_STATUS, '2', TRUNC(PML_STATUS.MAX_RSV_DT) - TRUNC(PML_STATUS.MIN_RSV_DT) + 1, NULL)
+        rsvDays
+        ,PML_STATUS.ISS_STATUS issStatus
+        ,DECODE(PML_STATUS.ISS_STATUS, '0', '未发放', '1', '发放中', '2', '发放完') issStatusDesc
+        ,PML_STATUS.MIN_ISS_DT minIssDt
+        ,PML_STATUS.MAX_ISS_DT maxIssDt
+        ,DECODE(PML_STATUS.ISS_STATUS, '2', PML_STATUS.MAX_ISS_DT, NULL) lastIssDt
+        ,TD.PML_RSV_DT_P pmlRsvDtP
+        ,TD.BENCHMARK_DT_P benchmarkDtP
+        ,TD.BASE_LINE_DT_P baseLineDtP
+        ,T_PMNP.PML_MAT_NEED_DT_P pmlMatNeedDtP
+        ,PML_REV.CNFM_DT cnfmDt
+        ,DS.GET_PML_LAST_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, PML.PML_DIV) lastCnfmDt
+        ,DECODE(PML_REV.CNFM_DT, NULL, 0, TRIM(NVL(
+        DECODE(PML_STATUS.PML_QTY, 0, 0, 100 * ROUND(PML_STATUS.RSV_QTY / PML_STATUS.PML_QTY, 4))
+        , 0))) || '%' rsvRate
+        ,DECODE(PML_REV.CNFM_DT, NULL, 0, TRIM(NVL(
+        DECODE(PML_STATUS.PML_QTY, 0, 0, 100 * ROUND(PML_STATUS.ISS_QTY / PML_STATUS.PML_QTY, 4))
+        , 0))) || '%' issRate
+        ,PML_STATUS.ISS_DEPT_DESC issDeptDesc
+        ,PML_STATUS.ISS_ORGN_DESC issOrgnDesc
+        ,PML_STATUS.REQ_DT reqDt
+        ,(SELECT TB.DESC_ENG FROM BA.T_COMPANY TB WHERE TB.CODE = INFO.COMPANY_CD) compDesc
+        ,CP.GET_ORGNDESC_BY_ORGNCD(INFO.DEPT_CD) deptDesc
+        ,CP.GET_ORGNDESC_BY_ORGNCD(INFO.ORGN_CD) officeDesc
+        ,PML_REG.REG_SOURCE regSource
+        ,T_PR.REMARK remark
+        ,PML.PML_DIV pmlDiv
+        FROM DS.T_PML_LIST PML
+        ,(<include refid="getMinRevPmlData"/>) PML_REV
+        ,(<include refid="getMaxReleasePmlPlanData"/>) TD
+        ,(<include refid="getPmlStatusData"/>) PML_STATUS
+        ,(<include refid="getPmlRegData"/>) PML_REG
+        ,DS.T_PML_REMARK T_PR
+        ,DS.T_PD_DWG_INFO_SWS INFO
+        ,DS.T_PML_MAT_NEED_PLAN T_PMNP
+        WHERE PML.PML_NO = TD.PML_NO(+)
+        AND PML.PROJ_NO = TD.PROJ_NO(+)
+        AND PML.PROJ_NO = PML_REV.PROJ_NO(+)
+        AND PML.PML_NO = PML_REV.PML_NO(+)
+        AND PML.PROJ_NO = PML_STATUS.PROJ_NO(+)
+        AND PML.PML_NO = PML_STATUS.PML_NO(+)
+        AND PML.PROJ_NO = PML_REG.PROJ_NO(+)
+        AND PML.PML_NO = PML_REG.INST_PML_NO(+)
+        AND PML.PROJ_NO = T_PR.PROJ_NO(+)
+        AND PML.PML_NO = T_PR.PML_NO(+)
+        AND PML.PROJ_NO = INFO.PROJ_NO(+)
+        AND PML.DWG_NO = INFO.DWG_NO(+)
+        AND PML.PROJ_NO = T_PMNP.PROJ_NO(+)
+        AND PML.PML_NO = T_PMNP.PML_NO(+)
+        AND PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlDiv != null and pmlDiv != ''">
+            AND PML.PML_DIV = #{pmlDiv,jdbcType=VARCHAR}
+        </if>
+        <if test="pmlDiv == null or pmlDiv == ''">
+            AND PML.PML_DIV IN ('Inst.', 'Raw')
+        </if>
+        <if test="pmlNo != null and pmlNo != ''">
+            AND REGEXP_LIKE(PML.PML_NO, #{pmlNo,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="pmlDesc != null and pmlDesc != ''">
+            AND REGEXP_LIKE(PML.PML_DESC, #{pmlDesc,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="subNetWork != null and subNetWork != ''">
+            AND REGEXP_LIKE(PML.SUB_NETWORK, #{subNetWork,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="block != null and block != ''">
+            AND REGEXP_LIKE(PML.BLOCK, #{block,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="section != null and section != ''">
+            AND REGEXP_LIKE(PML.SECTION, #{section,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="subZone != null and subZone != ''">
+            AND REGEXP_LIKE(PML.SUB_ZONE, #{subZone,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="zone != null and zone != ''">
+            AND REGEXP_LIKE(PML.ZONE, #{zone,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="rsvStatus != null and rsvStatus != ''">
+            AND NVL(PML_STATUS.RSV_STATUS, '99') IN
+            <foreach collection="lstRsvStatus" index="index" item="item" open="(" separator="," close=")">
+                #{item,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+        <if test="issStatus != null and issStatus != ''">
+            AND PML_STATUS.ISS_STATUS IN
+            <foreach collection="lstIssStatus" index="index" item="item" open="(" separator="," close=")">
+                #{item,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+        <if test="dateType != null and dateType != ''">
+            AND
+            <choose>
+                <when test="dateType == '0'.toString()">
+                    TO_CHAR(PML_STATUS.PML_NEED_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '1'.toString()">
+                    TO_CHAR(TD.BENCHMARK_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '2'.toString()">
+                    TO_CHAR(TD.BASE_LINE_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '3'.toString()">
+                    TO_CHAR(PML_REV.CNFM_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '4'.toString()">
+                    TO_CHAR(DS.GET_PML_LAST_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, PML.PML_DIV), 'YYYYMMDD') BETWEEN
+                    #{dateFrom, jdbcType=VARCHAR} AND #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '5'.toString()">
+                    TO_CHAR(TD.PML_RSV_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '6'.toString()">
+                    TO_CHAR(T_PMNP.PML_MAT_NEED_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+            </choose>
+        </if>
+
+        <if test="confomIsEmpty == 'Y'.toString()">
+            AND PML_REV.CNFM_DT IS NULL
+        </if>
+
+        <if test="confomIsEmpty == 'N'.toString()">
+            AND PML_REV.CNFM_DT IS NOT NULL
+        </if>
+
+        <if test="regSource != null and regSource != ''">
+            AND REGEXP_LIKE(PML_REG.REG_SOURCE, #{regSource,jdbcType=VARCHAR},'i')
+        </if>
+
+        ORDER BY
+        <if test="orderItem != null and orderItem != ''">
+            <choose>
+                <when test="orderItem == '0'.toString()">
+                    PML_STATUS.PML_NEED_DT
+                </when>
+                <when test="orderItem == '1'.toString()">
+                    TD.BENCHMARK_DT_P
+                </when>
+                <when test="orderItem == '2'.toString()">
+                    TD.BASE_LINE_DT_P
+                </when>
+                <when test="orderItem == '3'.toString()">
+                    PML_REV.CNFM_DT
+                </when>
+                <when test="orderItem == '4'.toString()">
+                    DS.GET_PML_LAST_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, PML.PML_DIV)
+                </when>
+                <when test="orderItem == '5'.toString()">
+                    TD.PML_RSV_DT_P
+                </when>
+                <when test="orderItem == '6'.toString()">
+                    T_PMNP.PML_MAT_NEED_DT_P
+                </when>
+            </choose>
+            ${orderType},
+        </if>
+        PML.PML_NO
+    </select>
+
+    <sql id="getPmlStatusData">
+        SELECT Y.PROJ_NO
+        ,Y.PML_NO
+        ,DECODE(COUNT(DISTINCT Y.RSV_STATUS), 1, MAX(Y.RSV_STATUS), '1') RSV_STATUS
+        ,DECODE(COUNT(DISTINCT Y.ISS_STATUS), 1, MAX(Y.ISS_STATUS), '1') ISS_STATUS
+        ,DECODE(COUNT(DISTINCT Y.IS_NEED_RETURN), 1, MAX(Y.IS_NEED_RETURN), 'Y') IS_NEED_RETURN
+        ,MAX(Y.PML_NEED_DT) PML_NEED_DT
+        ,SUM(Y.RSV_QTY) RSV_QTY
+        ,SUM(Y.ISS_QTY) ISS_QTY
+        ,SUM(Y.PML_QTY) PML_QTY
+        ,MAX(ISS_DEPT_DESC) ISS_DEPT_DESC
+        ,MAX(ISS_ORGN_DESC) ISS_ORGN_DESC
+        ,MAX(REQ_GUID) REQ_GUID
+        ,MAX(Y.MIN_RSV_DT) MIN_RSV_DT
+        ,MAX(Y.MAX_RSV_DT) MAX_RSV_DT
+        ,MIN(Y.MIN_ISS_DT) MIN_ISS_DT
+        ,MAX(Y.MAX_ISS_DT) MAX_ISS_DT
+        ,MAX(Y.REQ_DT) REQ_DT
+        FROM (<include refid="getPmlLineStatusData"/>) Y
+        GROUP BY Y.PROJ_NO
+        ,Y.PML_NO
+    </sql>
+
+    <sql id="getPmlLineStatusData">
+        SELECT PROJ_NO
+        ,PML_NO
+        ,PML_LINE_NO
+        ,DECODE((SELECT DISTINCT 'A'
+        FROM MA.T_MF_PML_UNRESERVE_MATERIAL A
+        WHERE A.PROJ_NO = R.PROJ_NO
+        AND A.MAT_CD = R.MAT_CD
+        AND A.PART_NO = R.PART_NO
+        AND A.PML_DIV = #{pmlDiv,jdbcType = VARCHAR})
+        ,'A'
+        ,'2'
+        ,DECODE(RSV_QTY, 0, '0', DECODE(SIGN(RSV_QTY - PML_QTY), -1, '1', '2'))) RSV_STATUS
+        ,DECODE(ISS_QTY, 0, '0', DECODE(SIGN(ISS_QTY - PML_QTY), -1, '1', '2')) ISS_STATUS
+        ,DECODE(SIGN(PML_QTY - RSV_QTY), -1, 'Y', 'N') IS_NEED_RETURN
+        ,PML_NEED_DT
+        ,RSV_QTY
+        ,MIN_RSV_DT
+        ,MAX_RSV_DT
+        ,ISS_QTY
+        ,MIN_ISS_DT
+        ,MAX_ISS_DT
+        ,PML_QTY
+        ,REQ_DT
+        ,ISS_DEPT_DESC
+        ,ISS_ORGN_DESC
+        ,REQ_GUID
+        FROM (SELECT T2.PROJ_NO
+        ,T2.PML_NO
+        ,T2.PML_LINE_NO
+        ,T2.QTY PML_QTY
+        ,T1.GUID REQ_GUID
+        ,NVL((SELECT SUM(R.RSV_QTY)
+        FROM MA.T_MF_RESERVE R
+        WHERE R.PML_LINE_GUID = T2.DB_ID), 0) RSV_QTY
+        ,(SELECT MIN(RSV_DT)
+        FROM MA.T_MF_RESERVE R
+        WHERE R.PML_LINE_GUID = T2.DB_ID) MIN_RSV_DT
+        ,(SELECT MAX(RSV_DT)
+        FROM MA.T_MF_RESERVE R
+        WHERE R.PML_LINE_GUID = T2.DB_ID) MAX_RSV_DT
+        ,NVL((SELECT SUM(S.ISS_QTY)
+        FROM MA.T_MF_RESERVE R
+        ,MA.T_MF_STOCK_OUT S
+        WHERE R.GUID = S.RSV_GUID
+        AND R.PML_LINE_GUID = T2.DB_ID), 0) ISS_QTY
+        ,(SELECT MIN(S.ISS_DT)
+        FROM MA.T_MF_RESERVE R
+        ,MA.T_MF_STOCK_OUT S
+        WHERE R.GUID = S.RSV_GUID
+        AND R.PML_LINE_GUID = T2.DB_ID) MIN_ISS_DT
+        ,(SELECT MAX(S.ISS_DT)
+        FROM MA.T_MF_RESERVE R
+        ,MA.T_MF_STOCK_OUT S
+        WHERE R.GUID = S.RSV_GUID
+        AND R.PML_LINE_GUID = T2.DB_ID) MAX_ISS_DT
+        ,T1.PML_NEED_DT PML_NEED_DT
+        ,(SELECT ORGN_DESC
+        FROM CP.ORGANIZATION
+        WHERE ORGN_LEVEL = '3'
+        START WITH ORGN_CD = T1.ISS_ORGN_CD
+        CONNECT BY ORGN_CD = PRIOR SUPER_ORGN_CD) ISS_DEPT_DESC
+        ,(SELECT A.ORGN_DESC
+        FROM CP.ORGANIZATION A
+        WHERE A.ORGN_CD = T1.ISS_ORGN_CD) ISS_ORGN_DESC
+        ,T1.REQ_DT REQ_DT
+        ,T2.MAT_CD
+        ,T2.PART_NO
+        FROM (
+        <choose>
+            <when test="pmlDiv != null and pmlDiv == 'Inst.'.toString()">
+                <include refid="getInstPmlLineLatestData"/>
+            </when>
+            <when test="pmlDiv != null and pmlDiv == 'Raw'.toString()">
+                <include refid="getRawPmlLineLatestData"/>
+            </when>
+            <otherwise>
+                <include refid="getInstPmlLineLatestData"/>
+                UNION ALL
+                <include refid="getRawPmlLineLatestData"/>
+            </otherwise>
+        </choose>
+        ) T2
+
+        ,(SELECT T_REQ.GUID GUID
+        ,T_REQ.ISS_PROJ_NO ISS_PROJ_NO
+        ,T_REQ.PML_NO PML_NO
+        ,T_REQ.PML_NEED_DT PML_NEED_DT
+        ,T_REQ.ISS_ORGN_CD ISS_ORGN_CD
+        ,T_REQ.REQ_DT REQ_DT
+        FROM (SELECT GUID GUID
+        ,ISS_PROJ_NO ISS_PROJ_NO
+        ,PML_NO PML_NO
+        ,PML_NEED_DT PML_NEED_DT
+        ,ISS_ORGN_CD ISS_ORGN_CD
+        ,REQ_DT REQ_DT
+        ,ROW_NUMBER() OVER (PARTITION BY ISS_PROJ_NO,PML_NO
+        ORDER BY WEEK_NO DESC) RNUM
+        FROM MA.T_MF_REQUEST
+        WHERE REQ_TYPE = '1'
+        AND ISS_PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlNo != null and pmlNo != ''">
+            AND REGEXP_LIKE(PML_NO, #{pmlNo,jdbcType=VARCHAR},'i')
+        </if>
+        ) T_REQ
+        WHERE T_REQ.RNUM = 1
+        ) T1
+        WHERE T2.PROJ_NO = T1.ISS_PROJ_NO
+        AND T2.PML_NO = T1.PML_NO
+        AND NOT EXISTS (SELECT 'X'
+        FROM BA.T_SHIP A
+        ,BA.T_SHIP_TYPE B
+        ,BA.T_SHIP_KIND C
+        ,BA.T_SHIP_KIND_CLASSIFY D
+        ,MA.T_MAT_NORMAL_LIB F
+        WHERE F.MAT_CD = T2.MAT_CD
+        AND A.PROJ_NO = T2.PROJ_NO
+        AND A.S_TYPE_ID = B.ID
+        AND B.SHIP_KIND_ID = C.ID
+        AND C.SHIP_KIND_CLASSIFY_ID = D.ID
+        AND D.ID = F.SHIP_KIND
+        AND F.RSV_YN = 'N'
+        )
+        ) R
+    </sql>
+
+    <sql id="getInstPmlLineLatestData">
+        SELECT INST.DB_ID                                               DB_ID
+             , INST.PROJ_NO                                             PROJ_NO
+             , INST.PML_NO                                              PML_NO
+             , INST.PML_LINE_NO                                         PML_LINE_NO
+             , INST.QTY                                                 QTY
+             , INST.MAT_CD                                              MAT_CD
+             , DECODE(INST.POR_PIECEMARK_YN, 'Y', INST.PIECE_MARK, ' ') PART_NO
+        FROM DS.T_INST_PML_LINE_LATEST INST
+        WHERE INST.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+          AND INST.MOD != 'D'
+           AND INST.REG_SOURCE  = 'W'
+    </sql>
+
+    <sql id="getRawPmlLineLatestData">
+        SELECT PIPE.DB_ID        DB_ID
+             , PIPE.PROJ_NO      PROJ_NO
+             , PIPE.PML_NO       PML_NO
+             , PIPE.PIPE_LINE_NO PML_LINE_NO
+             , PIPE.PROD_QTY     QTY
+             , PIPE.MAT_CD       MAT_CD
+             , ' '               PART_NO
+        FROM DS.T_PIPE_SUPPORT_PART_LATEST PIPE
+        WHERE PIPE.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+          AND PIPE.MOD != 'D'
+           AND PIPE.SOURCE_DIV  = 'W'
+    </sql>
+
+    <sql id="getMinRevPmlData">
+        SELECT PROJ_NO
+             , PML_NO
+             , ISSUE_DATE CNFM_DT
+             , RGST_USER_ID
+        FROM DS.T_INST_PML_REV_HISTORY
+        WHERE PML_REV_NO = '0000'
+          AND PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        UNION ALL
+        SELECT PROJ_NO
+             , PML_NO
+             , ISSUE_DATE CNFM_DT
+             , RGST_USER_ID
+        FROM DS.T_PIPE_SUPPORT_REV_HISTORY
+        WHERE PML_REV_NO = '0000'
+          AND PROJ_NO = #{projNo,jdbcType=VARCHAR}
+    </sql>
+
+    <sql id="getMaxReleasePmlPlanData">
+        SELECT INFO.DB_ID           INFO_ID
+             , INFO.PROJ_NO         PROJ_NO
+             , DTL.PML_NO           PML_NO
+             , DTL_1.BENCHMARK_DT_P BENCHMARK_DT_P
+             , DTL_2.BASE_LINE_DT_P BASE_LINE_DT_P
+             , DTL_3.PML_RSV_DT_P   PML_RSV_DT_P
+        FROM DS.T_PROJ_PML_PLAN_INFO INFO
+           , (SELECT DISTINCT INFO_ID
+                            , PML_NO
+              FROM DS.T_PROJ_PML_PLAN_DETAIL
+              WHERE PROJ_NO = #{projNo,jdbcType=VARCHAR}) DTL
+           , (SELECT VER.PROJ_NO
+                   , VER.INFO_ID
+                   , DTL.PML_NO
+                   , DTL.BENCHMARK_DT_P
+                   , ROW_NUMBER() OVER (PARTITION BY VER.INFO_ID, DTL.PML_NO ORDER BY VER.VER_NO DESC) RNUM
+              FROM DS.T_PROJ_PML_PLAN_VER VER
+                 , DS.T_PROJ_PML_PLAN_DETAIL DTL
+              WHERE VER.DB_ID = DTL.VER_ID
+                AND VER.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+                AND DTL.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+                AND VER.RELEASE_DT IS NOT NULL
+                AND DTL.BENCHMARK_DT_P IS NOT NULL) DTL_1
+           , (SELECT VER.PROJ_NO
+                   , VER.INFO_ID
+                   , DTL.PML_NO
+                   , DTL.BASE_LINE_DT_P
+                   , ROW_NUMBER() OVER (PARTITION BY VER.INFO_ID, DTL.PML_NO ORDER BY VER.VER_NO DESC) RNUM
+              FROM DS.T_PROJ_PML_PLAN_VER VER
+                 , DS.T_PROJ_PML_PLAN_DETAIL DTL
+              WHERE VER.DB_ID = DTL.VER_ID
+                AND VER.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+                AND DTL.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+                AND VER.RELEASE_DT IS NOT NULL
+                AND DTL.BASE_LINE_DT_P IS NOT NULL) DTL_2
+           , (SELECT VER.PROJ_NO
+                   , VER.INFO_ID
+                   , DTL.PML_NO
+                   , DTL.PML_RSV_DT_P
+                   , ROW_NUMBER() OVER (PARTITION BY VER.INFO_ID, DTL.PML_NO ORDER BY VER.VER_NO DESC) RNUM
+              FROM DS.T_PROJ_PML_PLAN_VER VER
+                 , DS.T_PROJ_PML_PLAN_DETAIL DTL
+              WHERE VER.DB_ID = DTL.VER_ID
+                AND VER.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+                AND DTL.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+                AND VER.RELEASE_DT IS NOT NULL
+                AND DTL.PML_RSV_DT_P IS NOT NULL) DTL_3
+        WHERE INFO.DB_ID = DTL.INFO_ID
+          AND DTL.INFO_ID = DTL_1.INFO_ID(+)
+          AND DTL.PML_NO = DTL_1.PML_NO(+)
+          AND DTL_1.RNUM(+) = 1
+          AND DTL.INFO_ID = DTL_2.INFO_ID(+)
+          AND DTL.PML_NO = DTL_2.PML_NO(+)
+          AND DTL_2.RNUM(+) = 1
+          AND DTL.INFO_ID = DTL_3.INFO_ID(+)
+          AND DTL.PML_NO = DTL_3.PML_NO(+)
+          AND DTL_3.RNUM(+) = 1
+          AND INFO.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+    </sql>
+
+    <select id="getPmlPlanDataByMatDetail"
+            parameterType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanTermDto"
+            resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanDto">
+        SELECT * FROM (
+        SELECT PML.PROJ_NO projNo
+        ,PML.PML_NO pmlNo
+        ,PML.PML_DESC pmlDesc
+        ,PML_LN.PML_LINE_NO pmlLineNo
+        ,PML_LN.MAT_CD matCd
+        ,PML_LN.PIECE_MARK pieceMark
+        ,PML_LN.ITEM_DESC matDesc
+        ,PML_STATUS.IS_NEED_RETURN isNeedReturn
+        ,DWG_INFO.SUB_NETWORK subNetWork
+        ,DWG_INFO.BLOCK block
+        ,DWG_INFO.SECTION section
+        ,DWG_INFO.SUB_ZONE subZone
+        ,DWG_INFO.ZONE zone
+        ,PML_STATUS.PML_NEED_DT pmlNeedDt
+        ,PML_STATUS.RSV_STATUS rsvStatus
+        ,DECODE(PML_STATUS.RSV_STATUS, '0', '未预约', '1', '预约中', '2', '预约完') rsvStatusDesc
+        ,PML_STATUS.ISS_STATUS issStatus
+        ,DECODE(PML_STATUS.ISS_STATUS, '0', '未发放', '1', '发放中', '2', '发放完') issStatusDesc
+        ,TD.BENCHMARK_DT_P benchmarkDtP
+        ,TD.BASE_LINE_DT_P baseLineDtP
+        ,NVL((SELECT DECODE(SIGN(COUNT(1)), 1, 'Y', 'N')
+        FROM MA.T_MAT_NORMAL_LIB T1
+        ,BA.T_SHIP T2
+        ,BA.T_SHIP_TYPE T3
+        ,BA.T_SHIP_KIND T4
+        WHERE T2.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        AND T2.S_TYPE_ID = T3.ID
+        AND T3.SHIP_KIND_ID = T4.ID
+        AND T4.SHIP_KIND_CLASSIFY_ID = T1.SHIP_KIND
+        AND T1.MAT_LIB_TYPE = 'outfit'
+        AND T1.MAT_CD = PML_LN.MAT_CD), 'N') isNormal
+        ,PML_LN.QTY pmlQty
+        ,POR_LN.BOM_QTY porQty
+        ,POR_LN.PO_QTY poQty
+        ,POR_LN.RCPT_QTY rcptQty
+        ,PML_STATUS.RSV_QTY rsvQty
+        ,PML_STATUS.ISS_QTY issQty
+        ,DECODE(PML_LN.POR_PIECEMARK_YN,
+        'Y',
+        NVL((SELECT SUM(S.STCK_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = PML_LN.PROJ_NO
+        AND S.MAT_CD = PML_LN.MAT_CD
+        AND S.PART_NO = PML_LN.PIECE_MARK),0),
+        NVL((SELECT SUM(S.STCK_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = PML_LN.PROJ_NO
+        AND S.MAT_CD = PML_LN.MAT_CD
+        AND S.PART_NO = ' '),0)) stckAllQty
+        ,DECODE(PML_LN.POR_PIECEMARK_YN,
+        'Y',
+        NVL((SELECT SUM(S.STCK_QTY-S.RSV_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = PML_LN.PROJ_NO
+        AND S.MAT_CD = PML_LN.MAT_CD
+        AND S.PART_NO = PML_LN.PIECE_MARK), 0),
+        NVL((SELECT SUM(S.STCK_QTY-S.RSV_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = PML_LN.PROJ_NO
+        AND S.MAT_CD = PML_LN.MAT_CD
+        AND S.PART_NO = ' '), 0)) canRsvQty
+        ,(SELECT TMP.STD_UNT FROM BA.UNIT TMP WHERE TMP.ID = POR_LN.UNIT) unitDesc
+        ,POR_LN.UNIT_WT unitWt
+        ,(SELECT TMP.STD_UNT FROM BA.UNIT TMP WHERE TMP.ID = POR_LN.WT_UNIT) wtUnitDesc
+        ,PML_LN.POR_NO porNo
+        ,PML_LN.POR_LINE_NO porLineNo
+        ,POR_LN.DOC_NAME dwgNo
+        ,POR_LN.DWG_MOD_NO modNo
+        ,PO_DATA.PO_NO poNo
+        ,PO_DATA.CURR_NAME currName
+        ,PO_DATA.SUBC_DESC subcDesc
+        ,PML_REV.CNFM_DT cnfmDt
+        ,DS.GET_PML_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, 'inst.') lastCnfmDt
+        ,(
+        SELECT (SELECT COMP.DESC_ENG
+        FROM BA.T_COMPANY COMP
+        WHERE COMP.CODE =
+        (SELECT O.ORGN_CD
+        FROM CP.ORGANIZATION O
+        WHERE O.ORGN_LEVEL = '2'
+        AND O.VALIDITY = '1'
+        START WITH O.ORGN_ID = EO.ORGANIZATION_ORGN_ID
+        CONNECT BY O.ORGN_ID = PRIOR O.SUPER_ORGN_ID)) AS CORP
+        FROM CP.USERINFO U
+        LEFT JOIN CP.EMPLOYEE EMP ON EMP.EMP_NO = U.EMP_NO
+        LEFT JOIN CP.EMPORGNRELATION EO ON EMP.EMP_ID = EO.EMPLOYEE_EMP_ID
+        WHERE U.VALIDITY = '1'
+        AND EMP.VALIDITY = '1'
+        AND U.USER_ID = PML_REV.RGST_USER_ID
+        AND EO.ORGNATTR_CD = '1'
+        ) compDesc
+        ,(
+        SELECT (SELECT O.ORGN_DESC
+        FROM CP.ORGANIZATION O
+        WHERE O.ORGN_LEVEL = '3'
+        AND O.VALIDITY = '1'
+        START WITH O.ORGN_ID = EO.ORGANIZATION_ORGN_ID
+        CONNECT BY O.ORGN_ID = PRIOR O.SUPER_ORGN_ID) AS CORP
+        FROM CP.USERINFO U
+        LEFT JOIN CP.EMPLOYEE EMP ON EMP.EMP_NO = U.EMP_NO
+        LEFT JOIN CP.EMPORGNRELATION EO ON EMP.EMP_ID = EO.EMPLOYEE_EMP_ID
+        WHERE U.VALIDITY = '1'
+        AND EMP.VALIDITY = '1'
+        AND U.USER_ID = PML_REV.RGST_USER_ID
+        AND EO.ORGNATTR_CD = '1'
+        ) deptDesc
+        ,(
+        SELECT (SELECT O.ORGN_DESC
+        FROM CP.ORGANIZATION O
+        WHERE O.ORGN_LEVEL = '4'
+        AND O.VALIDITY = '1'
+        START WITH O.ORGN_ID = EO.ORGANIZATION_ORGN_ID
+        CONNECT BY O.ORGN_ID = PRIOR O.SUPER_ORGN_ID) AS CORP
+        FROM CP.USERINFO U
+        LEFT JOIN CP.EMPLOYEE EMP ON EMP.EMP_NO = U.EMP_NO
+        LEFT JOIN CP.EMPORGNRELATION EO ON EMP.EMP_ID = EO.EMPLOYEE_EMP_ID
+        WHERE U.VALIDITY = '1'
+        AND EMP.VALIDITY = '1'
+        AND U.USER_ID = PML_REV.RGST_USER_ID
+        AND EO.ORGNATTR_CD = '1'
+        ) officeDesc
+        FROM DS.T_PML_LIST PML
+        ,DS.T_INST_PML_LINE_LATEST PML_LN
+        ,MA.T_BOM_MATERIAL POR_LN
+        ,(
+        SELECT POR.PROJ_NO
+        ,POR.POR_NO
+        ,POR.POR_LNNO
+        ,LISTAGG(POR.PO_NO, ',') WITHIN
+        GROUP (ORDER BY POR.POR_NO, POR.POR_LNNO, POR.PROJ_NO) PO_NO
+        ,LISTAGG(POR.CURR_NAME, ',') WITHIN
+        GROUP (ORDER BY POR.POR_NO, POR.POR_LNNO, POR.PROJ_NO) CURR_NAME
+        ,LISTAGG(POR.SUBC_DESC, ',') WITHIN
+        GROUP (ORDER BY POR.POR_NO, POR.POR_LNNO, POR.PROJ_NO) SUBC_DESC
+        FROM (
+        SELECT DISTINCT
+        POR_LN.PROJ_NO PROJ_NO
+        ,POR_LN.BOM_CD POR_NO
+        ,POR_LN.RECORD_ID POR_LNNO
+        ,PO.PO_NO PO_NO
+        ,(SELECT EMP.EMP_NAME FROM CP.EMPLOYEE EMP WHERE EMP.EMP_ID = PO.BUYER_ID) CURR_NAME
+        ,(SELECT DECODE(PO.SUBC_DISPLAY, '0', SUBC.SUBC_DESC, '1', SUBC.SUBC_ENG_DESC, ' ')
+        FROM BA.BA2020 SUBC WHERE SUBC.SUBC_CD = PO.SUBC_ID) SUBC_DESC
+        FROM MA.T_BOM_MATERIAL POR_LN
+        ,MA.T_PO PO
+        ,MA.T_PO_LINE PO_LN
+        WHERE POR_LN.PROJ_NO = PO_LN.PROJ_NO
+        AND POR_LN.BOM_CD = PO_LN.BOM_CD
+        AND POR_LN.RECORD_ID = PO_LN.BOM_LINE_NO
+        AND PO.PO_NO = PO_LN.PO_NO
+        AND POR_LN.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        ) POR
+        GROUP BY POR.POR_NO
+        ,POR.POR_LNNO
+        ,POR.PROJ_NO
+        ) PO_DATA
+        ,(<include refid="getMinRevPmlData"/>) PML_REV
+        ,(<include refid="getMaxReleasePmlPlanData"/>) TD
+        ,(<include refid="getPmlLineStatusData"/>) PML_STATUS
+        ,DS.T_PD_DWG_INFO_SWS DWG_INFO
+        WHERE PML.PROJ_NO = PML_LN.PROJ_NO
+        AND PML.PML_NO = PML_LN.PML_NO
+        AND PML_LN.PROJ_NO = POR_LN.PROJ_NO
+        AND PML_LN.POR_NO = POR_LN.BOM_CD
+        AND PML_LN.POR_LINE_NO = POR_LN.RECORD_ID
+        AND POR_LN.PROJ_NO = PO_DATA.PROJ_NO(+)
+        AND POR_LN.BOM_CD = PO_DATA.POR_NO(+)
+        AND POR_LN.RECORD_ID = PO_DATA.POR_LNNO(+)
+        AND PML.PROJ_NO = PML_REV.PROJ_NO
+        AND PML.PML_NO = PML_REV.PML_NO
+        AND PML_LN.PROJ_NO = PML_STATUS.PROJ_NO(+)
+        AND PML_LN.PML_NO = PML_STATUS.PML_NO(+)
+        AND PML_LN.PML_LINE_NO = PML_STATUS.PML_LINE_NO(+)
+        AND PML.PROJ_NO = TD.PROJ_NO(+)
+        AND PML.PML_NO = TD.PML_NO(+)
+        AND PML.PROJ_NO = DWG_INFO.PROJ_NO(+)
+        AND PML.DWG_NO = DWG_INFO.DWG_NO(+)
+        AND PML.PML_DIV = 'Inst.'
+        AND PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlNo != null and pmlNo != ''">
+            AND REGEXP_LIKE(PML.PML_NO, #{pmlNo,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="pmlDesc != null and pmlDesc != ''">
+            AND REGEXP_LIKE(PML.PML_DESC, #{pmlDesc,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="subNetWork != null and subNetWork != ''">
+            AND REGEXP_LIKE(DWG_INFO.SUB_NETWORK, #{subNetWork,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="block != null and block != ''">
+            AND REGEXP_LIKE(DWG_INFO.BLOCK, #{block,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="section != null and section != ''">
+            AND REGEXP_LIKE(DWG_INFO.SECTION, #{section,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="subZone != null and subZone != ''">
+            AND REGEXP_LIKE(DWG_INFO.SUB_ZONE, #{subZone,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="zone != null and zone != ''">
+            AND REGEXP_LIKE(DWG_INFO.ZONE, #{zone,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="rsvStatus != null and rsvStatus != ''">
+            AND PML_STATUS.RSV_STATUS = #{rsvStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="issStatus != null and issStatus != ''">
+            AND PML_STATUS.ISS_STATUS = #{issStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="dateType != null and dateType != ''">
+            AND
+            <choose>
+                <when test="dateType == '0'.toString()">
+                    TO_CHAR(PML_STATUS.PML_NEED_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '1'.toString()">
+                    TO_CHAR(TD.BENCHMARK_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '2'.toString()">
+                    TO_CHAR(TD.BASE_LINE_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '3'.toString()">
+                    TO_CHAR(PML_REV.CNFM_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '4'.toString()">
+                    TO_CHAR(DS.GET_PML_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, 'inst.'), 'YYYYMMDD') BETWEEN
+                    #{dateFrom, jdbcType=VARCHAR} AND #{dateTo, jdbcType=VARCHAR}
+                </when>
+            </choose>
+        </if>
+        <if test="matCdDesc != null and matCdDesc != ''">
+            AND (
+            REGEXP_LIKE(PML_LN.MAT_CD, #{matCdDesc,jdbcType=VARCHAR},'i')
+            OR REGEXP_LIKE(POR_LN.MAT_DESC, #{matCdDesc,jdbcType=VARCHAR},'i')
+            )
+        </if>
+        )
+        <if test="isNormal != null and isNormal != ''">
+            WHERE isNormal = #{isNormal, jdbcType=VARCHAR}
+        </if>
+        ORDER BY pmlNo
+        ,pmlLineNo
+    </select>
+
+    <select id="getPmlPlanDataByMatGroup"
+            parameterType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanTermDto"
+            resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanDto">
+        SELECT T_DATA.PROJ_NO projNo
+        ,T_DATA.MAT_CD matCd
+        ,T_DATA.PIECE_MARK pieceMark
+        ,DS.IS_NORMAL_BY_PROJ_NO_MAT_CD(MAT.PROJ_NO, MAT.MAT_CD) isNormal
+        ,MAT.MAT_DESC matDesc
+        ,T_DATA.PML_QTY pmlQty
+        ,T_DATA.POR_QTY porQty
+        ,T_DATA.PO_QTY poQty
+        ,T_DATA.RCPT_QTY rcptQty
+        ,BA.GET_UNIT_CD(MAT.UNIT) unitDesc
+        ,MAT.UNIT_WT unitWt
+        ,BA.GET_UNIT_CD(MAT.WEIGHT_UNIT) wtUnitDesc
+        ,T_DATA.RSV_QTY rsvQty
+        ,T_DATA.ISS_QTY issQty
+        ,DECODE(T_DATA.POR_PIECEMARK_YN,
+        'Y',
+        NVL((SELECT SUM(S.STCK_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = T_DATA.PROJ_NO
+        AND S.MAT_CD = T_DATA.MAT_CD
+        AND S.PART_NO = T_DATA.PIECE_MARK),0),
+        NVL((SELECT SUM(S.STCK_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = T_DATA.PROJ_NO
+        AND S.MAT_CD = T_DATA.MAT_CD
+        AND S.PART_NO = ' '),0)) stckAllQty
+        ,DECODE(T_DATA.POR_PIECEMARK_YN,
+        'Y',
+        NVL((SELECT SUM(S.STCK_QTY-S.RSV_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = T_DATA.PROJ_NO
+        AND S.MAT_CD = T_DATA.MAT_CD
+        AND S.PART_NO = T_DATA.PIECE_MARK), 0),
+        NVL((SELECT SUM(S.STCK_QTY-S.RSV_QTY)
+        FROM MA.T_MF_STOCK S
+        WHERE S.PROJ_NO = T_DATA.PROJ_NO
+        AND S.MAT_CD = T_DATA.MAT_CD
+        AND S.PART_NO = ' '), 0)) canRsvQty
+        FROM (
+        SELECT PML.PROJ_NO PROJ_NO
+        ,PML_LN.MAT_CD MAT_CD
+        ,PML_LN.PIECE_MARK PIECE_MARK
+        ,SUM(PML_LN.QTY) PML_QTY
+        ,MAX(POR_LN.BOM_QTY) POR_QTY
+        ,MAX(POR_LN.PO_QTY) PO_QTY
+        ,MAX(POR_LN.RCPT_QTY) RCPT_QTY
+        ,MAX(POR_LN.RSV_QTY) RSV_QTY
+        ,MAX(POR_LN.ISS_QTY) ISS_QTY
+        ,MAX(PML_LN.POR_PIECEMARK_YN) POR_PIECEMARK_YN
+        FROM DS.T_PML_LIST PML
+        ,DS.T_INST_PML_LINE_LATEST PML_LN
+        ,(
+        SELECT T_POR.PROJ_NO PROJ_NO
+        ,T_POR.MAT_CD MAT_CD
+        ,T_POR.PIECE_MARK PIECE_MARK
+        ,MAX(T_POR.MAT_DESC) MAT_DESC
+        ,SUM(T_POR.BOM_QTY) BOM_QTY
+        ,SUM(T_POR.PO_QTY) PO_QTY
+        ,SUM(T_POR.RCPT_QTY) RCPT_QTY
+        ,SUM(T_POR.RSV_QTY) RSV_QTY
+        ,SUM(T_POR.ISS_QTY) ISS_QTY
+        FROM (
+        SELECT DISTINCT
+        PML.PROJ_NO PROJ_NO
+        ,PML_LN.MAT_CD MAT_CD
+        ,PML_LN.PIECE_MARK PIECE_MARK
+        ,POR_LN.MAT_DESC MAT_DESC
+        ,POR_LN.BOM_CD BOM_CD
+        ,POR_LN.RECORD_ID RECORD_ID
+        ,POR_LN.BOM_QTY BOM_QTY
+        ,POR_LN.PO_QTY PO_QTY
+        ,POR_LN.RCPT_QTY RCPT_QTY
+        ,NVL((SELECT SUM(R.RSV_QTY)
+        FROM MA.T_MF_RESERVE R
+        WHERE R.PML_LINE_GUID = PML_LN.DB_ID), 0) RSV_QTY
+        ,NVL((SELECT SUM(S.ISS_QTY)
+        FROM MA.T_MF_RESERVE R
+        ,MA.T_MF_STOCK_OUT S
+        WHERE R.GUID = S.RSV_GUID
+        AND R.PML_LINE_GUID = PML_LN.DB_ID), 0) ISS_QTY
+        FROM DS.T_PML_LIST PML
+        ,DS.T_INST_PML_LINE_LATEST PML_LN
+        ,MA.T_BOM_MATERIAL POR_LN
+        ,(<include refid="getMinRevPmlData"/>) PML_REV
+        ,(<include refid="getMaxReleasePmlPlanData"/>) TD
+        WHERE PML.PROJ_NO = PML_LN.PROJ_NO
+        AND PML.PML_NO = PML_LN.PML_NO
+        AND PML_LN.PROJ_NO = POR_LN.PROJ_NO
+        AND PML_LN.POR_NO = POR_LN.BOM_CD
+        AND PML_LN.POR_LINE_NO = POR_LN.RECORD_ID
+        AND PML.PROJ_NO = TD.PROJ_NO(+)
+        AND PML.PML_NO = TD.PML_NO(+)
+        AND PML.PML_DIV = 'Inst.'
+        AND PML.PROJ_NO = PML_REV.PROJ_NO(+)
+        AND PML.PML_NO = PML_REV.PML_NO(+)
+        <include refid="MAT_GROUP_WHERE"/>
+        ) T_POR
+        GROUP BY PROJ_NO
+        ,MAT_CD
+        ,PIECE_MARK
+        ) POR_LN
+        ,(<include refid="getMinRevPmlData"/>) PML_REV
+        ,(<include refid="getMaxReleasePmlPlanData"/>) TD
+        WHERE PML.PROJ_NO = PML_LN.PROJ_NO
+        AND PML.PML_NO = PML_LN.PML_NO
+        AND PML.PROJ_NO = POR_LN.PROJ_NO
+        AND PML_LN.MAT_CD = POR_LN.MAT_CD
+        AND PML_LN.PIECE_MARK = POR_LN.PIECE_MARK
+        AND PML.PROJ_NO = TD.PROJ_NO(+)
+        AND PML.PML_NO = TD.PML_NO(+)
+        AND PML.PML_DIV = 'Inst.'
+        AND PML.PROJ_NO = PML_REV.PROJ_NO(+)
+        AND PML.PML_NO = PML_REV.PML_NO(+)
+        <include refid="MAT_GROUP_WHERE"/>
+        GROUP BY PML.PROJ_NO
+        ,PML_LN.MAT_CD
+        ,PML_LN.PIECE_MARK
+        ) T_DATA
+        ,MA.T_PROJ_MATERIAL MAT
+        WHERE T_DATA.PROJ_NO = MAT.PROJ_NO
+        AND T_DATA.MAT_CD = MAT.MAT_CD
+        AND NVL(T_DATA.PIECE_MARK, ' ') = MAT.PART_NO
+    </select>
+
+    <sql id="MAT_GROUP_WHERE">
+        AND PML.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="dateType != null and dateType != ''">
+            AND
+            <choose>
+                <when test="dateType == '1'.toString()">
+                    TO_CHAR(TD.BENCHMARK_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '2'.toString()">
+                    TO_CHAR(TD.BASE_LINE_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '3'.toString()">
+                    TO_CHAR(PML_REV.CNFM_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '4'.toString()">
+                    TO_CHAR(DS.GET_PML_CONFIRM_DATE(PML.PROJ_NO, PML.PML_NO, 'inst.'), 'YYYYMMDD') BETWEEN
+                    #{dateFrom, jdbcType=VARCHAR} AND #{dateTo, jdbcType=VARCHAR}
+                </when>
+            </choose>
+        </if>
+        <if test="matCdDesc != null and matCdDesc != ''">
+            AND (
+            REGEXP_LIKE(PML_LN.MAT_CD, #{matCdDesc,jdbcType=VARCHAR},'i')
+            OR REGEXP_LIKE(POR_LN.MAT_DESC, #{matCdDesc,jdbcType=VARCHAR},'i')
+            )
+        </if>
+        <if test="isNormal != null and isNormal != ''">
+            AND DS.IS_NORMAL_BY_PROJ_NO_MAT_CD(PML.PROJ_NO, PML_LN.MAT_CD) = #{isNormal, jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <select id="getPmlLineInfoBoardData" resultType="com.chinasws.web.mf.dto.PmlPlan.PmlLineInfoDto">
+        SELECT *
+        FROM (SELECT T2.ITEM_NO                                              itemNo
+                   , T2.PML_LINE_NO                                          pmlLineNo
+                   , T2.ITEM_DESC                                            matDesc
+                   , T2.MOD                                                  cMod
+                   , DECODE(T2.MOD, 'D', 0, T2.QTY)                          pmlQty
+                   , NVL((SELECT SUM(A.RSV_QTY)
+                          FROM MA.T_MF_RESERVE A
+                             , DS.T_INST_PML_LINE_LATEST B
+                          WHERE A.PML_LINE_GUID = B.DB_ID
+                            AND B.PROJ_NO = T2.PROJ_NO
+                            AND B.PML_NO = T2.PML_NO
+                            AND B.PML_LINE_NO = T2.PML_LINE_NO), 0)          rsvQty
+                   , NVL((SELECT SUM(C.ISS_QTY)
+                          FROM MA.T_MF_RESERVE A
+                             , DS.T_INST_PML_LINE_LATEST B
+                             , MA.T_MF_STOCK_OUT C
+                          WHERE A.PML_LINE_GUID = B.DB_ID
+                            AND B.PROJ_NO = T2.PROJ_NO
+                            AND B.PML_NO = T2.PML_NO
+                            AND B.PML_LINE_NO = T2.PML_LINE_NO
+                            AND A.GUID = C.RSV_GUID), 0)                     issQty
+                   , (SELECT SUM(T.PO_QTY)
+                      FROM MA.T_BOM_MATERIAL T
+                      WHERE T.PROJ_NO = T2.PROJ_NO
+                        AND T.BOM_CD = T2.POR_NO
+                        AND T.RECORD_ID = T2.POR_LINE_NO)                    poQty
+                   , (SELECT SUM(T.RCPT_QTY)
+                      FROM MA.T_BOM_MATERIAL T
+                      WHERE T.PROJ_NO = T2.PROJ_NO
+                        AND T.BOM_CD = T2.POR_NO
+                        AND T.RECORD_ID = T2.POR_LINE_NO)                    acptQty
+                   , DECODE(T2.POR_PIECEMARK_YN,
+                            'Y',
+                            NVL((SELECT SUM(S.STCK_QTY)
+                                 FROM MA.T_MF_STOCK S
+                                 WHERE S.PROJ_NO = T2.PROJ_NO
+                                   AND S.MAT_CD = T2.MAT_CD
+                                   AND S.PART_NO = T2.PIECE_MARK), 0),
+                            NVL((SELECT SUM(S.STCK_QTY)
+                                 FROM MA.T_MF_STOCK S
+                                 WHERE S.PROJ_NO = T2.PROJ_NO
+                                   AND S.MAT_CD = T2.MAT_CD
+                                   AND S.PART_NO = ' '), 0))                 stckAllQty
+                   , DECODE(T2.POR_PIECEMARK_YN,
+                            'Y',
+                            NVL((SELECT SUM(S.STCK_QTY - S.RSV_QTY)
+                                 FROM MA.T_MF_STOCK S
+                                 WHERE S.PROJ_NO = T2.PROJ_NO
+                                   AND S.MAT_CD = T2.MAT_CD
+                                   AND S.PART_NO = T2.PIECE_MARK), 0),
+                            NVL((SELECT SUM(S.STCK_QTY - S.RSV_QTY)
+                                 FROM MA.T_MF_STOCK S
+                                 WHERE S.PROJ_NO = T2.PROJ_NO
+                                   AND S.MAT_CD = T2.MAT_CD
+                                   AND S.PART_NO = ' '), 0))                 canRsvQty
+                   , (SELECT B.EMP_NAME
+                      FROM MA.T_BOM_MATERIAL A
+                         , CP.EMPLOYEE B
+                      WHERE A.PROJ_NO = T2.PROJ_NO
+                        AND A.BOM_CD = T2.POR_NO
+                        AND A.RECORD_ID = T2.POR_LINE_NO
+                        AND A.BUYER_ID = B.EMP_ID)                           buyrDesc
+                   , T2.MAT_CD                                               matCd
+                   , T2.PIECE_MARK                                           partNo
+                   , T2.POR_NO                                               porNo
+                   , T2.POR_LINE_NO                                          porLineNo
+                   , T2.PROJ_NO                                              projNo
+                   , (SELECT MAX(A.ISSUE_DATE) MAX_ISSUE_DATE
+                      FROM DS.T_INST_PML_REV_HISTORY A
+                      WHERE A.PROJ_NO = T2.PROJ_NO
+                        AND A.PML_NO = T2.PML_NO)                            lastIssueDate
+                   , DECODE((SELECT distinct 'A'
+                             FROM BA.T_SHIP A
+                                , BA.T_SHIP_TYPE B
+                                , BA.T_SHIP_KIND C
+                                , BA.T_SHIP_KIND_CLASSIFY D
+                                , MA.T_MAT_NORMAL_LIB F
+                             WHERE F.MAT_CD = T2.MAT_CD
+                               AND A.PROJ_NO = T2.PROJ_NO
+                               AND A.S_TYPE_ID = B.ID
+                               AND B.SHIP_KIND_ID = C.ID
+                               AND C.SHIP_KIND_CLASSIFY_ID = D.ID
+                               AND D.ID = F.SHIP_KIND
+                               AND F.RSV_YN = 'N'), 'A', '不参与预约', NULL) normalLibYn
+                   , T2.REG_SOURCE                                           regSource
+              FROM DS.T_INST_PML_LINE_LATEST T2
+              WHERE T2.PROJ_NO = #{projNo, jdbcType = VARCHAR}
+                AND T2.PML_NO = #{pmlNo, jdbcType = VARCHAR}
+
+              UNION ALL
+              SELECT T2.INST_ITEM_NO                      itemNo
+                   , T2.PIPE_LINE_NO                      pmlLineNo
+                   , T2.MAT_DESC                          matDesc
+                   , T2.MOD                               cMod
+                   , DECODE(T2.MOD, 'D', 0, T2.PROD_QTY)  pmlQty
+                   , NVL((SELECT SUM(A.RSV_QTY)
+                          FROM MA.T_MF_RESERVE A
+                          WHERE A.PML_LINE_GUID = T2.DB_ID),
+                         0)                               rsvQty
+                   , NVL((SELECT SUM(C.ISS_QTY)
+                          FROM MA.T_MF_RESERVE A,
+                               MA.T_MF_STOCK_OUT C
+                          WHERE A.PML_LINE_GUID = T2.DB_ID
+                            AND A.GUID = C.RSV_GUID),
+                         0)                               issQty
+                   , (SELECT SUM(T.PO_QTY)
+                      FROM MA.T_BOM_MATERIAL T
+                      WHERE T.PROJ_NO = T2.PROJ_NO
+                        AND T.BOM_CD = T2.POR_NO
+                        AND T.RECORD_ID = T2.POR_LINE_NO) poQty
+                   , (SELECT SUM(T.RCPT_QTY)
+                      FROM MA.T_BOM_MATERIAL T
+                      WHERE T.PROJ_NO = T2.PROJ_NO
+                        AND T.BOM_CD = T2.POR_NO
+                        AND T.RECORD_ID = T2.POR_LINE_NO) acptQty
+                   , NVL((SELECT SUM(S.STCK_QTY)
+                          FROM MA.T_MF_STOCK S
+                          WHERE S.PROJ_NO = T2.PROJ_NO
+                            AND S.MAT_CD = T2.MAT_CD
+                            AND S.PART_NO = ' '),
+                         0)                               stckAllQty
+                   , NVL((SELECT SUM(S.STCK_QTY - S.RSV_QTY)
+                          FROM MA.T_MF_STOCK S
+                          WHERE S.PROJ_NO = T2.PROJ_NO
+                            AND S.MAT_CD = T2.MAT_CD
+                            AND S.PART_NO = ' '),
+                         0)                               canRsvQty
+                   , (SELECT B.EMP_NAME
+                      FROM MA.T_BOM_MATERIAL A,
+                           CP.EMPLOYEE B
+                      WHERE A.PROJ_NO = T2.PROJ_NO
+                        AND A.BOM_CD = T2.POR_NO
+                        AND A.RECORD_ID = T2.POR_LINE_NO
+                        AND A.BUYER_ID = B.EMP_ID)        buyrDesc
+                   , T2.MAT_CD                            matCd
+                   , ' '                                  partNo
+                   , T2.POR_NO                            porNo
+                   , T2.POR_LINE_NO                       porLineNo
+                   , T2.PROJ_NO                           projNo
+                   , (SELECT MAX(A.ISSUE_DATE) MAX_ISSUE_DATE
+                      FROM DS.T_PIPE_SUPPORT_REV_HISTORY A
+                      WHERE A.PROJ_NO = T2.PROJ_NO
+                        AND A.PML_NO = T2.PML_NO)         lastIssueDate
+                   , DECODE((SELECT distinct 'A'
+                             FROM BA.T_SHIP A,
+                                  BA.T_SHIP_TYPE B,
+                                  BA.T_SHIP_KIND C,
+                                  BA.T_SHIP_KIND_CLASSIFY D,
+                                  MA.T_MAT_NORMAL_LIB F
+                             WHERE F.MAT_CD = T2.MAT_CD
+                               AND A.PROJ_NO = T2.PROJ_NO
+                               AND A.S_TYPE_ID = B.ID
+                               AND B.SHIP_KIND_ID = C.ID
+                               AND C.SHIP_KIND_CLASSIFY_ID = D.ID
+                               AND D.ID = F.SHIP_KIND
+                               AND F.RSV_YN = 'N'),
+                            'A', '不参与预约', NULL)      normalLibYn
+                   , T2.SOURCE_DIV                        regSource
+              FROM DS.T_PIPE_SUPPORT_PART_LATEST T2
+              WHERE T2.PROJ_NO = #{projNo, jdbcType = VARCHAR}
+                AND T2.PML_NO = #{pmlNo, jdbcType = VARCHAR})
+        WHERE (cMod != 'D' OR (cMod = 'D' AND rsvQty > 0))
+          AND regSource = #{regSource,jdbcType=VARCHAR}
+        ORDER BY pmlLineNo
+    </select>
+
+    <select id="getPmlMatBoardData" resultType="com.chinasws.web.mf.dto.PmlPlan.PmlMatInfoDto">
+        SELECT PML.PROJ_NO projNo
+        ,PML.PML_NO pmlNo
+        ,PML_LN.PML_LINE_NO pmlLineNo
+        ,PML.PML_DESC pmlDesc
+        ,DECODE (PML_LN.MOD, 'D', 0, PML_LN.QTY) pmlQty
+        ,DECODE(PML_STATUS.RSV_STATUS, '0', '未预约', '1', '预约中', '2', '预约完') rsvStatusDesc
+        ,DECODE(PML_STATUS.ISS_STATUS, '0', '未发放', '1', '发放中', '2', '发放完') issStatusDesc
+        ,TD.BENCHMARK_DT_P benchmarkDtP
+        ,TD.BASE_LINE_DT_P baseLineDtP
+        ,PML_STATUS.PML_NEED_DT pmlNeedDt
+        ,PML_LN.ITEM_NO itemNo
+        ,PML_LN.MAT_CD matCd
+        ,PML_LN.PIECE_MARK pieceMark
+        ,PML_LN.ITEM_DESC matDesc
+        FROM DS.T_PML_LIST PML
+        ,(SELECT TMP1.PROJ_NO
+        ,TMP1.PML_NO
+        ,TMP1.PML_LINE_NO
+        ,TMP1.MOD
+        ,TMP1.QTY
+        ,TMP1.ITEM_NO
+        ,TMP1.MAT_CD
+        ,TMP1.PIECE_MARK
+        ,TMP1.ITEM_DESC
+        FROM DS.T_INST_PML_LINE_LATEST TMP1
+        WHERE TMP1.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        AND TMP1.PML_NO = #{pmlNo,jdbcType=VARCHAR}
+        AND TMP1.REG_SOURCE = #{regSource,jdbcType=VARCHAR}
+        UNION ALL
+        SELECT TMP2.PROJ_NO
+        ,TMP2.PML_NO
+        ,TMP2.PIPE_LINE_NO PML_LINE_NO
+        ,TMP2.MOD
+        ,TMP2.PROD_QTY QTY
+        ,TMP2.INST_ITEM_NO ITEM_NO
+        ,TMP2.MAT_CD
+        ,' ' PIECE_MARK
+        ,TMP2.MAT_DESC ITEM_DESC
+        FROM DS.T_PIPE_SUPPORT_PART_LATEST TMP2
+        WHERE TMP2.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        AND TMP2.PML_NO = #{pmlNo,jdbcType=VARCHAR}
+        AND TMP2.SOURCE_DIV = #{regSource,jdbcType=VARCHAR}
+        ) PML_LN
+        ,(<include refid="getMaxReleasePmlPlanData"/>) TD
+        ,(<include refid="getPmlLineStatusData"/>) PML_STATUS
+        WHERE PML.PROJ_NO = PML_LN.PROJ_NO
+        AND PML.PML_NO = PML_LN.PML_NO
+        AND PML_LN.PROJ_NO = PML_STATUS.PROJ_NO(+)
+        AND PML_LN.PML_NO = PML_STATUS.PML_NO(+)
+        AND PML_LN.PML_LINE_NO = PML_STATUS.PML_LINE_NO(+)
+        AND PML_LN.PROJ_NO = TD.PROJ_NO(+)
+        AND PML_LN.PML_NO = TD.PML_NO(+)
+        ORDER BY PML_LN.PML_NO
+        ,PML_LN.PML_LINE_NO
+    </select>
+
+
+    <select id="getPmlPlanDataByMatDetail2"
+            parameterType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanTermDto"
+            resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanDto">
+        SELECT T_DATA.PROJ_NO projNo
+        ,T_DATA.PML_NO pmlNo
+        ,T_DATA.PML_DESC pmlDesc
+        ,T_DATA.PML_LINE_NO pmlLineNo
+        ,T_DATA.MAT_CD matCd
+        ,T_DATA.PIECE_MARK pieceMark
+        ,T_DATA.MAT_DESC matDesc
+        ,T_DATA.IS_NEED_RETURN isNeedReturn
+        ,T_DATA.SUB_NETWORK subNetWork
+        ,T_DATA.BLOCK block
+        ,T_DATA.SECTION section
+        ,T_DATA.SUB_ZONE subZone
+        ,T_DATA.ZONE zone
+        ,T_DATA.PML_NEED_DT pmlNeedDt
+        ,T_DATA.RSV_STATUS rsvStatus
+        ,T_DATA.RSV_STATUS_DESC rsvStatusDesc
+        ,T_DATA.ISS_STATUS issStatus
+        ,T_DATA.ISS_STATUS_DESC issStatusDesc
+        ,T_DATA.BENCHMARK_DT_P benchmarkDtP
+        ,T_DATA.BASE_LINE_DT_P baseLineDtP
+        ,DECODE(
+        (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL_PROJ NP WHERE NP.PROJ_NO = T_DATA.PROJ_NO), 0, T_DATA.IS_NORMAL,
+        DECODE(
+        (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL NT WHERE NT.MAT_CD = T_DATA.MAT_CD), 0, 'N', 'Y')
+        ) isNormal
+        ,T_DATA.PML_QTY pmlQty
+        ,T_DATA.POR_QTY porQty
+        ,T_DATA.PO_QTY poQty
+        ,T_DATA.RCPT_QTY rcptQty
+        ,T_DATA.RSV_QTY rsvQty
+        ,T_DATA.ISS_QTY issQty
+        ,T_DATA.STCK_ALL_QTY stckAllQty
+        ,T_DATA.CAN_RSV_QTY canRsvQty
+        ,DECODE(T_DATA.RSV_QTY, NULL, NULL, T_DATA.PML_QTY - T_DATA.RSV_QTY) outOfQty
+        ,T_DATA.UNITDESC unitDesc
+        ,T_DATA.UNIT_WT unitWt
+        ,T_DATA.WT_UNIT_DESC wtUnitDesc
+        ,T_DATA.POR_NO porNo
+        ,T_DATA.POR_LINE_NO porLineNo
+        ,T_DATA.DWG_NO dwgNo
+        ,T_DATA.DWG_MOD_NO modNo
+        ,T_DATA.PO_NO poNo
+        ,T_DATA.CURR_NAME currName
+        ,T_DATA.SUBC_DESC subcDesc
+        ,T_DATA.CNFM_DT cnfmDt
+        ,T_DATA.LAST_CNFM_DT lastCnfmDt
+        ,T_DATA.COMP_DESC compDesc
+        ,T_DATA.DEPT_DESC deptDesc
+        ,T_DATA.OFFICE_DESC officeDesc
+        ,T_DATA.PML_DIV pmlDiv
+        ,T_DATA.PML_RSV_DT_P pmlRsvDtP
+        ,T_DATA.PML_MAT_NEED_DT_P pmlMatNeedDtP
+        ,T_DATA.ITEM_NO itemNo
+        ,T_DATA.SUB_QTY subQty
+        ,T_DATA.DS_NEED_QTY dsNeedQty
+        FROM DS.T_PML_PLAN_MAT_TMP T_DATA <!--DS.P_SET_PML_PLAN_MAT_TMP生成-->
+        <include refid="MAT_DETAIL_WHERE"/>
+        ORDER BY T_DATA.PML_NO
+        ,T_DATA.PML_LINE_NO
+    </select>
+
+    <select id="getPmlPlanDataByMatDetail3"
+            parameterType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanTermDto"
+            resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanDto">
+        SELECT V_DATA.PROJ_NO projNo
+        ,V_DATA.PML_NO pmlNo
+        ,V_DATA.PML_DESC pmlDesc
+        ,V_DATA.PML_LINE_NO pmlLineNo
+        ,V_DATA.MAT_CD matCd
+        ,V_DATA.PIECE_MARK pieceMark
+        ,V_DATA.MAT_DESC matDesc
+        ,V_DATA.IS_NEED_RETURN isNeedReturn
+        ,V_DATA.SUB_NETWORK subNetWork
+        ,V_DATA.BLOCK block
+        ,V_DATA.SECTION section
+        ,V_DATA.SUB_ZONE subZone
+        ,V_DATA.ZONE zone
+        ,V_DATA.PML_NEED_DT pmlNeedDt
+        ,V_DATA.RSV_STATUS rsvStatus
+        ,V_DATA.RSV_STATUS_DESC rsvStatusDesc
+        ,V_DATA.ISS_STATUS issStatus
+        ,V_DATA.ISS_STATUS_DESC issStatusDesc
+        ,V_DATA.BENCHMARK_DT_P benchmarkDtP
+        ,V_DATA.BASE_LINE_DT_P baseLineDtP
+        ,V_DATA.IS_NORMAL isNormal
+        ,V_DATA.PML_QTY pmlQty
+        ,V_DATA.POR_QTY porQty
+        ,V_DATA.PO_QTY poQty
+        ,V_DATA.RCPT_QTY rcptQty
+        ,V_DATA.RSV_QTY rsvQty
+        ,V_DATA.ISS_QTY issQty
+        ,V_DATA.STCK_ALL_QTY stckAllQty
+        ,V_DATA.CAN_RSV_QTY canRsvQty
+        ,V_DATA.OUT_OF_QTY outOfQty
+        ,V_DATA.UNITDESC unitDesc
+        ,V_DATA.UNIT_WT unitWt
+        ,V_DATA.WT_UNIT_DESC wtUnitDesc
+        ,V_DATA.POR_NO porNo
+        ,V_DATA.POR_LINE_NO porLineNo
+        ,V_DATA.DWG_NO dwgNo
+        ,V_DATA.DWG_MOD_NO modNo
+        ,V_DATA.PO_NO poNo
+        ,V_DATA.CURR_NAME currName
+        ,V_DATA.SUBC_DESC subcDesc
+        ,V_DATA.CNFM_DT cnfmDt
+        ,V_DATA.LAST_CNFM_DT lastCnfmDt
+        ,V_DATA.COMP_DESC compDesc
+        ,V_DATA.DEPT_DESC deptDesc
+        ,V_DATA.OFFICE_DESC officeDesc
+        ,V_DATA.PML_DIV pmlDiv
+        ,V_DATA.PML_RSV_DT_P pmlRsvDtP
+        ,V_DATA.PML_MAT_NEED_DT_P pmlMatNeedDtP
+        ,V_DATA.ITEM_NO itemNo
+        ,V_DATA.SUB_QTY subQty
+        ,V_DATA.DS_NEED_QTY dsNeedQty
+        FROM (
+        <choose>
+            <when test="pmlDiv != null and pmlDiv == 'Inst.'.toString()">
+                <include refid="INST_PML_PLAN_MAT_DETAIL_DATA"/>
+            </when>
+            <when test="pmlDiv != null and pmlDiv == 'Raw'.toString()">
+                <include refid="RAW_PML_PLAN_MAT_DETAIL_DATA"/>
+            </when>
+            <otherwise>
+                <include refid="INST_PML_PLAN_MAT_DETAIL_DATA"/>
+                UNION ALL
+                <include refid="RAW_PML_PLAN_MAT_DETAIL_DATA"/>
+            </otherwise>
+        </choose>
+
+        ) V_DATA
+        ORDER BY V_DATA.PML_NO
+        ,V_DATA.PML_LINE_NO
+    </select>
+
+    <sql id="INST_PML_PLAN_MAT_DETAIL_DATA">
+        SELECT T_DATA.PROJ_NO PROJ_NO
+        ,T_DATA.PML_NO PML_NO
+        ,T_DATA.PML_DESC PML_DESC
+        ,T_DATA.PML_LINE_NO PML_LINE_NO
+        ,T_DATA.MAT_CD MAT_CD
+        ,T_DATA.PIECE_MARK PIECE_MARK
+        ,T_DATA.MAT_DESC MAT_DESC
+        ,T_DATA.IS_NEED_RETURN IS_NEED_RETURN
+        ,T_DATA.SUB_NETWORK SUB_NETWORK
+        ,T_DATA.BLOCK BLOCK
+        ,T_DATA.SECTION SECTION
+        ,T_DATA.SUB_ZONE SUB_ZONE
+        ,T_DATA.ZONE ZONE
+        ,T_DATA.PML_NEED_DT PML_NEED_DT
+        ,T_DATA.RSV_STATUS RSV_STATUS
+        ,T_DATA.RSV_STATUS_DESC RSV_STATUS_DESC
+        ,T_DATA.ISS_STATUS ISS_STATUS
+        ,T_DATA.ISS_STATUS_DESC ISS_STATUS_DESC
+        ,T_DATA.BENCHMARK_DT_P BENCHMARK_DT_P
+        ,T_DATA.BASE_LINE_DT_P BASE_LINE_DT_P
+        ,DECODE(
+        (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL_PROJ NP WHERE NP.PROJ_NO = T_DATA.PROJ_NO), 0, T_DATA.IS_NORMAL,
+        DECODE(
+        (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL NT WHERE NT.MAT_CD = T_DATA.MAT_CD), 0, 'N', 'Y')
+        ) IS_NORMAL
+        ,T_DATA.PML_QTY PML_QTY
+        ,T_DATA.POR_QTY POR_QTY
+        ,T_DATA.PO_QTY PO_QTY
+        ,T_DATA.RCPT_QTY RCPT_QTY
+        ,T_DATA.RSV_QTY RSV_QTY
+        ,T_DATA.ISS_QTY ISS_QTY
+        ,T_DATA.STCK_ALL_QTY STCK_ALL_QTY
+        ,T_DATA.CAN_RSV_QTY CAN_RSV_QTY
+        ,DECODE(T_DATA.RSV_QTY, NULL, TO_NUMBER(NULL), T_DATA.PML_QTY - T_DATA.RSV_QTY) OUT_OF_QTY
+        ,T_DATA.UNITDESC UNITDESC
+        ,T_DATA.UNIT_WT UNIT_WT
+        ,T_DATA.WT_UNIT_DESC WT_UNIT_DESC
+        ,T_DATA.POR_NO POR_NO
+        ,T_DATA.POR_LINE_NO POR_LINE_NO
+        ,T_DATA.DWG_NO DWG_NO
+        ,T_DATA.DWG_MOD_NO DWG_MOD_NO
+        ,T_DATA.PO_NO PO_NO
+        ,T_DATA.CURR_NAME CURR_NAME
+        ,T_DATA.SUBC_DESC SUBC_DESC
+        ,T_DATA.CNFM_DT CNFM_DT
+        ,T_DATA.LAST_CNFM_DT LAST_CNFM_DT
+        ,T_DATA.COMP_DESC COMP_DESC
+        ,T_DATA.DEPT_DESC DEPT_DESC
+        ,T_DATA.OFFICE_DESC OFFICE_DESC
+        ,T_DATA.PML_DIV PML_DIV
+        ,T_DATA.PML_RSV_DT_P PML_RSV_DT_P
+        ,T_DATA.PML_MAT_NEED_DT_P PML_MAT_NEED_DT_P
+        ,T_DATA.ITEM_NO ITEM_NO
+        ,T_DATA.SUB_QTY SUB_QTY
+        ,T_DATA.DS_NEED_QTY DS_NEED_QTY
+        FROM DS.T_PML_PLAN_MAT_TMP T_DATA <!--DS.P_SET_PML_PLAN_MAT_TMP生成-->
+        <include refid="MAT_DETAIL_WHERE"/>
+        AND T_DATA.PML_DIV = 'Inst.'
+    </sql>
+
+    <sql id="RAW_PML_PLAN_MAT_DETAIL_DATA">
+        SELECT T_DATA.PROJ_NO PROJ_NO
+        ,T_DATA.PML_NO PML_NO
+        ,MAX(T_DATA.PML_DESC) PML_DESC
+        ,NULL PML_LINE_NO
+        ,T_DATA.MAT_CD MAT_CD
+        ,MAX(T_DATA.PIECE_MARK) PIECE_MARK
+        ,MAX(T_DATA.MAT_DESC) MAT_DESC
+        ,MAX(T_DATA.IS_NEED_RETURN) IS_NEED_RETURN
+        ,MAX(T_DATA.SUB_NETWORK) SUB_NETWORK
+        ,MAX(T_DATA.BLOCK) BLOCK
+        ,MAX(T_DATA.SECTION) SECTION
+        ,MAX(T_DATA.SUB_ZONE) SUB_ZONE
+        ,MAX(T_DATA.ZONE) ZONE
+        ,MAX(T_DATA.PML_NEED_DT) PML_NEED_DT
+        ,MAX(T_DATA.RSV_STATUS) RSV_STATUS
+        ,MAX(T_DATA.RSV_STATUS_DESC) RSV_STATUS_DESC
+        ,MAX(T_DATA.ISS_STATUS) ISS_STATUS
+        ,MAX(T_DATA.ISS_STATUS_DESC) ISS_STATUS_DESC
+        ,MAX(T_DATA.BENCHMARK_DT_P) BENCHMARK_DT_P
+        ,MAX(T_DATA.BASE_LINE_DT_P) BASE_LINE_DT_P
+        ,MAX(DECODE(
+        (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL_PROJ NP WHERE NP.PROJ_NO = T_DATA.PROJ_NO), 0, T_DATA.IS_NORMAL,
+        DECODE(
+        (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL NT WHERE NT.MAT_CD = T_DATA.MAT_CD), 0, 'N', 'Y')
+        )) IS_NORMAL
+        ,SUM(T_DATA.PML_QTY) PML_QTY
+        ,MAX(T_DATA.POR_QTY) POR_QTY
+        ,MAX(T_DATA.PO_QTY) PO_QTY
+        ,MAX(T_DATA.RCPT_QTY) RCPT_QTY
+        ,SUM(T_DATA.RSV_QTY) RSV_QTY
+        ,SUM(T_DATA.ISS_QTY) ISS_QTY
+        ,MAX(T_DATA.STCK_ALL_QTY) STCK_ALL_QTY
+        ,MAX(T_DATA.CAN_RSV_QTY) CAN_RSV_QTY
+        ,MAX(DECODE(T_DATA.RSV_QTY, NULL, 0, T_DATA.PML_QTY - T_DATA.RSV_QTY)) OUT_OF_QTY
+        ,MAX(T_DATA.UNITDESC) UNITDESC
+        ,MAX(T_DATA.UNIT_WT) UNIT_WT
+        ,MAX(T_DATA.WT_UNIT_DESC) WT_UNIT_DESC
+        ,T_DATA.POR_NO POR_NO
+        ,T_DATA.POR_LINE_NO POR_LINE_NO
+        ,MAX(T_DATA.DWG_NO) DWG_NO
+        ,MAX(T_DATA.DWG_MOD_NO) DWG_MOD_NO
+        ,MAX(T_DATA.PO_NO) PO_NO
+        ,MAX(T_DATA.CURR_NAME) CURR_NAME
+        ,MAX(T_DATA.SUBC_DESC) SUBC_DESC
+        ,MAX(T_DATA.CNFM_DT) CNFM_DT
+        ,MAX(T_DATA.LAST_CNFM_DT) LAST_CNFM_DT
+        ,MAX(T_DATA.COMP_DESC) COMP_DESC
+        ,MAX(T_DATA.DEPT_DESC) DEPT_DESC
+        ,MAX(T_DATA.OFFICE_DESC) OFFICE_DESC
+        ,MAX(T_DATA.PML_DIV) PML_DIV
+        ,MAX(T_DATA.PML_RSV_DT_P) PML_RSV_DT_P
+        ,MAX(T_DATA.PML_MAT_NEED_DT_P) PML_MAT_NEED_DT_P
+        ,TO_CHAR(WM_CONCAT(DISTINCT T_DATA.ITEM_NO)) ITEM_NO
+        ,SUM(T_DATA.SUB_QTY) SUB_QTY
+        ,SUM(T_DATA.DS_NEED_QTY) DS_NEED_QTY
+        FROM DS.T_PML_PLAN_MAT_TMP T_DATA <!--DS.P_SET_PML_PLAN_MAT_TMP生成-->
+        <include refid="MAT_DETAIL_WHERE"/>
+        AND T_DATA.PML_DIV = 'Raw'
+        GROUP BY T_DATA.PROJ_NO
+        ,T_DATA.PML_NO
+        ,T_DATA.POR_NO
+        ,T_DATA.POR_LINE_NO
+        ,T_DATA.MAT_CD
+    </sql>
+
+    <sql id="MAT_DETAIL_WHERE">
+        WHERE T_DATA.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlDiv != null and pmlDiv != ''">
+            AND T_DATA.PML_DIV = #{pmlDiv,jdbcType=VARCHAR}
+        </if>
+        <if test="pmlDiv == null or pmlDiv == ''">
+            AND T_DATA.PML_DIV IN ('Inst.', 'Raw')
+        </if>
+        <if test="pmlNo != null and pmlNo != ''">
+            AND REGEXP_LIKE(T_DATA.PML_NO, #{pmlNo,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="pmlDesc != null and pmlDesc != ''">
+            AND REGEXP_LIKE(T_DATA.PML_DESC, #{pmlDesc,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="subNetWork != null and subNetWork != ''">
+            AND REGEXP_LIKE(T_DATA.SUB_NETWORK, #{subNetWork,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="block != null and block != ''">
+            AND REGEXP_LIKE(T_DATA.BLOCK, #{block,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="section != null and section != ''">
+            AND REGEXP_LIKE(T_DATA.SECTION, #{section,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="subZone != null and subZone != ''">
+            AND REGEXP_LIKE(T_DATA.SUB_ZONE, #{subZone,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="zone != null and zone != ''">
+            AND REGEXP_LIKE(T_DATA.ZONE, #{zone,jdbcType=VARCHAR},'i')
+        </if>
+        <if test="rsvStatus != null and rsvStatus != ''">
+            AND NVL(T_DATA.RSV_STATUS, '99') IN
+            <foreach collection="lstRsvStatus" index="index" item="item" open="(" separator="," close=")">
+                #{item,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+        <if test="issStatus != null and issStatus != ''">
+            AND T_DATA.ISS_STATUS IN
+            <foreach collection="lstIssStatus" index="index" item="item" open="(" separator="," close=")">
+                #{item,jdbcType=VARCHAR}
+            </foreach>
+        </if>
+        <if test="dateType != null and dateType != ''">
+            AND
+            <choose>
+                <when test="dateType == '0'.toString()">
+                    TO_CHAR(T_DATA.PML_NEED_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '1'.toString()">
+                    TO_CHAR(T_DATA.BENCHMARK_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '2'.toString()">
+                    TO_CHAR(T_DATA.BASE_LINE_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '3'.toString()">
+                    TO_CHAR(T_DATA.CNFM_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '4'.toString()">
+                    TO_CHAR(T_DATA.LAST_CNFM_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '5'.toString()">
+                    TO_CHAR(T_DATA.PML_RSV_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '6'.toString()">
+                    TO_CHAR(T_DATA.PML_MAT_NEED_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+            </choose>
+        </if>
+        <if test="matCdDesc != null and matCdDesc != ''">
+            AND (
+            REGEXP_LIKE(T_DATA.MAT_CD, #{matCdDesc,jdbcType=VARCHAR},'i')
+            OR REGEXP_LIKE(T_DATA.MAT_DESC, #{matCdDesc,jdbcType=VARCHAR},'i')
+            )
+        </if>
+        <if test="isNormal != null and isNormal != ''">
+            AND DECODE(
+            (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL_PROJ NP WHERE NP.PROJ_NO = T_DATA.PROJ_NO), 0, T_DATA.IS_NORMAL,
+            DECODE(
+            (SELECT COUNT(1) FROM MA.T_NORMAL_MATERIAL NT WHERE NT.MAT_CD = T_DATA.MAT_CD), 0, 'N', 'Y')
+            ) = #{isNormal, jdbcType=VARCHAR}
+        </if>
+
+        <if test="isOutOf == 'Y'.toString() ">
+            AND (T_DATA.RSV_QTY IS NOT NULL AND T_DATA.PML_QTY - T_DATA.RSV_QTY > 0)
+        </if>
+    </sql>
+
+    <select id="getPmlPlanDataByMatGroup2"
+            parameterType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanTermDto"
+            resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanDto">
+        SELECT T_DATA.PROJ_NO projNo
+        ,T_DATA.MAT_CD matCd
+        ,T_DATA.PIECE_MARK pieceMark
+        ,T_DATA.PML_DIV pmlDiv
+        ,MAX(T_DATA.MAT_DESC) matDesc
+        ,MAX(T_DATA.IS_NORMAL) isNormal
+        ,SUM(T_DATA.PML_QTY) pmlQty
+        ,MAX(T_DATA.MAT_POR_QTY) porQty
+        ,MAX(T_DATA.MAT_PO_QTY) poQty
+        ,MAX(T_DATA.MAT_RCPT_QTY) rcptQty
+        ,SUM(T_DATA.ISS_QTY) issQty
+        ,SUM(T_DATA.RSV_QTY) rsvQty
+        ,DECODE(SUM(T_DATA.RSV_QTY), NULL, NULL, SUM(T_DATA.PML_QTY - T_DATA.RSV_QTY)) outOfQty
+        ,MAX(T_DATA.STCK_ALL_QTY) stckAllQty
+        ,MAX(T_DATA.CAN_RSV_QTY) canRsvQty
+        ,MAX(T_DATA.UNITDESC) unitDesc
+        ,MAX(T_DATA.UNIT_WT) unitWt
+        ,MAX(T_DATA.WT_UNIT_DESC) wtUnitDesc
+        ,WM_CONCAT(DISTINCT T_DATA.ITEM_NO) itemNo
+        ,SUM(T_DATA.SUB_QTY) subQty
+        ,SUM(T_DATA.DS_NEED_QTY) dsNeedQty
+        FROM DS.T_PML_PLAN_MAT_TMP T_DATA <!--DS.P_SET_PML_PLAN_MAT_TMP生成-->
+        WHERE T_DATA.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlDiv != null and pmlDiv != ''">
+            AND T_DATA.PML_DIV = #{pmlDiv,jdbcType=VARCHAR}
+        </if>
+        <if test="pmlDiv == null or pmlDiv == ''">
+            AND T_DATA.PML_DIV IN ('Inst.', 'Raw')
+        </if>
+        <if test="dateType != null and dateType != ''">
+            AND
+            <choose>
+                <when test="dateType == '0'.toString()">
+                    TO_CHAR(T_DATA.PML_NEED_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '1'.toString()">
+                    TO_CHAR(T_DATA.BENCHMARK_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '2'.toString()">
+                    TO_CHAR(T_DATA.BASE_LINE_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '3'.toString()">
+                    TO_CHAR(T_DATA.CNFM_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '4'.toString()">
+                    TO_CHAR(T_DATA.LAST_CNFM_DT, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '5'.toString()">
+                    TO_CHAR(T_DATA.PML_RSV_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+                <when test="dateType == '6'.toString()">
+                    TO_CHAR(T_DATA.PML_MAT_NEED_DT_P, 'YYYYMMDD') BETWEEN #{dateFrom, jdbcType=VARCHAR} AND
+                    #{dateTo, jdbcType=VARCHAR}
+                </when>
+            </choose>
+        </if>
+        <if test="matCdDesc != null and matCdDesc != ''">
+            AND (
+            REGEXP_LIKE(T_DATA.MAT_CD, #{matCdDesc,jdbcType=VARCHAR},'i')
+            OR REGEXP_LIKE(T_DATA.MAT_DESC, #{matCdDesc,jdbcType=VARCHAR},'i')
+            )
+        </if>
+        <if test="isNormal != null and isNormal != ''">
+            AND T_DATA.IS_NORMAL = #{isNormal, jdbcType=VARCHAR}
+        </if>
+        <if test="isOutOf == 'Y'.toString() ">
+            AND (T_DATA.RSV_QTY IS NOT NULL AND T_DATA.PML_QTY - T_DATA.RSV_QTY > 0)
+        </if>
+        GROUP BY T_DATA.PROJ_NO
+        ,T_DATA.MAT_CD
+        ,T_DATA.PIECE_MARK
+        ,T_DATA.PML_DIV
+    </select>
+
+    <select id="getBlkStageList" resultType="java.util.HashMap">
+        SELECT T2.BLK_STAGE_CD   BLK_STAGE_CD
+             , T2.BLK_STAGE_DESC BLK_STAGE_DESC
+             , T2.ACTUAL_FLAG    ACTUAL_FLAG
+        FROM PD.T_PD_BLK_STAGE T2
+        ORDER BY T2.SEQ
+    </select>
+
+    <select id="getPmlPlanStrategyData" resultType="com.chinasws.web.mf.dto.PmlPlan.PmlPlanStrategyDto">
+        SELECT T_PPS.DB_ID dbId
+        ,T_PPS.PML_PLAN_TYPE pmlPlanType
+        ,T_PPS.PROJ_NO projNo
+        ,T_PPS.SUB_NETWORK subNetwork
+        ,T_PPS.PML_TYPE pmlType
+        ,(SELECT TMP.DWG_TYPE_DESC FROM DS.T_BASIC_DWG_TYPE_SWS TMP WHERE TMP.DWG_TYPE = T_PPS.PML_TYPE) pmlTypeDesc
+        ,T_PPS.BLOCK_YN blockYn
+        ,T_PPS.SECTION_YN sectionYn
+        ,T_PPS.SUB_ZONE_YN subZoneYn
+        ,T_PPS.STAGE_TYPE stageType
+        ,(SELECT TMP.TYPE_DESC FROM DS.T_BASIC_STAGE_TYPE TMP WHERE TMP.TYPE_CD = T_PPS.STAGE_TYPE) stageTypeDesc
+        ,T_PPS.BLK_STAGE_CD blkStageCd
+        ,T_PPS.ST_OR_FN stOrFn
+        ,DECODE(T_PPS.STAGE_TYPE, '0001', T_BLK.BLK_STAGE_DESC,
+        '0002', DECODE(T_PPS.BLK_STAGE_CD, 'B_A05_02', '分区舾装', 'B_A05_02_A', '分区舾装实绩')) blkStageDesc
+        ,T_BLK.ACTUAL_FLAG actualFlag
+        ,T_PPS.MAX_DT_YN maxDtYn
+        ,T_PPS.MIN_DT_YN minDtYn
+        ,T_PPS.LEAD_TIME leadTime
+        ,T_PPS.USE_YN useYn
+        ,T_PPS.MAIN_FLAG mainFlag
+        FROM DS.T_PML_PLAN_STRATEGY T_PPS
+        ,PD.T_PD_BLK_STAGE T_BLK
+        WHERE T_PPS.BLK_STAGE_CD = T_BLK.BLK_STAGE_CD(+)
+        AND T_PPS.PROJ_NO = #{projNo,jdbcType=VARCHAR}
+        <if test="pmlPlanType != null and pmlPlanType != ''">
+            AND T_PPS.PML_PLAN_TYPE = #{pmlPlanType,jdbcType=VARCHAR}
+        </if>
+        ORDER BY T_PPS.SUB_NETWORK
+        ,T_PPS.PML_TYPE
+        ,DECODE(T_PPS.MAIN_FLAG, 'Y', 0, 1)
+    </select>
+
+    <select id="getShipTypeCdByProjNo" resultType="java.lang.String">
+        SELECT T2.CODE
+        FROM BA.T_SHIP_TYPE T2
+           , BA.T_SHIP T3
+        WHERE T2.ID = T3.S_TYPE_ID
+          AND T3.PROJ_NO = #{projNo, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getCanBatchPlanDtDataByProjNo" resultType="java.util.HashMap">
+        SELECT PML.PROJ_NO PROJ_NO
+        ,PML.ID PML_ID
+        ,PML.PML_NO PML_NO
+        ,PML.PML_TYPE PML_TYPE
+        ,PML.BLOCK BLOCK
+        ,PML.SECTION SECTION
+        ,PML.SUB_ZONE SUB_ZONE
+        ,PML.SUB_NETWORK SUB_NETWORK
+        ,PPS.PML_PLAN_TYPE PML_PLAN_TYPE
+        FROM DS.T_PML_LIST PML
+        ,(SELECT DISTINCT
+        PROJ_NO
+        ,PML_TYPE
+        ,SUB_NETWORK
+        ,PML_PLAN_TYPE
+        FROM DS.T_PML_PLAN_STRATEGY
+        WHERE USE_YN = 'Y'
+        ) PPS
+        WHERE PML.PROJ_NO = PPS.PROJ_NO
+        AND PML.PML_TYPE = PPS.PML_TYPE
+        AND PML.SUB_NETWORK = PPS.SUB_NETWORK
+        AND PML.PML_DIV IN ('Inst.', 'Raw')
+        <if test="projNo != null and projNo != ''">
+            AND PML.PROJ_NO = #{projNo, jdbcType=VARCHAR}
+        </if>
+        <if test="pmlPlanType != null and pmlPlanType != ''">
+            AND PPS.PML_PLAN_TYPE = #{pmlPlanType,jdbcType=VARCHAR}
+        </if>
+        <if test="pmlPlanType == null or pmlPlanType == ''">
+            AND PPS.PML_PLAN_TYPE != 'PML_MAT_NEED'
+        </if>
+    </select>
+
+    <select id="getSectionOrBlockPlanDate" resultType="java.lang.String">
+        SELECT TO_CHAR(${minMaxFlag}(PLAN_DT), 'YYYYMMDD') DT_P
+        FROM PD.T_PD_RO_BLK_PLAN_SNAPSHOT
+        WHERE VER_NO = (SELECT MAX(VER_NO)
+        FROM PD.T_PD_RO_BLK_PLAN_VER_SNAPSHOT
+        WHERE PROJ_NO = #{projNo, jdbcType=VARCHAR}
+        )
+        AND PLAN_DT IS NOT NULL
+        AND PROJ_NO = #{projNo, jdbcType=VARCHAR}
+        AND BLK_STAGE_CD = #{blkStageCd, jdbcType=VARCHAR}
+        AND ST_OR_FN = #{stOrFn, jdbcType=VARCHAR}
+        <if test="sectionYn == 'Y'.toString()">
+            AND PE_NO = #{section, jdbcType=VARCHAR}
+        </if>
+        <if test="blockYn == 'Y'.toString()">
+            AND BLK_NO = #{block, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="getSectionOrBlockActualDate" resultType="java.lang.String">
+        SELECT TO_CHAR(${minMaxFlag}(PLAN_DT), 'YYYYMMDD') DT_A
+        FROM PD.T_PD_RO_BLK_PLAN
+        WHERE PROJ_NO = #{projNo, jdbcType=VARCHAR}
+        AND BLK_STAGE_CD = #{blkStageCd, jdbcType=VARCHAR}
+        AND ST_OR_FN = #{stOrFn, jdbcType=VARCHAR}
+        <if test="sectionYn == 'Y'.toString()">
+            AND PE_NO = #{section, jdbcType=VARCHAR}
+        </if>
+        <if test="blockYn == 'Y'.toString()">
+            AND BLK_NO = #{block, jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="getSubZonePlanDate" resultType="java.lang.String">
+        WITH A AS (SELECT *
+                   FROM (SELECT T1.PROJ_NO,
+                                T1.CLASSIFY_CD,
+                                T1.PLAN_ITEM_ID,
+                                T1.PLAN_ITEM,
+                                T2.COLUMN_NAME,
+                                T2.COLUMN_COSTOMIZE,
+                                DECODE(T2.GATEGORY_CD, 'A',
+                                       DECODE(T2.DETAIL_CD,
+                                              '01', (SELECT ORGN_DESC
+                                                     FROM CP.ORGANIZATION ORG
+                                                     WHERE ORGN_CD = T2.COLUMN_COSTOMIZE),
+                                              '02', (SELECT zone_div_desc
+                                                     FROM PD.T_OU_ZONE_DIV
+                                                     WHERE PROJ_NO = T1.PROJ_NO
+                                                       AND zone_div_cd = T2.COLUMN_COSTOMIZE
+                                                       and zone_div = '2'),
+                                              '03', (SELECT zone_desc
+                                                     FROM PD.T_BA_PROJ_ZONE
+                                                     WHERE PROJ_NO = T1.PROJ_NO AND zone_cd = T2.COLUMN_COSTOMIZE),
+                                              '04', '',
+                                              null),
+                                       NULL) COLUMN_COSTOMIZE_DESC
+                         FROM PD.T_AFTER_OUTFIT_PLAN_INFO T1,
+                              PD.T_AFTER_OUTFIT_PLAN_COSTOMIZE T2
+                         WHERE T1.PLAN_ITEM_ID = T2.PLAN_ITEM_ID(+)
+                           AND T1.PROJ_NO = #{projNo, jdbcType=VARCHAR}
+                           AND T1.CLASSIFY_CD = 'A') PIVOT(MAX(COLUMN_COSTOMIZE) AS COLUMN_CD, MIN(COLUMN_COSTOMIZE_DESC) AS COLUMN_DESC for COLUMN_NAME IN ('C_A02_09' as C_A02_09, 'B_A05_02' as B_A05_02))),
+             B AS (SELECT *
+                   FROM (SELECT T1.PROJ_NO,
+                                T1.CLASSIFY_CD,
+                                T1.PLAN_ITEM_ID,
+                                T1.PLAN_ITEM,
+                                T2.STAGE_COL_NAME,
+                                T2.PLAN_DT
+                         FROM PD.T_AFTER_OUTFIT_PLAN_INFO T1,
+                              PD.T_AFTER_OUTFIT_STAGE_PLAN T2
+                         WHERE T1.PLAN_ITEM_ID = T2.PLAN_ITEM_ID(+)
+                           AND T1.PROJ_NO = #{projNo, jdbcType=VARCHAR}
+                           AND T1.CLASSIFY_CD = 'A') PIVOT(MAX(PLAN_DT) for STAGE_COL_NAME IN ('JH_ST' as "JH_ST", 'JH_FN' as "JH_FN", 'JHA_ST' as "JHA_ST", 'JHA_FN' as "JHA_FN")))
+        SELECT TO_CHAR(
+                       ${minMaxFlag}(DECODE(#{actualFlag, jdbcType=VARCHAR}, 'N', T2.JH_${stOrFn}, 'Y', T2.JHA_${stOrFn})),
+                       'YYYYMMDD') DT_P
+        FROM A T1,
+             B T2
+        WHERE T1.PROJ_NO = T2.PROJ_NO
+          AND T1.CLASSIFY_CD = T2.CLASSIFY_CD
+          AND T1.PLAN_ITEM_ID = T2.PLAN_ITEM_ID
+          AND T1.B_A05_02_COLUMN_CD = '舾装'
+          AND T1.C_A02_09_COLUMN_CD = #{subZone, jdbcType=VARCHAR}
+    </select>
+
+    <select id="getOutfittingPmlType" resultType="java.util.HashMap">
+        SELECT T1.DWG_TYPE      DWG_TYPE
+             , T1.DWG_TYPE_DESC DWG_TYPE_DESC
+        FROM DS.T_BASIC_DWG_TYPE_SWS T1
+           , DS.T_BASIC_SYSTEM_TYPE T2
+        WHERE T1.SYSTEM_ID = T2.DB_ID
+          AND T2.SYSTEM_CD = '2'
+    </select>
+
+    <select id="getActualFlagByBlkStageCd" resultType="java.lang.String">
+        SELECT ACTUAL_FLAG
+        FROM PD.T_PD_BLK_STAGE
+        WHERE BLK_STAGE_CD = #{blkStageCd, jdbcType=VARCHAR}
+    </select>
+</mapper>
