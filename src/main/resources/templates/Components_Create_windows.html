@@ -9,7 +9,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>出险报案申请审批1</title>
+    <title>工装申请弹窗</title>
 
 </head>
 <style>
@@ -21,10 +21,14 @@
         margin: 0;
         padding: 0;
     }
+    .toolbar{
+        font-size: 15px;
+        font-weight: bold;
+    }
 </style>
 <body>
 <div class="mini-toolbar">
-    <span>工装申请</span>
+    <span class="toolbar">工装申请</span>
 </div>
 <table style="width: 100%;">
     <tr>
@@ -85,7 +89,7 @@
     </tr>
 </table>
 <div class="mini-toolbar">
-    <span>申请材料</span>
+    <span class="toolbar">申请材料</span>
 </div>
 <div id="dataGrid1" class="mini-datagrid" style="width:100%;height:300px;"
      borderStyle="border:top"
@@ -156,7 +160,7 @@
     >
         <div property="toolbar">
             <div class="mini-toolbar">
-                <span >附件信息</span>
+                <span class="toolbar">附件信息</span>
                 <button style="margin-left: 300px">上传</button>
                 <button style="padding-left: 10px">删除</button>
             </div>
@@ -182,8 +186,15 @@
          idField="id" allowResize="false"
          sizeList="[300,500,1000]" pageSize="300"
          showHeader="false" title="钢板预处理计划"
+         showToolbar="true"
          multiSelect="false"
     >
+        <div property="toolbar">
+            <div class="mini-toolbar" style="height: 24px;display:flex;align-items: center">
+                <span class="toolbar">审批过程记录</span>
+
+            </div>
+        </div>
         <div property="columns">
             <div type="indexcolumn" headerAlign="center" width="20">序号</div>
 
